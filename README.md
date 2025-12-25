@@ -8,11 +8,23 @@ A framework that doesn't shout — it endures.
 
 ## ✨ Features
 
+### Core Features
 - **Zero Dependencies** — Pure Python, nothing else
 - **Custom File Extension** — `.pyisha` files for clear intent
 - **Clean CLI** — `isha run app.pyisha`
 - **Minimal Core** — App, Request, Response — that's it
 - **Human DX** — Professional, corporate-ready developer experience
+
+### Enhanced Features (v0.2.0+)
+- **🎯 URL Parameters** — Dynamic routes like `/users/{id}`
+- **📦 JSON Parsing** — Automatic JSON body parsing
+- **🌐 CORS Support** — Cross-origin resource sharing
+- **📤 File Uploads** — Multipart form-data handling
+- **⚡ Rate Limiting** — Token bucket algorithm protection
+- **💾 Response Caching** — In-memory caching with TTL
+- **📝 Structured Logging** — Colorful, contextual logs
+
+> See [NEW_FEATURES.md](NEW_FEATURES.md) for detailed documentation
 
 ---
 

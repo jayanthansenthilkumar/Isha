@@ -1,0 +1,799 @@
+"""
+ISHA Framework - Enhanced Feature Demo
+
+Demonstrates all the new features:
+- URL parameters (dynamic routes)
+- JSON body parsing
+- CORS support
+- File uploads
+- Rate limiting
+- Response caching
+- Structured logging
+"""
+
+from isha import (
+    App, Database, 
+    enable_cors, enable_rate_limiting, enable_request_logging,
+    FileUploadHandler, ResponseCache, cached_route,
+    Logger, LogLevel
+)
+
+# Initialize app
+app = App(name="isha-enhanced-demo")
+db = Database("demo_enhanced.db")
+logger = Logger(name="demo", min_level=LogLevel.DEBUG)
+
+# Enable features
+enable_cors(app, origins=["*"])
+enable_rate_limiting(app, requests_per_minute=100)
+enable_request_logging(app, logger)
+
+# File upload handler
+upload_handler = FileUploadHandler(upload_dir="uploads", max_size_mb=10)
+
+# Response cache
+response_cache = ResponseCache(ttl=60)
+
+@app.before
+def handle_uploads(req):
+    """Process file uploads automatically."""
+    upload_handler.process(req)
+
+# Initialize database
+db.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
+db.execute("""
+    CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+""")
+
+db.execute("""
+    CREATE TABLE IF NOT EXISTS files (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT NOT NULL,
+        path TEXT NOT NULL,
+        size INTEGER NOT NULL,
+        uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
+# Seed data
+if not db.query("SELECT * FROM users"):
+    db.insert("users", {"username": "alice", "email": "alice@example.com"})
+    db.insert("users", {"username": "bob", "email": "bob@example.com"})
+    db.insert("users", {"username": "charlie", "email": "charlie@example.com"})
+    
+    db.insert("posts", {"user_id": 1, "title": "First Post", "content": "Hello from Alice!"})
+    db.insert("posts", {"user_id": 2, "title": "Bob's Thoughts", "content": "Interesting ideas..."})
+    logger.info("Database seeded with sample data")
+
+
+# ===== HOMEPAGE =====
+@app.get("/")
+def home(req):
+    """Homepage with feature overview."""
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>ISHA Enhanced Demo</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 2rem;
+            }
+            .container { max-width: 1200px; margin: 0 auto; }
+            h1 {
+                color: white;
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            .subtitle {
+                color: rgba(255, 255, 255, 0.9);
+                text-align: center;
+                font-size: 1.2rem;
+                margin-bottom: 3rem;
+            }
+            .features {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 3rem;
+            }
+            .feature-card {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s;
+            }
+            .feature-card:hover { transform: translateY(-4px); }
+            .feature-card h3 {
+                color: #667eea;
+                margin-bottom: 0.5rem;
+            }
+            .feature-card p {
+                color: #666;
+                line-height: 1.6;
+            }
+            .routes {
+                background: white;
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .routes h2 {
+                color: #333;
+                margin-bottom: 1rem;
+            }
+            .route-list {
+                list-style: none;
+            }
+            .route-list li {
+                padding: 0.75rem;
+                margin-bottom: 0.5rem;
+                background: #f5f5f5;
+                border-radius: 6px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .route-list li:hover {
+                background: #e0e0e0;
+            }
+            .method {
+                display: inline-block;
+                padding: 0.25rem 0.5rem;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: bold;
+                color: white;
+            }
+            .get { background: #10b981; }
+            .post { background: #3b82f6; }
+            .put { background: #f59e0b; }
+            .delete { background: #ef4444; }
+            a {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🚀 ISHA Enhanced</h1>
+            <p class="subtitle">Zero Dependencies. Maximum Features.</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🎯 URL Parameters</h3>
+                    <p>Dynamic routes with path variables like /users/{id}</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📦 JSON Parsing</h3>
+                    <p>Automatic JSON body parsing for POST/PUT requests</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌐 CORS Support</h3>
+                    <p>Cross-Origin Resource Sharing enabled for APIs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📤 File Uploads</h3>
+                    <p>Handle multipart/form-data file uploads easily</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Rate Limiting</h3>
+                    <p>Protect your API from abuse with token bucket algorithm</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💾 Response Caching</h3>
+                    <p>In-memory caching for expensive operations</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📝 Structured Logging</h3>
+                    <p>Beautiful, colorful logs for development and production</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Security Headers</h3>
+                    <p>Built-in security headers and signed sessions</p>
+                </div>
+            </div>
+            
+            <div class="routes">
+                <h2>Available Routes</h2>
+                <ul class="route-list">
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/users">View All Users</a>
+                        </div>
+                        <small>Database query with caching</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/users/1">View User #1</a>
+                        </div>
+                        <small>URL parameter example</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method post">POST</span>
+                            <span>/api/users</span>
+                        </div>
+                        <small>Create user (JSON body)</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/posts">View All Posts</a>
+                        </div>
+                        <small>Cached responses</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/posts/1">View Post #1</a>
+                        </div>
+                        <small>Dynamic route with parameter</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/upload">Upload Page</a>
+                        </div>
+                        <small>File upload form</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method post">POST</span>
+                            <span>/upload</span>
+                        </div>
+                        <small>Handle file uploads</small>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="method get">GET</span>
+                            <a href="/api/status">API Status</a>
+                        </div>
+                        <small>JSON API endpoint</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+
+# ===== USER ROUTES WITH URL PARAMETERS =====
+@app.get("/users")
+@response_cache.cached(ttl=30)
+def list_users(req):
+    """List all users (cached)."""
+    users = db.query("SELECT * FROM users ORDER BY created_at DESC")
+    
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Users - ISHA Demo</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                padding: 2rem;
+            }
+            .container { max-width: 800px; margin: 0 auto; }
+            h1 { color: #333; margin-bottom: 1rem; }
+            .back { margin-bottom: 1rem; }
+            .back a {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            table {
+                width: 100%;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            th, td {
+                padding: 1rem;
+                text-align: left;
+            }
+            th {
+                background: #667eea;
+                color: white;
+                font-weight: 600;
+            }
+            tr:hover { background: #f9f9f9; }
+            a { color: #667eea; text-decoration: none; }
+            a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="back"><a href="/">← Back to Home</a></div>
+            <h1>Users Directory</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+    """
+    
+    for user in users:
+        html += f"""
+                    <tr>
+                        <td>{user['id']}</td>
+                        <td>{user['username']}</td>
+                        <td>{user['email']}</td>
+                        <td><a href="/users/{user['id']}">View Details</a></td>
+                    </tr>
+        """
+    
+    html += """
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>
+    """
+    return html
+
+
+@app.get("/users/{id}")
+def get_user(req):
+    """Get a single user by ID (URL parameter demo)."""
+    user_id = req.params.get("id")
+    
+    if not user_id:
+        return "User ID required", 400
+    
+    user = db.query("SELECT * FROM users WHERE id = ?", (user_id,))
+    
+    if not user:
+        return f"User {user_id} not found", 404
+    
+    user = user[0]
+    
+    # Get user's posts
+    posts = db.query("SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC", (user_id,))
+    
+    posts_html = ""
+    for post in posts:
+        posts_html += f"""
+            <div style="padding: 1rem; background: #f9f9f9; border-radius: 6px; margin-bottom: 1rem;">
+                <h3 style="color: #667eea; margin-bottom: 0.5rem;">{post['title']}</h3>
+                <p style="color: #666;">{post['content']}</p>
+                <small style="color: #999;">{post['created_at']}</small>
+            </div>
+        """
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>{user['username']} - User Profile</title>
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                padding: 2rem;
+            }}
+            .container {{ max-width: 800px; margin: 0 auto; }}
+            .back {{ margin-bottom: 1rem; }}
+            .back a {{
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 500;
+            }}
+            .profile {{
+                background: white;
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }}
+            .profile h1 {{ color: #333; margin-bottom: 1rem; }}
+            .profile p {{ color: #666; margin-bottom: 0.5rem; }}
+            .posts h2 {{ color: #333; margin-bottom: 1rem; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="back"><a href="/users">← Back to Users</a></div>
+            <div class="profile">
+                <h1>👤 {user['username']}</h1>
+                <p><strong>Email:</strong> {user['email']}</p>
+                <p><strong>User ID:</strong> {user['id']}</p>
+                <p><strong>Joined:</strong> {user['created_at']}</p>
+            </div>
+            <div class="posts">
+                <h2>Posts by {user['username']}</h2>
+                {posts_html if posts_html else "<p style='color: #999;'>No posts yet.</p>"}
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+
+# ===== API ENDPOINTS WITH JSON =====
+@app.get("/api/users")
+def api_list_users(req):
+    """API endpoint - list users as JSON."""
+    users = db.query("SELECT id, username, email FROM users")
+    return {"users": users, "count": len(users)}
+
+
+@app.post("/api/users")
+def api_create_user(req):
+    """API endpoint - create user from JSON body."""
+    if not req.json_body:
+        return {"error": "JSON body required"}, 400
+    
+    username = req.json_body.get("username")
+    email = req.json_body.get("email")
+    
+    if not username or not email:
+        return {"error": "username and email required"}, 400
+    
+    try:
+        db.insert("users", {"username": username, "email": email})
+        logger.info(f"Created new user: {username}")
+        return {"message": "User created", "username": username}, 201
+    except Exception as e:
+        logger.error(f"Failed to create user: {e}")
+        return {"error": "Username already exists"}, 400
+
+
+# ===== POSTS WITH CACHING =====
+@app.get("/posts")
+@cached_route(ttl=60)
+def list_posts(req):
+    """List all posts (cached for 60 seconds)."""
+    posts = db.query("""
+        SELECT posts.*, users.username 
+        FROM posts 
+        JOIN users ON posts.user_id = users.id 
+        ORDER BY posts.created_at DESC
+    """)
+    
+    posts_html = ""
+    for post in posts:
+        posts_html += f"""
+            <div class="post-card">
+                <h3><a href="/posts/{post['id']}">{post['title']}</a></h3>
+                <p>{post['content']}</p>
+                <div class="meta">
+                    <span>By {post['username']}</span>
+                    <span>{post['created_at']}</span>
+                </div>
+            </div>
+        """
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Posts - ISHA Demo</title>
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                padding: 2rem;
+            }}
+            .container {{ max-width: 800px; margin: 0 auto; }}
+            .back {{ margin-bottom: 1rem; }}
+            .back a {{ color: #667eea; text-decoration: none; font-weight: 500; }}
+            h1 {{ color: #333; margin-bottom: 1.5rem; }}
+            .post-card {{
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }}
+            .post-card h3 {{ color: #667eea; margin-bottom: 0.5rem; }}
+            .post-card h3 a {{ color: #667eea; text-decoration: none; }}
+            .post-card h3 a:hover {{ text-decoration: underline; }}
+            .post-card p {{ color: #666; margin-bottom: 1rem; line-height: 1.6; }}
+            .meta {{ display: flex; justify-content: space-between; color: #999; font-size: 0.875rem; }}
+            .cached {{ background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 6px; margin-bottom: 1rem; display: inline-block; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="back"><a href="/">← Back to Home</a></div>
+            <h1>📝 Blog Posts</h1>
+            <div class="cached">⚡ This page is cached for 60 seconds</div>
+            {posts_html}
+        </div>
+    </body>
+    </html>
+    """
+
+
+@app.get("/posts/{id}")
+def get_post(req):
+    """Get a single post by ID."""
+    post_id = req.params.get("id")
+    
+    post = db.query("""
+        SELECT posts.*, users.username 
+        FROM posts 
+        JOIN users ON posts.user_id = users.id 
+        WHERE posts.id = ?
+    """, (post_id,))
+    
+    if not post:
+        return f"Post {post_id} not found", 404
+    
+    post = post[0]
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>{post['title']} - ISHA Demo</title>
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                padding: 2rem;
+            }}
+            .container {{ max-width: 800px; margin: 0 auto; }}
+            .back {{ margin-bottom: 1rem; }}
+            .back a {{ color: #667eea; text-decoration: none; font-weight: 500; }}
+            .post {{
+                background: white;
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }}
+            .post h1 {{ color: #333; margin-bottom: 1rem; }}
+            .post p {{ color: #666; line-height: 1.8; margin-bottom: 1.5rem; }}
+            .author {{ color: #667eea; font-weight: 500; }}
+            .date {{ color: #999; font-size: 0.875rem; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="back"><a href="/posts">← Back to Posts</a></div>
+            <div class="post">
+                <h1>{post['title']}</h1>
+                <p>{post['content']}</p>
+                <div>
+                    <span class="author">By {post['username']}</span> • 
+                    <span class="date">{post['created_at']}</span>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+
+# ===== FILE UPLOAD DEMO =====
+@app.get("/upload")
+def upload_page(req):
+    """File upload form."""
+    files = db.query("SELECT * FROM files ORDER BY uploaded_at DESC LIMIT 10")
+    
+    files_html = ""
+    for file in files:
+        files_html += f"""
+            <tr>
+                <td>{file['filename']}</td>
+                <td>{file['size']} bytes</td>
+                <td>{file['uploaded_at']}</td>
+            </tr>
+        """
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>File Upload - ISHA Demo</title>
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                padding: 2rem;
+            }}
+            .container {{ max-width: 800px; margin: 0 auto; }}
+            .back {{ margin-bottom: 1rem; }}
+            .back a {{ color: #667eea; text-decoration: none; font-weight: 500; }}
+            h1 {{ color: #333; margin-bottom: 1.5rem; }}
+            .upload-form {{
+                background: white;
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }}
+            input[type="file"] {{
+                margin: 1rem 0;
+                padding: 0.75rem;
+                border: 2px dashed #667eea;
+                border-radius: 6px;
+                width: 100%;
+                cursor: pointer;
+            }}
+            button {{
+                background: #667eea;
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 1rem;
+                font-weight: 500;
+            }}
+            button:hover {{ background: #5568d3; }}
+            table {{
+                width: 100%;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }}
+            th, td {{ padding: 1rem; text-align: left; }}
+            th {{ background: #667eea; color: white; font-weight: 600; }}
+            tr:hover {{ background: #f9f9f9; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="back"><a href="/">← Back to Home</a></div>
+            <h1>📤 File Upload</h1>
+            <div class="upload-form">
+                <form method="POST" enctype="multipart/form-data">
+                    <label for="file"><strong>Choose a file to upload:</strong></label>
+                    <input type="file" name="file" id="file" required>
+                    <button type="submit">Upload File</button>
+                </form>
+            </div>
+            <h2 style="margin-bottom: 1rem; color: #333;">Recent Uploads</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Size</th>
+                        <th>Uploaded At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {files_html if files_html else "<tr><td colspan='3' style='text-align: center; color: #999;'>No files uploaded yet</td></tr>"}
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>
+    """
+
+
+@app.post("/upload")
+def handle_upload(req):
+    """Handle file upload."""
+    if not hasattr(req, 'files') or 'file' not in req.files:
+        return "No file uploaded", 400
+    
+    uploaded_file = req.files['file']
+    
+    # Save file
+    save_path = uploaded_file.save("uploads")
+    
+    # Record in database
+    db.insert("files", {
+        "filename": uploaded_file.filename,
+        "path": save_path,
+        "size": uploaded_file.size
+    })
+    
+    logger.info(f"File uploaded: {uploaded_file.filename} ({uploaded_file.size} bytes)")
+    
+    # Redirect back to upload page
+    from isha import Response
+    res = Response()
+    res.redirect("/upload")
+    return res
+
+
+# ===== API STATUS =====
+@app.get("/api/status")
+def api_status(req):
+    """API status endpoint."""
+    return {
+        "status": "running",
+        "framework": "ISHA Enhanced",
+        "version": "0.2.0",
+        "features": [
+            "URL Parameters",
+            "JSON Body Parsing",
+            "CORS Support",
+            "File Uploads",
+            "Rate Limiting",
+            "Response Caching",
+            "Structured Logging"
+        ],
+        "routes": len(app.routes) + len(app.dynamic_routes)
+    }
+
+
+# ===== ERROR HANDLERS =====
+@app.error(404)
+def not_found(req):
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>404 - Not Found</title>
+        <style>
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #f5f5f5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+            }}
+            .error {{
+                text-align: center;
+                background: white;
+                padding: 3rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }}
+            h1 {{ color: #ef4444; font-size: 4rem; margin: 0; }}
+            p {{ color: #666; font-size: 1.2rem; margin: 1rem 0; }}
+            a {{ color: #667eea; text-decoration: none; font-weight: 500; }}
+        </style>
+    </head>
+    <body>
+        <div class="error">
+            <h1>404</h1>
+            <p>Page not found: {req.path}</p>
+            <a href="/">← Go Home</a>
+        </div>
+    </body>
+    </html>
+    """, 404
+
+
+if __name__ == "__main__":
+    logger.info("🚀 Starting ISHA Enhanced Demo Server")
+    logger.info("Visit http://127.0.0.1:8000 to see all features!")

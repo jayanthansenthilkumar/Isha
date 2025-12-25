@@ -32,6 +32,8 @@ class Request:
         self.headers = {}
         self.cookies = {}
         self.body = ""
+        self.json_body = None  # Parsed JSON body
+        self.params = {}  # URL path parameters like {id}
         self._parse()
     
     def _parse(self):
@@ -74,6 +76,10 @@ class Request:
         # Parse cookies from headers
         if "Cookie" in self.headers:
             self._parse_cookies()
+        
+        # Parse JSON body if content-type is application/json
+        if self.headers.get("Content-Type", "").startswith("application/json"):
+            self._parse_json_body()
     
     def _parse_query_params(self):
         """Parse URL query parameters."""
@@ -88,6 +94,15 @@ class Request:
             if "=" in cookie:
                 key, value = cookie.strip().split("=", 1)
                 self.cookies[key] = value
+    
+    def _parse_json_body(self):
+        """Parse JSON from request body."""
+        if self.body:
+            try:
+                import json
+                self.json_body = json.loads(self.body)
+            except (json.JSONDecodeError, ValueError):
+                self.json_body = None
 
 
 class Response:
@@ -197,6 +212,7 @@ class App:
     def __init__(self, name: str = "isha"):
         self.name = name
         self.routes = {}
+        self.dynamic_routes = []  # For routes with {param} patterns
         self.before_request_handlers = []
         self.after_request_handlers = []
         self.error_handlers = {}
@@ -225,10 +241,18 @@ class App:
             methods = ["GET"]
         
         def wrapper(fn):
-            self.routes[path] = {
-                "handler": fn,
-                "methods": methods
-            }
+            # Check if path has dynamic parameters {param}
+            if "{" in path and "}" in path:
+                self.dynamic_routes.append({
+                    "pattern": path,
+                    "handler": fn,
+                    "methods": methods
+                })
+            else:
+                self.routes[path] = {
+                    "handler": fn,
+                    "methods": methods
+                }
             return fn
         return wrapper
     
@@ -291,8 +315,14 @@ class App:
             if result is not None:
                 return self._make_response(result)
         
-        # Find route
+        # Find route - check static routes first
         route_info = self.routes.get(request.path)
+        
+        # If no static route, check dynamic routes
+        if route_info is None:
+            route_info, params = self._match_dynamic_route(request.path)
+            if route_info:
+                request.params = params
         
         if route_info is None:
             return self._handle_error(404, request)
@@ -326,6 +356,22 @@ class App:
             body, status = result
             return Response(body, status)
         return Response(str(result))
+    
+    def _match_dynamic_route(self, path: str):
+        """Match a path against dynamic route patterns."""
+        import re
+        
+        for route in self.dynamic_routes:
+            pattern = route["pattern"]
+            # Convert {param} to regex capturing group
+            regex_pattern = re.sub(r"\{([^}]+)\}", r"(?P<\1>[^/]+)", pattern)
+            regex_pattern = "^" + regex_pattern + "$"
+            
+            match = re.match(regex_pattern, path)
+            if match:
+                return route, match.groupdict()
+        
+        return None, {}
     
     def _handle_error(self, status_code: int, request: Request) -> Response:
         """Handle error responses."""
