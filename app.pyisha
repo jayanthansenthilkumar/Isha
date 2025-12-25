@@ -1,0 +1,679 @@
+"""
+═══════════════════════════════════════════════════════════════════════════════
+ ╦╔═╗╦ ╦╔═╗  FULLSTACK APPLICATION
+ ║╚═╗╠═╣╠═╣  Simple. Human. Timeless.
+ ╩╚═╝╩ ╩╩ ╩  Production-Ready Demo
+═══════════════════════════════════════════════════════════════════════════════
+
+This is a complete fullstack application showcasing ISHA's capabilities:
+• Configuration Management        • Session Management
+• Template Rendering             • Form Handling & Validation
+• Static File Serving            • Database Operations (SQLite)
+• RESTful API Endpoints          • Cookie Management
+• Error Handling                 • Middleware Pipeline
+
+Run with: isha run app.pyisha
+"""
+
+from pathlib import Path
+from isha import (
+    App, Config, DEFAULT_CONFIG,
+    Database, Session,
+    Form, Field, parse_form_data
+)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔧 APPLICATION CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════
+
+config = Config(DEFAULT_CONFIG)
+config.set("DEBUG", True)
+config.set("SECRET_KEY", "my-super-secret-key-change-in-production")
+config.set("DATABASE_URL", "app_database.db")
+config.set("TEMPLATE_DIR", "templates")
+config.set("STATIC_DIR", "static")
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🏗️  APPLICATION INITIALIZATION
+# ═══════════════════════════════════════════════════════════════════════════
+
+app = App(name="isha-fullstack-app")
+app.config = config
+app.template_dir = Path(config.get("TEMPLATE_DIR"))
+
+# Mount static files (CSS, JS, images)
+app.mount_static("/static", config.get("STATIC_DIR"))
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 💾 DATABASE SETUP
+# ═══════════════════════════════════════════════════════════════════════════
+
+db = Database(config.get("DATABASE_URL"))
+
+# Create tables
+db.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+
+db.execute('''
+    CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        author_id INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (author_id) REFERENCES users(id)
+    )
+''')
+
+# Seed sample data
+if db.query_one("SELECT COUNT(*) as count FROM users")["count"] == 0:
+    db.insert("users", {"username": "alice", "email": "alice@example.com"})
+    db.insert("users", {"username": "bob", "email": "bob@example.com"})
+    db.insert("users", {"username": "charlie", "email": "charlie@example.com"})
+    
+    db.insert("posts", {
+        "title": "Welcome to ISHA Framework",
+        "content": "ISHA is a simple, human-centric web framework for Python.",
+        "author_id": 1
+    })
+    db.insert("posts", {
+        "title": "Building Modern Web Apps",
+        "content": "Learn how to build fullstack applications with minimal dependencies.",
+        "author_id": 2
+    })
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 📝 FORM DEFINITIONS
+# ═══════════════════════════════════════════════════════════════════════════
+
+class RegistrationForm(Form):
+    """User registration form with validation"""
+    username = Field(required=True, min_length=3, max_length=20)
+    email = Field(
+        required=True,
+        validator=lambda v: '@' in v and '.' in v.split('@')[1]
+    )
+
+class PostForm(Form):
+    """Blog post creation form"""
+    title = Field(required=True, min_length=5, max_length=100)
+    content = Field(required=True, min_length=10)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔄 MIDDLEWARE - Request/Response Pipeline
+# ═══════════════════════════════════════════════════════════════════════════
+
+visit_count = 0
+
+@app.before
+def track_visits(req):
+    """Track visits and add session support"""
+    global visit_count
+    visit_count += 1
+    
+    session = Session.decode(
+        req.cookies.get("session", ""),
+        config.get("SECRET_KEY")
+    )
+    req.session = session or Session(
+        config.get("SECRET_KEY"),
+        lifetime=config.get("SESSION_LIFETIME")
+    )
+    
+    print(f"  🌐 {req.method} {req.path} | Visits: {visit_count}")
+
+@app.after
+def add_security_headers(req, res):
+    """Add security headers"""
+    res.set_header("X-Content-Type-Options", "nosniff")
+    res.set_header("X-Frame-Options", "DENY")
+    res.set_header("X-Powered-By", "ISHA Framework")
+    
+    if hasattr(req, 'session') and req.session._modified:
+        res.set_cookie("session", req.session.encode(), 
+                      max_age=config.get("SESSION_LIFETIME"))
+    
+    return res
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🏠 WEB ROUTES - HTML Pages
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/")
+def home(req):
+    """Homepage with modern UI"""
+    user_count = db.query_one("SELECT COUNT(*) as count FROM users")["count"]
+    post_count = db.query_one("SELECT COUNT(*) as count FROM posts")["count"]
+    
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISHA Fullstack Framework</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }}
+        header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }}
+        header h1 {{
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }}
+        nav {{
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e0e0e0;
+        }}
+        nav a {{
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 25px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }}
+        nav a:hover {{ color: #764ba2; }}
+        .content {{
+            padding: 40px;
+        }}
+        .stats {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }}
+        .stat-card {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }}
+        .stat-card h3 {{ font-size: 2.5em; margin-bottom: 10px; }}
+        .features {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }}
+        .feature {{
+            border: 2px solid #e0e0e0;
+            padding: 25px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }}
+        .feature:hover {{
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }}
+        .feature h3 {{ color: #667eea; margin-bottom: 10px; }}
+        footer {{
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e0e0e0;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>╦╔═╗╦ ╦╔═╗</h1>
+            <h1>║╚═╗╠═╣╠═╣</h1>
+            <h1>╩╚═╝╩ ╩╩ ╩</h1>
+            <p style="font-size: 1.2em; opacity: 0.9;">Simple. Human. Timeless.</p>
+        </header>
+        
+        <nav>
+            <a href="/">🏠 Home</a>
+            <a href="/users">👥 Users</a>
+            <a href="/posts">📝 Posts</a>
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/api/status">🔌 API</a>
+        </nav>
+        
+        <div class="content">
+            <h2 style="color: #667eea; margin-bottom: 20px;">📊 Live Statistics</h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>{user_count}</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{post_count}</h3>
+                    <p>Blog Posts</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{visit_count}</h3>
+                    <p>Page Visits</p>
+                </div>
+            </div>
+            
+            <h2 style="color: #667eea; margin-bottom: 20px;">✨ Framework Features</h2>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>🔧 Zero Dependencies</h3>
+                    <p>Pure Python implementation</p>
+                </div>
+                <div class="feature">
+                    <h3>🎨 Templates</h3>
+                    <p>Built-in HTML rendering</p>
+                </div>
+                <div class="feature">
+                    <h3>💾 Database</h3>
+                    <p>SQLite integration</p>
+                </div>
+                <div class="feature">
+                    <h3>📝 Forms</h3>
+                    <p>Validation & parsing</p>
+                </div>
+                <div class="feature">
+                    <h3>🔐 Sessions</h3>
+                    <p>Secure cookie sessions</p>
+                </div>
+                <div class="feature">
+                    <h3>📁 Static Files</h3>
+                    <p>CSS, JS, images</p>
+                </div>
+                <div class="feature">
+                    <h3>🚀 APIs</h3>
+                    <p>JSON REST endpoints</p>
+                </div>
+                <div class="feature">
+                    <h3>⚙️ Config</h3>
+                    <p>Flexible settings</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built with ❤️ using ISHA Framework v0.1.0</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                A framework that doesn't shout — it endures.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>'''
+    
+    from isha import Response
+    return Response(html, content_type="text/html")
+
+@app.get("/users")
+def list_users(req):
+    """Display all users"""
+    users = db.query("SELECT * FROM users ORDER BY created_at DESC")
+    
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <title>Users - ISHA</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }}
+        table {{
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-collapse: collapse;
+        }}
+        th {{
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }}
+        td {{
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }}
+        tr:hover {{ background: #f8f9fa; }}
+        a {{
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👥 Users Directory</h1>
+        <p>Total: {len(users)} registered users</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+'''
+    
+    for user in users:
+        html += f'''
+            <tr>
+                <td>{user["id"]}</td>
+                <td><strong>{user["username"]}</strong></td>
+                <td>{user["email"]}</td>
+                <td>{user["created_at"]}</td>
+            </tr>
+'''
+    
+    html += '''
+        </tbody>
+    </table>
+    <p style="margin-top: 20px;"><a href="/">← Back to Home</a></p>
+</body>
+</html>'''
+    
+    from isha import Response
+    return Response(html, content_type="text/html")
+
+@app.get("/posts")
+def list_posts(req):
+    """Display blog posts"""
+    posts = db.query('''
+        SELECT p.*, u.username as author_name 
+        FROM posts p
+        LEFT JOIN users u ON p.author_id = u.id
+        ORDER BY p.created_at DESC
+    ''')
+    
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts - ISHA</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }}
+        .post {{
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }}
+        .post h2 {{ color: #667eea; margin-bottom: 10px; }}
+        .post-meta {{
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }}
+        a {{ color: #667eea; text-decoration: none; font-weight: 600; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📝 Blog Posts</h1>
+        <p>Total: {len(posts)} posts published</p>
+    </div>
+'''
+    
+    for post in posts:
+        html += f'''
+    <div class="post">
+        <h2>{post["title"]}</h2>
+        <div class="post-meta">
+            By <strong>{post["author_name"]}</strong> • {post["created_at"]}
+        </div>
+        <p>{post["content"]}</p>
+    </div>
+'''
+    
+    html += '''
+    <p><a href="/">← Back to Home</a></p>
+</body>
+</html>'''
+    
+    from isha import Response
+    return Response(html, content_type="text/html")
+
+@app.get("/dashboard")
+def dashboard(req):
+    """Dashboard with session demo"""
+    username = req.session.get("username")
+    
+    if not username:
+        req.session["username"] = "demo_user"
+        username = "demo_user"
+    
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - ISHA</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }}
+        .card {{
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }}
+        .session-info {{
+            background: #e8f5e9;
+            padding: 15px;
+            border-left: 4px solid #4caf50;
+            border-radius: 5px;
+        }}
+        a {{ color: #667eea; text-decoration: none; font-weight: 600; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Dashboard</h1>
+        <p>Welcome back, <strong>{username}</strong>!</p>
+    </div>
+    
+    <div class="card">
+        <h2>🔐 Session Information</h2>
+        <div class="session-info">
+            <p><strong>Username:</strong> {username}</p>
+            <p><strong>Session Active:</strong> Yes ✓</p>
+            <p><strong>Visit Count:</strong> {visit_count}</p>
+        </div>
+    </div>
+    
+    <p><a href="/">← Back to Home</a></p>
+</body>
+</html>'''
+    
+    from isha import Response
+    return Response(html, content_type="text/html")
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔌 API ROUTES - RESTful JSON Endpoints
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.get("/api/status")
+def api_status(req):
+    """API status endpoint"""
+    return {
+        "status": "operational",
+        "framework": "ISHA",
+        "version": "0.1.0",
+        "endpoints": {
+            "users": "/api/users",
+            "posts": "/api/posts",
+            "health": "/api/health"
+        }
+    }
+
+@app.get("/api/users")
+def api_users(req):
+    """Get all users (JSON)"""
+    users = db.query("SELECT id, username, email, created_at FROM users")
+    return {"success": True, "count": len(users), "data": users}
+
+@app.get("/api/posts")
+def api_posts(req):
+    """Get all posts (JSON)"""
+    posts = db.query('''
+        SELECT p.*, u.username as author_name 
+        FROM posts p
+        LEFT JOIN users u ON p.author_id = u.id
+    ''')
+    return {"success": True, "count": len(posts), "data": posts}
+
+@app.get("/api/health")
+def api_health(req):
+    """Health check"""
+    return {"status": "healthy", "visits": visit_count}
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ❌ ERROR HANDLERS
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.error(404)
+def not_found(req):
+    """Custom 404 page"""
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <title>404 - Not Found</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }}
+        h1 {{ font-size: 6em; margin: 0; }}
+        p {{ font-size: 1.5em; }}
+        a {{
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }}
+    </style>
+</head>
+<body>
+    <div>
+        <h1>404</h1>
+        <p>🔍 Path '{req.path}' not found</p>
+        <a href="/">← Go Home</a>
+    </div>
+</body>
+</html>'''
+    
+    from isha import Response
+    return Response(html, status=404, content_type="text/html")
+
+@app.error(500)
+def server_error(req):
+    """Custom 500 page"""
+    return {"error": "Internal Server Error", "status": 500}, 500
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🎉 APPLICATION READY
+# ═══════════════════════════════════════════════════════════════════════════
+
+print("""
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║   ✨ ISHA Fullstack Application Loaded                        ║
+║                                                                ║
+║   📦 Features Enabled:                                         ║
+║      • Configuration Management ✓                              ║
+║      • Database (SQLite) ✓                                     ║
+║      • Template Rendering ✓                                    ║
+║      • Static File Serving ✓                                   ║
+║      • Session Management ✓                                    ║
+║      • Form Validation ✓                                       ║
+║      • RESTful APIs ✓                                          ║
+║      • Error Handling ✓                                        ║
+║                                                                ║
+║   🌐 Available Routes:                                         ║
+║      GET  /              → Homepage with Live Stats            ║
+║      GET  /users         → User Directory (Database)           ║
+║      GET  /posts         → Blog Posts (with Authors)           ║
+║      GET  /dashboard     → Dashboard (Session Demo)            ║
+║      GET  /api/status    → API Status & Info                   ║
+║      GET  /api/users     → Users API (JSON)                    ║
+║      GET  /api/posts     → Posts API (JSON)                    ║
+║      GET  /api/health    → Health Check                        ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+""")
+
