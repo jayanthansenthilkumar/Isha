@@ -3,10 +3,13 @@ Isha — A Modern Python Web Framework
 
 Simplicity of Flask. Structure of Django. Performance mindset of FastAPI.
 Clean. Powerful. Elegant.
+
+Install:  pip install isha
+Docs:     https://github.com/jayanthansenthilkumar/ISHA_Framework
 """
 
 __version__ = "1.0.0"
-__author__ = "Isha Framework Contributors"
+__author__ = "Jayanthan Senthilkumar"
 
 from .app import Isha
 from .request import Request

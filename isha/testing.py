@@ -87,17 +87,17 @@ class TestClient:
     def get(self, path, headers=None, params=None, **kwargs):
         return self._request("GET", path, headers=headers, params=params, **kwargs)
 
-    def post(self, path, headers=None, data=None, json_data=None, **kwargs):
-        return self._request("POST", path, headers=headers, data=data, json_data=json_data, **kwargs)
+    def post(self, path, headers=None, data=None, json=None, json_data=None, **kwargs):
+        return self._request("POST", path, headers=headers, data=data, json_data=json or json_data, **kwargs)
 
-    def put(self, path, headers=None, data=None, json_data=None, **kwargs):
-        return self._request("PUT", path, headers=headers, data=data, json_data=json_data, **kwargs)
+    def put(self, path, headers=None, data=None, json=None, json_data=None, **kwargs):
+        return self._request("PUT", path, headers=headers, data=data, json_data=json or json_data, **kwargs)
 
     def delete(self, path, headers=None, **kwargs):
         return self._request("DELETE", path, headers=headers, **kwargs)
 
-    def patch(self, path, headers=None, data=None, json_data=None, **kwargs):
-        return self._request("PATCH", path, headers=headers, data=data, json_data=json_data, **kwargs)
+    def patch(self, path, headers=None, data=None, json=None, json_data=None, **kwargs):
+        return self._request("PATCH", path, headers=headers, data=data, json_data=json or json_data, **kwargs)
 
     def _request(
         self,

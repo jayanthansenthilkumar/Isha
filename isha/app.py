@@ -167,12 +167,13 @@ class Isha:
         """Set the template rendering engine."""
         self._template_engine = engine
 
-    async def render(self, template_name: str, **context) -> HTMLResponse:
-        """Render a template with the given context."""
+    def render(self, template_name: str, **context) -> HTMLResponse:
+        """Render a template with the given context. Returns an HTMLResponse."""
         if self._template_engine is None:
             from .template import TemplateEngine
-            self._template_engine = TemplateEngine(self.config.get("TEMPLATE_DIR", "templates"))
-        
+            template_dir = self.config.get("TEMPLATE_DIR", "templates")
+            self._template_engine = TemplateEngine(template_dir)
+
         html = self._template_engine.render(template_name, **context)
         return HTMLResponse(html)
 
@@ -338,15 +339,11 @@ class Isha:
         if debug is not None:
             self.debug = debug
 
-        print(f"""
-╔══════════════════════════════════════════════╗
-║           ✦  Isha Framework v1.0  ✦          ║
-║──────────────────────────────────────────────║
-║  Running on: http://{host}:{port:<5}               ║
-║  Debug mode: {'ON' if self.debug else 'OFF':<4}                          ║
-║  Press Ctrl+C to stop                        ║
-╚══════════════════════════════════════════════╝
-""")
+        from . import __version__
+        print(f"""\n✦ Isha Framework v{__version__}""")
+        print(f"  Running on: http://{host}:{port}")
+        print(f"  Debug mode: {'ON' if self.debug else 'OFF'}")
+        print(f"  Press Ctrl+C to stop\n")
 
         try:
             from .server import run_server

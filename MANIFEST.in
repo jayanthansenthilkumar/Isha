@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+include pyproject.toml
+
+recursive-include isha *.py
+recursive-exclude tests *
+recursive-exclude examples *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[cod]
