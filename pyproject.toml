@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "isha"
-version = "1.0.0"
+version = "1.1.0"
 description = "A modern, lightweight, high-performance Python web framework"
 readme = "README.md"
 license = {text = "MIT"}

@@ -13,7 +13,7 @@ long_description = readme.read_text(encoding="utf-8") if readme.exists() else ""
 
 setup(
     name="isha",
-    version="1.0.0",
+    version="1.1.0",
     author="Jayanthan Senthilkumar",
     author_email="jayanthansenthilkumar@gmail.com",
     description="A modern, lightweight, high-performance Python web framework",
