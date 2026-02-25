@@ -1,0 +1,1389 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — Isha Framework{% endblock %}
+
+{% block head %}
+<style>
+/* ═══════════════════════════════════════════════════════
+   DOCUMENTATION PAGE STYLES
+   ═══════════════════════════════════════════════════════ */
+.docs-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+    min-height: 100vh;
+    padding-top: 70px;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.docs-sidebar {
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: var(--bg-alt);
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    scrollbar-width: thin;
+}
+.docs-sidebar::-webkit-scrollbar { width: 4px; }
+.docs-sidebar::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 2px; }
+
+.sidebar-section {
+    margin-bottom: 1.5rem;
+}
+.sidebar-label {
+    display: block;
+    padding: 0.3rem 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 0.2rem;
+}
+.sidebar-link {
+    display: block;
+    padding: 0.38rem 1.5rem 0.38rem 1.8rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+}
+.sidebar-link:hover {
+    color: var(--primary-light);
+    background: rgba(99,102,241,0.05);
+}
+.sidebar-link.active {
+    color: var(--primary-light);
+    border-left-color: var(--primary);
+    background: rgba(99,102,241,0.06);
+    font-weight: 600;
+}
+
+/* Sidebar mobile toggle */
+.docs-sidebar-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 999;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px var(--primary-glow);
+    font-size: 1.4rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Content ─────────────────────────────────────────── */
+.docs-content {
+    padding: 3rem 3.5rem 6rem;
+    max-width: 860px;
+    min-width: 0;
+}
+.docs-content h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+.docs-content .docs-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+.docs-content h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 3rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    scroll-margin-top: 90px;
+}
+.docs-content h2:first-of-type {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+}
+.docs-content h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 2rem 0 0.8rem;
+    color: var(--text);
+    scroll-margin-top: 90px;
+}
+.docs-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 1.4rem 0 0.6rem;
+    color: var(--text);
+}
+.docs-content p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+.docs-content ul, .docs-content ol {
+    margin: 0.5rem 0 1.2rem 1.2rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.8;
+}
+.docs-content li { margin-bottom: 0.3rem; }
+.docs-content code {
+    font-family: var(--font-mono);
+    background: var(--surface);
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    font-size: 0.84rem;
+    border: 1px solid var(--border);
+    color: var(--accent);
+}
+.docs-content pre {
+    background: #0b1120;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.5rem;
+    overflow-x: auto;
+    margin: 0.8rem 0 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+.docs-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+}
+
+/* ── Syntax highlighting ── */
+.sh-keyword    { color: #c678dd; font-weight: 600; }
+.sh-string     { color: #98c379; }
+.sh-comment    { color: #5c6370; font-style: italic; }
+.sh-number     { color: #d19a66; }
+.sh-decorator  { color: #e5c07b; }
+.sh-builtin    { color: #56b6c2; }
+.sh-function   { color: #61afef; }
+.sh-operator   { color: #c678dd; }
+
+/* Docs tables */
+.docs-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8rem 0 1.5rem;
+    font-size: 0.88rem;
+}
+.docs-content th,
+.docs-content td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+.docs-content th {
+    background: var(--surface);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text);
+}
+.docs-content td {
+    color: var(--text-muted);
+}
+.docs-content td code {
+    font-size: 0.82rem;
+}
+
+/* Tip / Note boxes */
+.docs-tip {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius);
+    margin: 1rem 0 1.5rem;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+.docs-tip-info {
+    background: rgba(99,102,241,0.08);
+    border-left: 3px solid var(--primary);
+    color: var(--text);
+}
+.docs-tip-warn {
+    background: rgba(251,191,36,0.08);
+    border-left: 3px solid #f59e0b;
+    color: var(--text);
+}
+.docs-tip strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.docs-tip-info strong { color: var(--primary-light); }
+.docs-tip-warn strong { color: #f59e0b; }
+
+/* Version badge */
+.docs-version {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    font-weight: 700;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+/* Search input (top of sidebar) */
+.sidebar-search {
+    padding: 0 1rem 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+.sidebar-search input {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.82rem;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: var(--transition);
+}
+.sidebar-search input::placeholder { color: var(--text-faint); }
+.sidebar-search input:focus { border-color: var(--primary); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 70px;
+        width: 260px;
+        z-index: 998;
+        transition: left 0.3s ease;
+    }
+    .docs-sidebar.open {
+        left: 0;
+    }
+    .docs-sidebar-toggle {
+        display: flex;
+    }
+    .docs-content {
+        padding: 2rem 1.5rem 4rem;
+    }
+}
+@media (max-width: 480px) {
+    .docs-content { padding: 1.5rem 1rem 3rem; }
+    .docs-content h1 { font-size: 1.7rem; }
+    .docs-content h2 { font-size: 1.25rem; }
+    .docs-content pre { font-size: 0.78rem; padding: 1rem; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="docs-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+        <div class="sidebar-search">
+            <input type="text" id="docs-search" placeholder="Search docs..." autocomplete="off">
+        </div>
+
+        <div class="sidebar-section">
+            <span class="sidebar-label">Getting Started</span>
+            <a class="sidebar-link active" href="#introduction">Introduction</a>
+            <a class="sidebar-link" href="#installation">Installation</a>
+            <a class="sidebar-link" href="#hello-world">Hello World</a>
+            <a class="sidebar-link" href="#project-structure">Project Structure</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Core</span>
+            <a class="sidebar-link" href="#application">Application</a>
+            <a class="sidebar-link" href="#routing">Routing</a>
+            <a class="sidebar-link" href="#request">Request</a>
+            <a class="sidebar-link" href="#response">Response</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Features</span>
+            <a class="sidebar-link" href="#middleware">Middleware</a>
+            <a class="sidebar-link" href="#blueprints">Blueprints</a>
+            <a class="sidebar-link" href="#orm">ORM &amp; Database</a>
+            <a class="sidebar-link" href="#authentication">Authentication</a>
+            <a class="sidebar-link" href="#templates">Template Engine</a>
+            <a class="sidebar-link" href="#websocket">WebSocket</a>
+            <a class="sidebar-link" href="#background-tasks">Background Tasks</a>
+            <a class="sidebar-link" href="#graphql">GraphQL</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Advanced</span>
+            <a class="sidebar-link" href="#dependency-injection">Dependency Injection</a>
+            <a class="sidebar-link" href="#plugins">Plugins</a>
+            <a class="sidebar-link" href="#openapi">OpenAPI / Swagger</a>
+            <a class="sidebar-link" href="#testing">Testing</a>
+            <a class="sidebar-link" href="#cli">CLI Tool</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">SARE Engine</span>
+            <a class="sidebar-link" href="#sare-overview">Overview</a>
+            <a class="sidebar-link" href="#sare-quickstart">Quick Start</a>
+            <a class="sidebar-link" href="#sare-traffic">Traffic Analyzer</a>
+            <a class="sidebar-link" href="#sare-optimizer">Adaptive Optimizer</a>
+            <a class="sidebar-link" href="#sare-predictor">Latency Predictor</a>
+            <a class="sidebar-link" href="#sare-codepath">Code Path Optimizer</a>
+            <a class="sidebar-link" href="#sare-reports">Intelligence Reports</a>
+            <a class="sidebar-link" href="#sare-config">Configuration</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Reference</span>
+            <a class="sidebar-link" href="#api-reference">API Reference</a>
+            <a class="sidebar-link" href="#configuration">Configuration</a>
+            <a class="sidebar-link" href="#architecture">Architecture</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+
+        <!-- ─── INTRODUCTION ─────────────────────────── -->
+        <h1>Isha Framework Documentation <span class="docs-version">v1.1.0</span></h1>
+        <p class="docs-subtitle">
+            Complete guide to building modern, async-first web applications with Isha — the batteries-included Python framework with zero required dependencies and a self-evolving routing engine.
+        </p>
+
+        <h2 id="introduction">Introduction</h2>
+        <p>Isha is a lightweight, modular, high-performance Python web framework built from scratch with <strong>zero required external dependencies</strong>. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more — all in pure Python.</p>
+
+        <p>Isha brings together:</p>
+        <ul>
+            <li><strong>Simplicity of Flask</strong> — intuitive routing decorators and a minimal learning curve</li>
+            <li><strong>Structure of Django</strong> — built-in ORM, templates, admin, and middleware pipeline</li>
+            <li><strong>Performance of FastAPI</strong> — async-first ASGI architecture with dependency injection</li>
+            <li><strong>Self-Evolution (SARE)</strong> — the world's first web framework that optimizes itself at runtime</li>
+        </ul>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Tip</strong>
+            Isha requires Python 3.8+ and has no mandatory third-party dependencies. All features work out of the box with the standard library.
+        </div>
+
+
+        <!-- ─── INSTALLATION ─────────────────────────── -->
+        <h2 id="installation">Installation</h2>
+
+        <h3>From Source (Recommended during development)</h3>
+        <pre><code>git clone https://github.com/jayanthansenthilkumar/ISHA_Framework.git
+cd ISHA_Framework
+pip install -e .</code></pre>
+
+        <h3>With Optional Dependencies</h3>
+        <pre><code># Full installation with uvicorn, bcrypt, and jinja2
+pip install -e ".[full]"</code></pre>
+
+        <table>
+            <thead><tr><th>Package</th><th>Purpose</th><th>Required</th></tr></thead>
+            <tbody>
+                <tr><td><code>uvicorn</code></td><td>Production ASGI server with auto-reload</td><td>Optional</td></tr>
+                <tr><td><code>bcrypt</code></td><td>Alternative password hashing (faster)</td><td>Optional</td></tr>
+                <tr><td><code>jinja2</code></td><td>Alternative template engine</td><td>Optional</td></tr>
+                <tr><td><code>pytest</code></td><td>Test runner</td><td>Optional</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ─── HELLO WORLD ──────────────────────────── -->
+        <h2 id="hello-world">Hello World</h2>
+        <p>Create a file called <code>app.py</code>:</p>
+        <pre><code>from isha import Isha
+
+app = Isha("myapp")
+
+@app.route("/")
+async def hello(request):
+    return {"message": "Hello from Isha! 🌟"}
+
+@app.route("/hello/&lt;name&gt;")
+async def greet(request, name):
+    return f"&lt;h1&gt;Hello, {name}!&lt;/h1&gt;"
+
+app.run()</code></pre>
+        <p>Run it:</p>
+        <pre><code>$ python app.py
+✦ Isha server running on http://127.0.0.1:8000</code></pre>
+
+
+        <!-- ─── PROJECT STRUCTURE ─────────────────────── -->
+        <h2 id="project-structure">Project Structure</h2>
+        <p>When you scaffold a project with <code>isha create project myapp</code>, you get:</p>
+        <pre><code>myapp/
+├── app.py              # Main application entry
+├── config.py           # Configuration settings
+├── models.py           # Database models
+├── routes/
+│   └── __init__.py     # Route blueprints
+├── templates/
+│   └── base.html       # Base template
+├── static/
+│   ├── css/
+│   └── js/
+└── tests/
+    └── test_app.py     # Test suite</code></pre>
+
+
+        <!-- ─── APPLICATION ──────────────────────────── -->
+        <h2 id="application">Application</h2>
+        <p>The <code>Isha</code> class is the core entry point. It manages routing, middleware, plugins, templates, lifecycle events, and the ASGI interface.</p>
+
+        <h3>Creating an App</h3>
+        <pre><code>from isha import Isha
+
+app = Isha("myapp", debug=True)</code></pre>
+
+        <h3>Default Configuration</h3>
+        <table>
+            <thead><tr><th>Key</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>DEBUG</code></td><td><code>False</code></td><td>Enable debug mode</td></tr>
+                <tr><td><code>SECRET_KEY</code></td><td><code>""</code></td><td>Secret for JWT / CSRF</td></tr>
+                <tr><td><code>HOST</code></td><td><code>"127.0.0.1"</code></td><td>Server bind host</td></tr>
+                <tr><td><code>PORT</code></td><td><code>8000</code></td><td>Server bind port</td></tr>
+                <tr><td><code>STATIC_DIR</code></td><td><code>"static"</code></td><td>Static files directory</td></tr>
+                <tr><td><code>TEMPLATE_DIR</code></td><td><code>"templates"</code></td><td>Template directory</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Running the App</h3>
+        <pre><code>app.run(host="0.0.0.0", port=8080, debug=True, workers=4)</code></pre>
+
+        <h3>Lifecycle Hooks</h3>
+        <pre><code>@app.on_startup
+async def startup():
+    print("App started!")
+
+@app.on_shutdown
+async def shutdown():
+    print("App shutting down...")</code></pre>
+
+
+        <!-- ─── ROUTING ──────────────────────────────── -->
+        <h2 id="routing">Routing</h2>
+        <p>Isha supports typed URL parameters, multiple HTTP methods, named routes, and method shortcuts.</p>
+
+        <h3>Basic Routes</h3>
+        <pre><code>@app.route("/")
+async def index(request):
+    return "Welcome!"
+
+@app.route("/items", methods=["GET", "POST"])
+async def items(request):
+    if request.method == "POST":
+        data = await request.json()
+        return {"created": data}, 201
+    return {"items": []}</code></pre>
+
+        <h3>Method Shortcuts</h3>
+        <pre><code>@app.get("/health")
+async def health(request):
+    return {"status": "ok"}
+
+@app.post("/upload")
+async def upload(request):
+    body = await request.body()
+    return {"size": len(body)}</code></pre>
+
+        <h3>Typed URL Parameters</h3>
+        <table>
+            <thead><tr><th>Type</th><th>Pattern</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><code>str</code></td><td><code>[^/]+</code></td><td><code>/users/&lt;name&gt;</code></td></tr>
+                <tr><td><code>int</code></td><td><code>\d+</code></td><td><code>/users/&lt;int:id&gt;</code></td></tr>
+                <tr><td><code>float</code></td><td><code>[\d.]+</code></td><td><code>/price/&lt;float:amount&gt;</code></td></tr>
+                <tr><td><code>uuid</code></td><td><code>[0-9a-f]{8}-...</code></td><td><code>/item/&lt;uuid:uid&gt;</code></td></tr>
+                <tr><td><code>slug</code></td><td><code>[a-z0-9]+(?:-[a-z0-9]+)*</code></td><td><code>/blog/&lt;slug:title&gt;</code></td></tr>
+                <tr><td><code>path</code></td><td><code>.+</code></td><td><code>/files/&lt;path:filepath&gt;</code></td></tr>
+            </tbody>
+        </table>
+        <pre><code>@app.route("/users/&lt;int:id&gt;")
+async def get_user(request, id):
+    return {"user_id": id}  # id is already an int</code></pre>
+
+        <h3>Named Routes &amp; url_for</h3>
+        <pre><code>@app.route("/profile/&lt;username&gt;", name="user_profile")
+async def profile(request, username):
+    return f"Profile: {username}"
+
+url = app.url_for("user_profile", username="alice")
+# => "/profile/alice"</code></pre>
+
+
+        <!-- ─── REQUEST ──────────────────────────────── -->
+        <h2 id="request">Request</h2>
+        <p>The <code>Request</code> object provides access to all incoming HTTP data.</p>
+
+        <h3>Properties</h3>
+        <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>method</code></td><td><code>str</code></td><td>HTTP method (GET, POST, etc.)</td></tr>
+                <tr><td><code>path</code></td><td><code>str</code></td><td>URL path</td></tr>
+                <tr><td><code>query_params</code></td><td><code>dict</code></td><td>Query string parameters</td></tr>
+                <tr><td><code>headers</code></td><td><code>dict</code></td><td>HTTP headers (lowercased keys)</td></tr>
+                <tr><td><code>cookies</code></td><td><code>dict</code></td><td>Parsed cookies</td></tr>
+                <tr><td><code>content_type</code></td><td><code>str</code></td><td>Request content type</td></tr>
+                <tr><td><code>client</code></td><td><code>tuple</code></td><td>Client (host, port)</td></tr>
+                <tr><td><code>is_json</code></td><td><code>bool</code></td><td>True if JSON content type</td></tr>
+                <tr><td><code>host</code></td><td><code>str</code></td><td>Request host header</td></tr>
+                <tr><td><code>url</code></td><td><code>str</code></td><td>Full URL with query string</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Body Parsing</h3>
+        <pre><code>@app.route("/example", methods=["POST"])
+async def example(request):
+    body = await request.body()      # raw bytes
+    text = await request.text()      # decoded string
+    data = await request.json()      # parsed JSON dict
+    form = await request.form()      # form data dict</code></pre>
+
+
+        <!-- ─── RESPONSE ─────────────────────────────── -->
+        <h2 id="response">Response</h2>
+        <p>Isha auto-detects response types from return values, or you can use explicit response classes.</p>
+
+        <h3>Auto-Detection</h3>
+        <pre><code>return "Hello"              # → HTMLResponse
+return {"key": "value"}     # → JSONResponse
+return [1, 2, 3]            # → JSONResponse
+return {"data": "ok"}, 201  # → JSONResponse with status 201</code></pre>
+
+        <h3>Explicit Responses</h3>
+        <pre><code>from isha import Response, JSONResponse, HTMLResponse, RedirectResponse
+from isha.response import StreamingResponse
+
+return Response("Plain text", status_code=200, content_type="text/plain")
+return JSONResponse({"ok": True}, status_code=201)
+return HTMLResponse("&lt;h1&gt;Page&lt;/h1&gt;")
+return RedirectResponse("/login")</code></pre>
+
+        <h3>Cookies</h3>
+        <pre><code>resp = JSONResponse({"logged_in": True})
+resp.set_cookie("token", "abc123",
+    max_age=3600, httponly=True, secure=True, samesite="Lax")
+resp.delete_cookie("old_cookie")
+return resp</code></pre>
+
+        <h3>Streaming</h3>
+        <pre><code>from isha.response import StreamingResponse
+
+async def generate():
+    for i in range(10):
+        yield f"data: {i}\n\n"
+
+return StreamingResponse(generate(), content_type="text/event-stream")</code></pre>
+
+
+        <!-- ─── MIDDLEWARE ────────────────────────────── -->
+        <h2 id="middleware">Middleware</h2>
+        <p>Isha provides a flexible middleware pipeline with built-in security middleware and support for custom classes.</p>
+
+        <h3>Built-in Middleware</h3>
+        <pre><code>from isha.middleware import (
+    CORSMiddleware,
+    RateLimitMiddleware,
+    CSRFMiddleware,
+    SecurityHeadersMiddleware,
+)
+
+# CORS — Cross-Origin Resource Sharing
+app.add_middleware(CORSMiddleware(
+    allow_origins=["https://example.com"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_credentials=True,
+    max_age=600,
+))
+
+# Rate Limiting — per-IP, in-memory
+app.add_middleware(RateLimitMiddleware(
+    max_requests=100, window_seconds=60
+))
+
+# CSRF Protection
+csrf = CSRFMiddleware(secret="your-secret")
+app.add_middleware(csrf)
+
+# Security Headers (X-Frame-Options, CSP, etc.)
+app.add_middleware(SecurityHeadersMiddleware())</code></pre>
+
+        <h3>Decorator-Based Hooks</h3>
+        <pre><code>@app.before_request
+async def log_request(request):
+    print(f"{request.method} {request.path}")
+    return None  # return a Response to short-circuit
+
+@app.after_request
+async def add_header(request, response):
+    response.headers["X-Powered-By"] = "Isha"
+    return response</code></pre>
+
+        <h3>Custom Middleware Class</h3>
+        <pre><code>from isha.middleware import Middleware
+
+class TimingMiddleware(Middleware):
+    async def before_request(self, request):
+        import time
+        request._start = time.time()
+        return None
+
+    async def after_request(self, request, response):
+        import time
+        elapsed = time.time() - request._start
+        response.headers["X-Response-Time"] = f"{elapsed:.4f}s"
+        return response
+
+app.add_middleware(TimingMiddleware())</code></pre>
+
+
+        <!-- ─── BLUEPRINTS ───────────────────────────── -->
+        <h2 id="blueprints">Blueprints</h2>
+        <p>Organize your application into modular sections with prefix routing.</p>
+        <pre><code>from isha import Blueprint
+
+api = Blueprint("api", prefix="/api/v1")
+
+@api.route("/users")
+async def list_users(request):
+    return {"users": []}
+
+@api.route("/users/&lt;int:id&gt;")
+async def get_user(request, id):
+    return {"user": id}
+
+@api.before_request
+async def api_auth(request):
+    if "authorization" not in request.headers:
+        return {"error": "Unauthorized"}, 401
+    return None
+
+# Register with app
+app.register_blueprint(api)
+# Routes: /api/v1/users, /api/v1/users/&lt;int:id&gt;</code></pre>
+
+
+        <!-- ─── ORM ──────────────────────────────────── -->
+        <h2 id="orm">ORM &amp; Database</h2>
+        <p>A lightweight ORM with SQLite support, model definitions, chainable query builder, and migrations.</p>
+
+        <h3>Define Models</h3>
+        <pre><code>from isha.orm import (
+    Database, Model,
+    IntegerField, TextField, FloatField,
+    BooleanField, DateTimeField, JSONField, ForeignKeyField,
+)
+
+db = Database("app.db")
+
+class User(Model):
+    _table = "users"
+    _db = db
+
+    name = TextField()
+    email = TextField(unique=True)
+    age = IntegerField(default=0)
+    is_active = BooleanField(default=True)
+    created_at = DateTimeField(auto_now_add=True)</code></pre>
+
+        <h3>Field Types</h3>
+        <table>
+            <thead><tr><th>Field</th><th>SQL Type</th><th>Extra Options</th></tr></thead>
+            <tbody>
+                <tr><td><code>IntegerField</code></td><td>INTEGER</td><td><code>primary_key</code>, <code>unique</code>, <code>index</code></td></tr>
+                <tr><td><code>TextField</code></td><td>TEXT / VARCHAR(n)</td><td><code>max_length</code></td></tr>
+                <tr><td><code>FloatField</code></td><td>REAL</td><td>—</td></tr>
+                <tr><td><code>BooleanField</code></td><td>INTEGER</td><td>Auto bool↔int conversion</td></tr>
+                <tr><td><code>DateTimeField</code></td><td>TEXT (ISO)</td><td><code>auto_now</code>, <code>auto_now_add</code></td></tr>
+                <tr><td><code>JSONField</code></td><td>TEXT</td><td>Auto JSON serialization</td></tr>
+                <tr><td><code>ForeignKeyField</code></td><td>INTEGER</td><td><code>references</code>, <code>on_delete</code></td></tr>
+            </tbody>
+        </table>
+
+        <h3>CRUD Operations</h3>
+        <pre><code># Create table
+User.create_table()
+
+# Create record
+user = User.create(name="Alice", email="alice@example.com", age=30)
+print(user.id)  # Auto-generated ID
+
+# Read
+user = User.get(1)          # By primary key
+all_users = User.all()      # All records
+
+# Update
+user.age = 31
+user.save()
+
+# Delete
+user.delete_record()</code></pre>
+
+        <h3>Query Builder</h3>
+        <pre><code># Chainable queries
+active_users = (User.query()
+    .filter(is_active=True)
+    .filter(age__gt=18)
+    .order_by("name")
+    .limit(10)
+    .all())
+
+# Count &amp; exists
+count = User.query().filter(is_active=True).count()
+exists = User.query().filter(email="alice@example.com").exists()
+
+# Bulk operations
+User.query().filter(is_active=False).delete()
+User.query().filter(age__lt=18).update(is_active=False)
+
+# Query operators: __gt, __lt, __gte, __lte, __ne,
+#                  __like, __ilike, __in, __notin, __is</code></pre>
+
+        <h3>Migrations</h3>
+        <pre><code>from isha.orm import MigrationManager
+
+mgr = MigrationManager(db)
+mgr.init()
+
+# Create migration
+mgr.create_migration(
+    "add_users_table",
+    sql_up="CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)",
+    sql_down="DROP TABLE users"
+)
+
+# Run pending migrations
+mgr.run_migrations()</code></pre>
+
+
+        <!-- ─── AUTHENTICATION ────────────────────────── -->
+        <h2 id="authentication">Authentication</h2>
+        <p>Built-in password hashing, JWT tokens, session management, and route protection decorators.</p>
+
+        <h3>Password Hashing</h3>
+        <pre><code>from isha.auth import PasswordHasher
+
+hasher = PasswordHasher()
+hashed = hasher.hash("my_password")          # PBKDF2-HMAC-SHA256
+is_valid = hasher.verify("my_password", hashed)  # True</code></pre>
+
+        <h3>JWT Tokens</h3>
+        <pre><code>from isha.auth import JWT
+
+jwt = JWT(secret="your-secret-key", expiry_seconds=3600)
+token = jwt.encode({"user_id": 1, "role": "admin"})
+payload = jwt.decode(token)
+# {"user_id": 1, "role": "admin", "exp": ..., "iat": ...}</code></pre>
+
+        <h3>Session Management</h3>
+        <pre><code>from isha.auth import SessionManager
+
+sessions = SessionManager(max_age=3600)
+session_id = sessions.create_session()
+sessions.set(session_id, "user_id", 1)
+value = sessions.get(session_id, "user_id")  # 1
+sessions.destroy_session(session_id)</code></pre>
+
+        <h3>Route Protection</h3>
+        <pre><code>from isha.auth import AuthMiddleware, login_required, role_required
+
+# Middleware approach
+app.add_middleware(AuthMiddleware(
+    jwt=jwt, exclude=["/login", "/register"]
+))
+
+# Decorator approach
+@app.route("/dashboard")
+@login_required
+async def dashboard(request):
+    return f"Welcome, user {request.state['user']['user_id']}!"
+
+@app.route("/admin")
+@role_required("admin")
+async def admin_panel(request):
+    return "Admin area"</code></pre>
+
+
+        <!-- ─── TEMPLATES ────────────────────────────── -->
+        <h2 id="templates">Template Engine</h2>
+        <p>Jinja-like template syntax with inheritance, includes, loops, conditionals, and filters — all built in.</p>
+
+        <h3>Rendering Templates</h3>
+        <pre><code>app = Isha("myapp")  # templates/ dir by default
+
+@app.route("/page")
+async def page(request):
+    return app.render("page.html", title="Home", items=["a", "b"])</code></pre>
+
+        <h3>Template Syntax</h3>
+        <pre><code>&#123;# templates/base.html #&#125;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;&#123;% block title %&#125;Default&#123;% endblock %&#125;&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &#123;% block content %&#125;&#123;% endblock %&#125;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <pre><code>&#123;# templates/page.html #&#125;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;&#123;&#123; title &#125;&#125;&#123;% endblock %&#125;
+&#123;% block content %&#125;
+  &lt;h1&gt;&#123;&#123; title|upper &#125;&#125;&lt;/h1&gt;
+
+  &#123;% for item in items %&#125;
+    &lt;p&gt;&#123;&#123; loop.index &#125;&#125;. &#123;&#123; item &#125;&#125;&lt;/p&gt;
+  &#123;% endfor %&#125;
+
+  &#123;% if user %&#125;
+    &lt;p&gt;Welcome, &#123;&#123; user.name &#125;&#125;!&lt;/p&gt;
+  &#123;% else %&#125;
+    &lt;p&gt;Please log in.&lt;/p&gt;
+  &#123;% endif %&#125;
+
+  &#123;% include "_footer.html" %&#125;
+&#123;% endblock %&#125;</code></pre>
+
+        <h3>Built-in Filters</h3>
+        <table>
+            <thead><tr><th>Filter</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><code>upper</code></td><td>Uppercase</td><td><code>&#123;&#123; name|upper &#125;&#125;</code></td></tr>
+                <tr><td><code>lower</code></td><td>Lowercase</td><td><code>&#123;&#123; name|lower &#125;&#125;</code></td></tr>
+                <tr><td><code>title</code></td><td>Title Case</td><td><code>&#123;&#123; name|title &#125;&#125;</code></td></tr>
+                <tr><td><code>length</code></td><td>Length of value</td><td><code>&#123;&#123; items|length &#125;&#125;</code></td></tr>
+                <tr><td><code>default</code></td><td>Fallback value</td><td><code>&#123;&#123; x|default("N/A") &#125;&#125;</code></td></tr>
+                <tr><td><code>truncate</code></td><td>Truncate string</td><td><code>&#123;&#123; text|truncate(100) &#125;&#125;</code></td></tr>
+                <tr><td><code>join</code></td><td>Join list</td><td><code>&#123;&#123; items|join(", ") &#125;&#125;</code></td></tr>
+                <tr><td><code>escape</code></td><td>HTML escape</td><td><code>&#123;&#123; html|escape &#125;&#125;</code></td></tr>
+                <tr><td><code>format_number</code></td><td>Number formatting</td><td><code>&#123;&#123; num|format_number &#125;&#125;</code></td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ─── WEBSOCKET ────────────────────────────── -->
+        <h2 id="websocket">WebSocket</h2>
+        <p>Full-duplex WebSocket communication with rooms and broadcasting.</p>
+        <pre><code>from isha.websocket import websocket_route, WebSocketRoom
+
+chat_room = WebSocketRoom("chat")
+
+@app.route("/ws")
+@websocket_route
+async def ws_handler(ws):
+    await ws.accept()
+    chat_room.add(ws)
+
+    try:
+        while True:
+            data = await ws.receive_json()
+            await chat_room.broadcast_json({
+                "user": data["user"],
+                "message": data["message"],
+            })
+    except Exception:
+        chat_room.remove(ws)
+        await ws.close()</code></pre>
+
+        <h3>WebSocket Methods</h3>
+        <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>accept()</code></td><td>Accept the connection</td></tr>
+                <tr><td><code>close(code, reason)</code></td><td>Close the connection</td></tr>
+                <tr><td><code>receive_text()</code></td><td>Receive text message</td></tr>
+                <tr><td><code>receive_json()</code></td><td>Receive and parse JSON</td></tr>
+                <tr><td><code>send_text(data)</code></td><td>Send text message</td></tr>
+                <tr><td><code>send_json(data)</code></td><td>Send JSON message</td></tr>
+                <tr><td><code>send_bytes(data)</code></td><td>Send binary data</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ─── BACKGROUND TASKS ─────────────────────── -->
+        <h2 id="background-tasks">Background Tasks</h2>
+        <p>Run tasks asynchronously with status tracking and periodic scheduling.</p>
+        <pre><code>from isha.tasks import TaskQueue, task
+
+queue = TaskQueue(max_workers=4)
+
+@task(queue)
+async def send_email(to, subject, body):
+    import asyncio
+    await asyncio.sleep(2)
+    return f"Email sent to {to}"
+
+# Dispatch
+result = await send_email.delay("user@example.com", "Hello", "Welcome!")
+print(result.task_id)   # UUID
+print(result.status)    # PENDING → RUNNING → COMPLETED
+
+# Periodic tasks
+@queue.periodic(seconds=300)
+async def cleanup():
+    print("Running cleanup...")</code></pre>
+
+
+        <!-- ─── GRAPHQL ──────────────────────────────── -->
+        <h2 id="graphql">GraphQL</h2>
+        <p>Built-in GraphQL engine with queries, mutations, subscriptions, and an interactive GraphiQL IDE.</p>
+        <pre><code>from isha.graphql import GraphQLSchema, mount_graphql
+
+schema = GraphQLSchema()
+
+@schema.query("hello")
+async def resolve_hello(name: str = "World"):
+    return f"Hello, {name}!"
+
+@schema.query("users")
+async def resolve_users():
+    return [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]
+
+@schema.mutation("createUser")
+async def create_user(name: str, email: str):
+    return {"id": 3, "name": name, "email": email}
+
+mount_graphql(app, schema, path="/graphql")
+# Visit http://localhost:8000/graphql for GraphiQL IDE</code></pre>
+
+
+        <!-- ─── DEPENDENCY INJECTION ──────────────────── -->
+        <h2 id="dependency-injection">Dependency Injection</h2>
+        <p>FastAPI-style dependency injection with async support and automatic cleanup.</p>
+        <pre><code>from isha.di import Depends, inject
+
+async def get_db():
+    db = Database("app.db")
+    yield db  # Generator deps are auto-cleaned up
+
+async def get_current_user(request):
+    token = request.headers.get("authorization", "").replace("Bearer ", "")
+    if not token:
+        from isha.di import HTTPException
+        raise HTTPException(401, "Not authenticated")
+    return jwt.decode(token)
+
+@app.route("/profile")
+@inject
+async def profile(request, user=Depends(get_current_user), db=Depends(get_db)):
+    return {"user": user}</code></pre>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Tip</strong>
+            Dependencies are cached per-request by default. Use <code>Depends(func, use_cache=False)</code> to create a fresh instance each time.
+        </div>
+
+
+        <!-- ─── PLUGINS ──────────────────────────────── -->
+        <h2 id="plugins">Plugins</h2>
+        <p>Extend Isha with a clean plugin system for caching, static files, mail, and admin.</p>
+
+        <h3>Cache Plugin</h3>
+        <pre><code>from isha.plugins import CachePlugin
+
+cache = CachePlugin(default_ttl=300, max_size=1000)
+app.register_plugin(cache)
+
+@app.route("/expensive")
+@cache.cached(ttl=60)
+async def expensive(request):
+    return {"result": compute_something()}</code></pre>
+
+        <h3>Static Files Plugin</h3>
+        <pre><code>from isha.plugins import StaticFilesPlugin
+
+static = StaticFilesPlugin(directory="static", prefix="/static")
+app.register_plugin(static)
+# Serves files from ./static/ at /static/...</code></pre>
+
+        <h3>Mail Plugin</h3>
+        <pre><code>from isha.plugins import MailPlugin
+
+mail = MailPlugin(host="smtp.example.com", port=587,
+    username="user", password="pass", use_tls=True)
+app.register_plugin(mail)
+
+await mail.send(to="user@example.com", subject="Hello", body="Welcome!")</code></pre>
+
+        <h3>Admin Plugin</h3>
+        <pre><code>from isha.plugins import AdminPlugin
+
+admin = AdminPlugin(prefix="/admin", title="My Admin")
+admin.register_model(User)
+admin.register_model(Post)
+app.register_plugin(admin)
+# Dashboard at /admin, model views at /admin/users, /admin/posts</code></pre>
+
+
+        <!-- ─── OPENAPI ──────────────────────────────── -->
+        <h2 id="openapi">OpenAPI / Swagger</h2>
+        <p>Auto-generated API documentation with Swagger UI.</p>
+        <pre><code>from isha.openapi import mount_docs
+
+mount_docs(app, title="My API", version="1.0.0", description="My awesome API")
+# Swagger UI at /docs
+# OpenAPI JSON at /openapi.json</code></pre>
+
+
+        <!-- ─── TESTING ──────────────────────────────── -->
+        <h2 id="testing">Testing</h2>
+        <p>Built-in test client for HTTP-level testing without running the server.</p>
+        <pre><code>from isha.testing import TestClient, assert_status, assert_json
+
+client = TestClient(app)
+
+# Make requests
+response = client.get("/")
+assert response.ok
+assert response.status_code == 200
+
+response = client.post("/api/users", json={"name": "Alice"})
+assert response.status_code == 201
+
+# With auth headers
+response = client.get("/protected",
+    headers={"Authorization": "Bearer &lt;token&gt;"})
+
+# Assertion helpers
+assert_status(response, 200)
+assert_json(response, {"ok": True})
+assert_html(response, contains="&lt;h1&gt;")
+assert_redirect(response, "/login")</code></pre>
+
+        <h3>Available Methods</h3>
+        <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>client.get(path)</code></td><td>GET request</td></tr>
+                <tr><td><code>client.post(path, json=...)</code></td><td>POST with JSON body</td></tr>
+                <tr><td><code>client.put(path, data=...)</code></td><td>PUT request</td></tr>
+                <tr><td><code>client.patch(path, json=...)</code></td><td>PATCH request</td></tr>
+                <tr><td><code>client.delete(path)</code></td><td>DELETE request</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ─── CLI ──────────────────────────────────── -->
+        <h2 id="cli">CLI Tool</h2>
+        <p>Isha includes a command-line tool for common development tasks.</p>
+        <pre><code># Scaffold a new project
+$ isha create project myapp
+
+# Start development server
+$ isha run --host 0.0.0.0 --port 8000 --reload
+
+# Database migrations
+$ isha migrate run
+$ isha migrate create add_users_table
+
+# List registered routes
+$ isha routes
+
+# Interactive shell
+$ isha shell
+
+# Version info
+$ isha version</code></pre>
+
+        <table>
+            <thead><tr><th>Command</th><th>Description</th><th>Key Options</th></tr></thead>
+            <tbody>
+                <tr><td><code>isha create project &lt;name&gt;</code></td><td>Scaffold project</td><td><code>--minimal</code></td></tr>
+                <tr><td><code>isha run</code></td><td>Run dev server</td><td><code>--host</code>, <code>--port</code>, <code>--debug</code>, <code>--reload</code></td></tr>
+                <tr><td><code>isha routes</code></td><td>List routes</td><td>—</td></tr>
+                <tr><td><code>isha shell</code></td><td>Interactive shell</td><td>—</td></tr>
+                <tr><td><code>isha version</code></td><td>Show version</td><td>—</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SARE ENGINE
+             ═══════════════════════════════════════════════ -->
+        <h2 id="sare-overview">SARE — Self-Evolving Adaptive Routing Engine</h2>
+        <p>SARE is the world's first web framework feature that <strong>automatically observes, decides, adapts, and evolves</strong> its own routing and middleware execution based on real-time traffic intelligence. No external ML libraries required — everything runs in pure Python.</p>
+
+        <h3>How SARE Works</h3>
+        <ol>
+            <li><strong>Observe</strong> — The Traffic Analyzer collects per-route metrics: latency percentiles, RPS, error rates, response sizes, and heat scores.</li>
+            <li><strong>Decide</strong> — The Adaptive Optimizer identifies hot routes and evaluates middleware ordering efficiency.</li>
+            <li><strong>Adapt</strong> — Hot routes are promoted to O(1) fast-path caches. Middleware is auto-reordered for maximum short-circuit efficiency.</li>
+            <li><strong>Evolve</strong> — The Latency Predictor uses EWMA, trend detection, spike detection, and reinforcement heuristics to continuously improve predictions and strategy selection.</li>
+        </ol>
+
+
+        <h2 id="sare-quickstart">SARE Quick Start</h2>
+        <pre><code>from isha import Isha
+
+app = Isha("myapp")
+app.enable_sare()  # That's it — self-optimization begins
+
+@app.route("/api/data")
+async def data(request):
+    return {"items": await fetch_items()}
+
+# Access the intelligence dashboard
+@app.route("/sare/report")
+async def intelligence(request):
+    return app.sare.report()    # Full JSON report
+
+@app.route("/sare/print")
+async def sare_print(request):
+    app.sare.print_report()     # Console output
+    return {"status": "printed"}
+
+app.run()</code></pre>
+
+
+        <h2 id="sare-traffic">Traffic Analyzer</h2>
+        <p>The observation layer that collects real-time per-route and per-middleware metrics.</p>
+
+        <h3>Metrics Collected Per Route</h3>
+        <table>
+            <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>total_requests</code></td><td>Total number of requests served</td></tr>
+                <tr><td><code>avg_latency</code></td><td>Average response latency (ms)</td></tr>
+                <tr><td><code>p50_latency</code></td><td>Median latency</td></tr>
+                <tr><td><code>p95_latency</code></td><td>95th percentile latency</td></tr>
+                <tr><td><code>p99_latency</code></td><td>99th percentile latency</td></tr>
+                <tr><td><code>requests_per_second</code></td><td>Current RPS (rolling window)</td></tr>
+                <tr><td><code>error_rate</code></td><td>Ratio of errors to total requests</td></tr>
+                <tr><td><code>heat_score</code></td><td>0–1 composite score (frequency × 0.5 + latency × 0.3 + errors × 0.2)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Middleware Metrics</h3>
+        <table>
+            <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>avg_latency</code></td><td>Average middleware execution time</td></tr>
+                <tr><td><code>short_circuit_rate</code></td><td>Ratio of requests short-circuited by this middleware</td></tr>
+                <tr><td><code>total_calls</code></td><td>Number of times middleware was invoked</td></tr>
+            </tbody>
+        </table>
+
+
+        <h2 id="sare-optimizer">Adaptive Optimizer</h2>
+        <p>The decision-making core that identifies hot routes and optimizes middleware order.</p>
+
+        <h3>Hot Route Caching</h3>
+        <p>Routes with the highest heat scores are promoted to an O(1) fast-path lookup cache. When SARE is enabled and a request hits a hot route, the framework checks the response cache <em>before</em> running middleware or the handler.</p>
+
+        <h3>Middleware Auto-Reordering</h3>
+        <p>SARE analyzes each middleware's execution cost and short-circuit rate. Middleware that frequently short-circuits (e.g., rate limiting, auth) is promoted to run first, saving downstream computation. The reorder only triggers when the improvement exceeds 15%.</p>
+
+        <pre><code># The optimizer runs automatically. You can query its state:
+hot_routes = app.sare.is_hot_route("GET", "/api/data")
+order = app.sare.get_optimized_middleware_order()
+stats = app.sare.stats()</code></pre>
+
+
+        <h2 id="sare-predictor">Latency Predictor</h2>
+        <p>AI-assisted prediction engine using pure Python — no external ML dependencies.</p>
+
+        <h3>Prediction Algorithms</h3>
+        <table>
+            <thead><tr><th>Algorithm</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><strong>EWMA</strong></td><td>Exponentially Weighted Moving Average for smooth latency prediction</td></tr>
+                <tr><td><strong>Trend Detector</strong></td><td>Linear regression over rolling window to detect rising/falling/stable trends</td></tr>
+                <tr><td><strong>Spike Detector</strong></td><td>Z-score based anomaly detection for latency spikes</td></tr>
+                <tr><td><strong>Route Strategy</strong></td><td>Reinforcement-style heuristics to choose between caching, async optimization, and precompilation</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Access predictions programmatically
+report = app.sare.report()
+predictions = report["predictions"]
+# Each route gets: predicted RPS, predicted latency,
+# spike analysis, and recommended strategy</code></pre>
+
+
+        <h2 id="sare-codepath">Code Path Optimizer</h2>
+        <p>Automatic code path optimization for hot endpoints.</p>
+
+        <h3>Features</h3>
+        <ul>
+            <li><strong>Response Memoization</strong> — LRU cache with TTL-aware expiration. GET requests to hot endpoints are cached and served without re-executing handlers.</li>
+            <li><strong>JSON Pre-Encoding</strong> — Learns structural patterns of JSON responses and creates encoding templates for repeated structures, reducing serialization overhead.</li>
+            <li><strong>Handler Caching</strong> — Compiled handler references are cached to avoid repeated lookups.</li>
+        </ul>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Auto-Memoize Criteria</strong>
+            SARE automatically enables memoization for a route when: it's a GET endpoint, RPS ≥ 5.0, error rate ≤ 2%, and total requests ≥ 50.
+        </div>
+
+
+        <h2 id="sare-reports">Intelligence Reports</h2>
+        <p>SARE generates comprehensive self-improvement reports accessible via API or console.</p>
+
+        <h3>Report Sections</h3>
+        <table>
+            <thead><tr><th>Section</th><th>Contents</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Traffic Overview</strong></td><td>Total routes, total requests, global RPS, hottest routes, error-prone routes</td></tr>
+                <tr><td><strong>Route Intelligence</strong></td><td>Per-route metrics, percentiles, heat scores, predictions</td></tr>
+                <tr><td><strong>Middleware Intelligence</strong></td><td>Per-middleware timing, short-circuit rates, optimal order</td></tr>
+                <tr><td><strong>Predictions</strong></td><td>RPS forecasts, latency forecasts, spike warnings, strategy recommendations</td></tr>
+                <tr><td><strong>Optimizations Applied</strong></td><td>Hot route cache status, middleware reorder status, suggestions</td></tr>
+                <tr><td><strong>Evolution History</strong></td><td>Timeline of all optimization decisions with before/after metrics</td></tr>
+                <tr><td><strong>Performance Delta</strong></td><td>Before vs. after comparison of latency, RPS, and cache hit rates</td></tr>
+                <tr><td><strong>Recommendations</strong></td><td>Actionable suggestions for further optimization</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Accessing Reports</h3>
+        <pre><code># JSON report (for API endpoints)
+report = app.sare.report()
+
+# Pretty-printed console output
+app.sare.print_report()
+
+# Raw JSON string
+json_str = app.sare.report_json()
+
+# Quick stats summary
+stats = app.sare.stats()</code></pre>
+
+
+        <h2 id="sare-config">SARE Configuration</h2>
+        <p>All SARE parameters are configurable via <code>enable_sare()</code>:</p>
+        <pre><code>app.enable_sare(
+    optimize_interval=10,   # Seconds between optimization cycles
+    cache_size=500,         # Max entries in response cache
+    cache_ttl=30,           # Default cache TTL in seconds
+    hot_route_slots=20,     # Number of hot route slots
+    middleware_reorder=True, # Enable middleware auto-reordering
+    predictor=True,          # Enable latency predictor
+    auto_memoize=True,       # Enable auto-memoization
+)</code></pre>
+
+        <table>
+            <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>optimize_interval</code></td><td>10</td><td>Seconds between optimization cycles</td></tr>
+                <tr><td><code>cache_size</code></td><td>500</td><td>Maximum entries in response cache</td></tr>
+                <tr><td><code>cache_ttl</code></td><td>30</td><td>Default cache TTL in seconds</td></tr>
+                <tr><td><code>hot_route_slots</code></td><td>20</td><td>Number of hot route fast-path slots</td></tr>
+                <tr><td><code>middleware_reorder</code></td><td><code>True</code></td><td>Enable middleware auto-reordering</td></tr>
+                <tr><td><code>predictor</code></td><td><code>True</code></td><td>Enable the latency predictor</td></tr>
+                <tr><td><code>auto_memoize</code></td><td><code>True</code></td><td>Auto-enable memoization for hot routes</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Control at Runtime</h3>
+        <pre><code># Disable SARE temporarily
+app.sare.disable()
+
+# Re-enable
+app.sare.enable()
+
+# Reset all collected data
+app.sare.reset()</code></pre>
+
+
+        <!-- ─── API REFERENCE ────────────────────────── -->
+        <h2 id="api-reference">API Reference</h2>
+
+        <h3>Core Exports (<code>from isha import ...</code>)</h3>
+        <table>
+            <thead><tr><th>Export</th><th>Module</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>Isha</code></td><td>app</td><td>Core application class</td></tr>
+                <tr><td><code>Blueprint</code></td><td>blueprints</td><td>Modular route grouping</td></tr>
+                <tr><td><code>Request</code></td><td>request</td><td>HTTP request object</td></tr>
+                <tr><td><code>Response</code></td><td>response</td><td>HTTP response base class</td></tr>
+                <tr><td><code>JSONResponse</code></td><td>response</td><td>JSON response helper</td></tr>
+                <tr><td><code>HTMLResponse</code></td><td>response</td><td>HTML response helper</td></tr>
+                <tr><td><code>RedirectResponse</code></td><td>response</td><td>Redirect helper</td></tr>
+                <tr><td><code>SARE</code></td><td>sare</td><td>Self-Evolving Adaptive Routing Engine</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ─── CONFIGURATION ────────────────────────── -->
+        <h2 id="configuration">Configuration</h2>
+        <p>Configuration can be set during initialization or modified at runtime:</p>
+        <pre><code>app = Isha("myapp", debug=True)
+
+# Access config
+app.config["SECRET_KEY"] = "your-secret"
+app.config["HOST"] = "0.0.0.0"
+app.config["PORT"] = 3000</code></pre>
+
+
+        <!-- ─── ARCHITECTURE ─────────────────────────── -->
+        <h2 id="architecture">Architecture</h2>
+        <pre><code>isha/
+├── __init__.py           # Package exports
+├── app.py                # Core application (ASGI interface)
+├── routing.py            # URL routing &amp; pattern matching
+├── request.py            # HTTP request parsing
+├── response.py           # HTTP response types
+├── middleware.py          # Middleware pipeline
+├── blueprints.py         # Modular route grouping
+├── server.py             # Built-in ASGI server
+├── utils.py              # Configuration &amp; utilities
+├── orm.py                # Database ORM
+├── auth.py               # Authentication (JWT, sessions, passwords)
+├── template.py           # Template engine
+├── tasks.py              # Background task queue
+├── websocket.py          # WebSocket support
+├── graphql.py            # GraphQL engine
+├── openapi.py            # OpenAPI documentation
+├── di.py                 # Dependency injection
+├── plugins.py            # Plugin system (cache, static, admin)
+├── cli.py                # Command-line interface
+├── testing.py            # Test client &amp; helpers
+├── sare.py               # SARE unified engine
+├── sare_traffic.py       # Traffic analyzer
+├── sare_optimizer.py     # Adaptive optimizer
+├── sare_predictor.py     # Latency predictor
+├── sare_codepath.py      # Code path optimizer
+└── sare_reporter.py      # Intelligence reporter</code></pre>
+
+        <h3>Design Principles</h3>
+        <ul>
+            <li><strong>Zero dependencies</strong> — Core runs on Python standard library only</li>
+            <li><strong>ASGI-native</strong> — Full async support, compatible with uvicorn / hypercorn</li>
+            <li><strong>Modular</strong> — Use only what you need</li>
+            <li><strong>Convention over configuration</strong> — Sensible defaults, easy overrides</li>
+            <li><strong>Developer-first</strong> — Clear errors, intuitive API, minimal boilerplate</li>
+            <li><strong>Self-evolving</strong> — SARE observes, decides, adapts, and evolves automatically</li>
+        </ul>
+
+    </main>
+</div>
+
+<!-- Mobile sidebar toggle button -->
+<button class="docs-sidebar-toggle" id="docs-sidebar-toggle" aria-label="Toggle docs sidebar">☰</button>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/docs.js"></script>
+{% endblock %}

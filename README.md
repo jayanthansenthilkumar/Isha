@@ -9,8 +9,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  <img src="https://img.shields.io/badge/version-1.0.0-orange.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.1.0-orange.svg" alt="Version">
   <img src="https://img.shields.io/badge/ASGI-3.0-purple.svg" alt="ASGI 3.0">
+  <img src="https://img.shields.io/badge/SARE-Self--Evolving-ff69b4.svg" alt="SARE Engine">
 </p>
 
 ---
@@ -24,6 +25,7 @@
 | Category | Features |
 |----------|----------|
 | **Core** | ASGI 3.0, async/sync handlers, middleware pipeline, blueprints |
+| **SARE Engine** | Self-evolving routing, traffic heat mapping, middleware auto-reordering, AI latency prediction, code path optimization, intelligence reports |
 | **Routing** | Typed params (`int`, `float`, `uuid`, `slug`, `path`), regex matching, named routes, `url_for()` |
 | **ORM** | SQLite adapter, model metaclass, chainable QueryBuilder, migrations, field types |
 | **Auth** | PBKDF2 password hashing, HMAC-SHA256 JWT, session management, decorators |
@@ -659,6 +661,75 @@ assert_redirect(response, "/login")
 
 ---
 
+## 🧬 SARE — Self-Evolving Adaptive Routing Engine
+
+> **World's first web framework with self-optimizing routing and middleware.**
+
+SARE automatically observes, decides, adapts, and evolves your application's routing and middleware execution — based on real-time traffic intelligence.
+
+### Quick Start
+
+```python
+from isha import Isha
+
+app = Isha("myapp")
+app.enable_sare()  # That's it — self-optimization begins
+
+@app.route("/api/data")
+async def data(request):
+    return {"items": await fetch_items()}
+
+@app.route("/sare/report")
+async def intelligence(request):
+    return app.sare.report()  # Full intelligence dashboard
+
+app.run()
+```
+
+### What SARE Does
+
+| Component | What It Does |
+|-----------|-------------|
+| **Traffic Analyzer** | Tracks per-route latency (p50/p95/p99), RPS, error rates, and heat scores |
+| **Adaptive Optimizer** | Promotes hot routes to O(1) fast-path cache; reorders middleware by efficiency |
+| **Latency Predictor** | EWMA + linear regression + z-score spike detection + reinforcement heuristics |
+| **Code Path Optimizer** | Response memoization, JSON pre-encoding, handler caching — all automatic |
+| **Intelligence Reporter** | Generates reports: performance deltas, evolution history, recommendations |
+
+### Configuration
+
+```python
+app.enable_sare(
+    optimize_interval=10,    # Seconds between optimization cycles
+    cache_size=500,          # Max response cache entries
+    cache_ttl=30,            # Default cache TTL (seconds)
+    hot_route_slots=20,      # Number of hot route fast-path slots
+    middleware_reorder=True,  # Enable middleware auto-reordering
+    predictor=True,           # Enable AI latency predictor
+    auto_memoize=True,        # Auto-enable memoization for hot GET routes
+)
+```
+
+### Auto-Memoize Criteria
+
+Routes are automatically memoized when:
+- HTTP method is **GET**
+- RPS ≥ 5.0
+- Error rate ≤ 2%
+- Total requests ≥ 50
+
+### Runtime Control
+
+```python
+app.sare.disable()       # Pause SARE
+app.sare.enable()        # Resume
+app.sare.reset()         # Reset all collected data
+app.sare.print_report()  # Console output
+app.sare.stats()         # Quick stats dict
+```
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -682,7 +753,13 @@ isha/
 ├── di.py                # Dependency injection
 ├── plugins.py           # Plugin system (cache, static, admin)
 ├── cli.py               # Command-line interface
-└── testing.py           # Test client & helpers
+├── testing.py           # Test client & helpers
+├── sare.py              # SARE unified engine
+├── sare_traffic.py      # Traffic analyzer (observation layer)
+├── sare_optimizer.py    # Adaptive optimizer (decision layer)
+├── sare_predictor.py    # Latency predictor (AI layer)
+├── sare_codepath.py     # Code path optimizer (execution layer)
+└── sare_reporter.py     # Intelligence reporter (reporting layer)
 ```
 
 **Design Principles:**
@@ -692,6 +769,7 @@ isha/
 - **Modular** — Use only what you need
 - **Convention over configuration** — Sensible defaults, easy overrides
 - **Developer-first** — Clear errors, intuitive API, minimal boilerplate
+- **Self-evolving** — SARE observes, decides, adapts, and evolves automatically
 
 ---
 

@@ -1,0 +1,558 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- ═══════════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="hero-bg-effects">
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+        <div class="hero-glow hero-glow-3"></div>
+        <div class="hero-grid-pattern"></div>
+    </div>
+    <div class="container hero-content">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Open Source &amp; Free Forever
+        </div>
+        <h1 class="hero-title">
+            Build Web Apps<br>
+            <span class="gradient-text">At Lightning Speed</span>
+        </h1>
+        <p class="hero-description">{{ description }}</p>
+        <div class="cta-group">
+            <a href="#getting-started" class="btn btn-primary btn-lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Get Started
+            </a>
+            <a href="https://github.com/jayanthansenthilkumar/ISHA_Framework" target="_blank" class="btn btn-secondary btn-lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View on GitHub
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-value">Async</span>
+                <span class="stat-label">First Architecture</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-value">SARE</span>
+                <span class="stat-label">Self-Evolving Engine</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-value">Zero</span>
+                <span class="stat-label">Config Setup</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FEATURES SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="features-section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Features</span>
+            <h2 class="section-title">Everything You Need,<br><span class="gradient-text">Nothing You Don't</span></h2>
+            <p class="section-description">Isha comes batteries-included so you can focus on building, not configuring.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card feature-card-highlight">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <h3>Async-First ASGI</h3>
+                <p>Built on native async/await from the ground up. Handle thousands of concurrent connections with ease using the ASGI protocol.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Blueprints &amp; Plugins</h3>
+                <p>Organize your app with modular blueprints. Extend functionality with a clean plugin system — use only what you need.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <h3>Built-in ORM</h3>
+                <p>SQLite-powered ORM with Model classes, TextField, IntegerField, BooleanField — no external dependencies required.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Security Built-in</h3>
+                <p>JWT authentication, CORS middleware, CSRF protection, rate limiting, and security headers — all out of the box.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+                <h3>Middleware Pipeline</h3>
+                <p>Flexible middleware system for request/response processing. Chain CORS, auth, logging, compression, and custom middleware.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </div>
+                <h3>Testing Client</h3>
+                <p>Ship with confidence using the built-in TestClient. Write clean, async-compatible tests with zero extra setup.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SARE — SELF-EVOLVING ADAPTIVE ROUTING ENGINE
+     ═══════════════════════════════════════════════════════ -->
+<section class="sare-section" id="sare">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge sare-badge">World First</span>
+            <h2 class="section-title">Self-Evolving<br><span class="gradient-text">Adaptive Routing Engine</span></h2>
+            <p class="section-description">The first web framework that automatically rewrites and optimizes its own routing &amp; middleware execution — based on real-time traffic intelligence.</p>
+        </div>
+
+        <!-- SARE Architecture Flow -->
+        <div class="sare-flow">
+            <div class="sare-flow-item">
+                <div class="sare-flow-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <span>Client Request</span>
+            </div>
+            <div class="sare-flow-arrow">→</div>
+            <div class="sare-flow-item sare-flow-highlight">
+                <div class="sare-flow-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9"/></svg>
+                </div>
+                <span>Traffic Analyzer</span>
+            </div>
+            <div class="sare-flow-arrow">→</div>
+            <div class="sare-flow-item sare-flow-highlight">
+                <div class="sare-flow-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <span>Adaptive Optimizer</span>
+            </div>
+            <div class="sare-flow-arrow">→</div>
+            <div class="sare-flow-item">
+                <div class="sare-flow-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <span>Response</span>
+            </div>
+        </div>
+
+        <!-- SARE Capability Cards -->
+        <div class="sare-grid">
+            <div class="sare-card">
+                <div class="sare-card-number">01</div>
+                <div class="sare-card-icon">🔥</div>
+                <h3>Intelligent Route Heat Mapping</h3>
+                <p>Tracks request frequency, latency percentiles (p50/p95/p99), error rates, and resource usage per route. Hot routes are promoted to an O(1) in-memory fast-path cache automatically.</p>
+                <div class="sare-card-tags">
+                    <span class="sare-tag">Real-time RPS</span>
+                    <span class="sare-tag">Heat Scoring</span>
+                    <span class="sare-tag">Auto-caching</span>
+                </div>
+            </div>
+            <div class="sare-card">
+                <div class="sare-card-number">02</div>
+                <div class="sare-card-icon">⚡</div>
+                <h3>Middleware Auto-Reordering</h3>
+                <p>Analyzes per-middleware execution cost and short-circuit rates at runtime. Middleware with high short-circuit rates is promoted to run first — saving downstream work. No human tuning.</p>
+                <div class="sare-card-tags">
+                    <span class="sare-tag">Cost Analysis</span>
+                    <span class="sare-tag">Smart Ordering</span>
+                    <span class="sare-tag">Zero Config</span>
+                </div>
+            </div>
+            <div class="sare-card">
+                <div class="sare-card-number">03</div>
+                <div class="sare-card-icon">🧠</div>
+                <h3>AI-Assisted Latency Predictor</h3>
+                <p>Uses EWMA, linear regression trends, z-score spike detection, and reinforcement-style heuristics — all in pure Python. Predicts traffic spikes, latency trends, and optimal execution strategy.</p>
+                <div class="sare-card-tags">
+                    <span class="sare-tag">Spike Detection</span>
+                    <span class="sare-tag">Trend Analysis</span>
+                    <span class="sare-tag">Zero Dependencies</span>
+                </div>
+            </div>
+            <div class="sare-card">
+                <div class="sare-card-number">04</div>
+                <div class="sare-card-icon">🚀</div>
+                <h3>Auto Code Path Optimization</h3>
+                <p>Hot endpoints automatically get response memoization with TTL-aware LRU caching, JSON pre-encoding templates for repeated structures, and handler bytecode caching.</p>
+                <div class="sare-card-tags">
+                    <span class="sare-tag">Memoization</span>
+                    <span class="sare-tag">JSON Pre-encode</span>
+                    <span class="sare-tag">LRU Cache</span>
+                </div>
+            </div>
+            <div class="sare-card sare-card-wide">
+                <div class="sare-card-number">05</div>
+                <div class="sare-card-icon">📊</div>
+                <h3>Real-Time Intelligence Reports</h3>
+                <p>SARE generates comprehensive self-improvement reports: optimization suggestions, auto-applied patches, performance deltas (before vs after), code path evolution history, spike warnings, and middleware reorder logs. Access via API endpoint or console output.</p>
+                <div class="sare-card-tags">
+                    <span class="sare-tag">Performance Delta</span>
+                    <span class="sare-tag">Evolution History</span>
+                    <span class="sare-tag">API + Console</span>
+                    <span class="sare-tag">Recommendations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SARE Differentiator -->
+        <div class="sare-compare">
+            <div class="sare-compare-col sare-compare-others">
+                <h4>Other Frameworks</h4>
+                <ul>
+                    <li><span class="compare-icon">📋</span> Log performance</li>
+                    <li><span class="compare-icon">🔧</span> Manual optimization</li>
+                    <li><span class="compare-icon">📈</span> Provide profiling tools</li>
+                    <li><span class="compare-icon">👨‍💻</span> Devs optimize manually</li>
+                </ul>
+            </div>
+            <div class="sare-compare-vs">VS</div>
+            <div class="sare-compare-col sare-compare-isha">
+                <h4>Isha with SARE</h4>
+                <ul>
+                    <li><span class="compare-icon">🔥</span> Observe traffic patterns</li>
+                    <li><span class="compare-icon">🧠</span> Decide what to optimize</li>
+                    <li><span class="compare-icon">⚡</span> Adapt middleware &amp; routing</li>
+                    <li><span class="compare-icon">🧬</span> Evolve autonomously</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- One-line activation -->
+        <div class="sare-activation">
+            <p class="sare-activation-label">Activate with one line:</p>
+            <div class="code-window code-window-sm">
+                <div class="code-window-bar">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="code-filename">app.py</span>
+                </div>
+                <pre><code><span class="kw">from</span> <span class="mod">isha</span> <span class="kw">import</span> <span class="cls">Isha</span>
+
+app = <span class="cls">Isha</span>(<span class="str">"myapp"</span>)
+app.enable_sare()  <span class="cmt"># That's it. Self-optimization begins.</span>
+
+<span class="dec">@app.route</span>(<span class="str">"/sare/report"</span>)
+<span class="kw">async def</span> <span class="fn">intelligence</span>(request):
+    <span class="kw">return</span> app.sare.report()  <span class="cmt"># Full intelligence dashboard</span></code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     CODE SHOWCASE SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="code-section" id="code">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Code</span>
+            <h2 class="section-title">Elegant by Design,<br><span class="gradient-text">Powerful by Default</span></h2>
+            <p class="section-description">Clean syntax that reads like English. Get a full web app running in under 10 lines.</p>
+        </div>
+        <div class="code-showcase">
+            <div class="code-tabs">
+                <button class="code-tab active" data-tab="hello">Hello World</button>
+                <button class="code-tab" data-tab="api">REST API</button>
+                <button class="code-tab" data-tab="orm">ORM</button>
+                <button class="code-tab" data-tab="middleware">Middleware</button>
+                <button class="code-tab" data-tab="sare">SARE</button>
+            </div>
+            <div class="code-panels">
+                <div class="code-panel active" id="panel-hello">
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-filename">app.py</span>
+                        </div>
+                        <pre><code><span class="kw">from</span> <span class="mod">isha</span> <span class="kw">import</span> <span class="cls">Isha</span>
+
+app = <span class="cls">Isha</span>(<span class="str">"myapp"</span>)
+
+<span class="dec">@app.route</span>(<span class="str">"/"</span>)
+<span class="kw">async def</span> <span class="fn">home</span>(request):
+    <span class="kw">return</span> {<span class="str">"message"</span>: <span class="str">"Hello, World!"</span>}
+
+app.run()</code></pre>
+                    </div>
+                </div>
+                <div class="code-panel" id="panel-api">
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-filename">api.py</span>
+                        </div>
+                        <pre><code><span class="kw">from</span> <span class="mod">isha</span> <span class="kw">import</span> <span class="cls">Isha</span>, <span class="cls">Blueprint</span>
+
+app = <span class="cls">Isha</span>(<span class="str">"api"</span>)
+api = <span class="cls">Blueprint</span>(<span class="str">"api"</span>, prefix=<span class="str">"/api/v1"</span>)
+
+<span class="dec">@api.route</span>(<span class="str">"/users"</span>)
+<span class="kw">async def</span> <span class="fn">list_users</span>(request):
+    users = <span class="kw">await</span> User.all()
+    <span class="kw">return</span> [{<span class="str">"name"</span>: u.name} <span class="kw">for</span> u <span class="kw">in</span> users]
+
+<span class="dec">@api.route</span>(<span class="str">"/users"</span>, methods=[<span class="str">"POST"</span>])
+<span class="kw">async def</span> <span class="fn">create_user</span>(request):
+    data = <span class="kw">await</span> request.json()
+    user = <span class="kw">await</span> User.create(**data)
+    <span class="kw">return</span> {<span class="str">"id"</span>: user.id}, <span class="num">201</span>
+
+app.register_blueprint(api)</code></pre>
+                    </div>
+                </div>
+                <div class="code-panel" id="panel-orm">
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-filename">models.py</span>
+                        </div>
+                        <pre><code><span class="kw">from</span> <span class="mod">isha.orm</span> <span class="kw">import</span> (
+    <span class="cls">Database</span>, <span class="cls">Model</span>,
+    <span class="cls">TextField</span>, <span class="cls">IntegerField</span>, <span class="cls">BooleanField</span>
+)
+
+db = <span class="cls">Database</span>(<span class="str">"myapp.db"</span>)
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">Model</span>):
+    _table = <span class="str">"users"</span>
+    _db = db
+    name  = <span class="cls">TextField</span>()
+    email = <span class="cls">TextField</span>()
+    age   = <span class="cls">IntegerField</span>()
+    admin = <span class="cls">BooleanField</span>(default=<span class="kw">False</span>)
+
+<span class="cmt"># Create, query, update, delete</span>
+user = <span class="kw">await</span> User.create(name=<span class="str">"Isha"</span>, email=<span class="str">"hi@isha.dev"</span>)
+all_users = <span class="kw">await</span> User.all()</code></pre>
+                    </div>
+                </div>
+                <div class="code-panel" id="panel-middleware">
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-filename">secure_app.py</span>
+                        </div>
+                        <pre><code><span class="kw">from</span> <span class="mod">isha</span> <span class="kw">import</span> <span class="cls">Isha</span>
+<span class="kw">from</span> <span class="mod">isha.middleware</span> <span class="kw">import</span> (
+    <span class="cls">CORSMiddleware</span>,
+    <span class="cls">SecurityHeadersMiddleware</span>,
+)
+
+app = <span class="cls">Isha</span>(<span class="str">"secure_app"</span>)
+
+<span class="cmt"># Stack middleware in one line</span>
+app.add_middleware(<span class="cls">CORSMiddleware</span>(
+    allow_origins=[<span class="str">"https://mysite.com"</span>]
+))
+app.add_middleware(<span class="cls">SecurityHeadersMiddleware</span>())
+
+<span class="dec">@app.route</span>(<span class="str">"/secret"</span>)
+<span class="kw">async def</span> <span class="fn">secret</span>(request):
+    <span class="kw">return</span> {<span class="str">"data"</span>: <span class="str">"Protected!"</span>}</code></pre>
+                    </div>
+                </div>
+                <div class="code-panel" id="panel-sare">
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-filename">sare_app.py</span>
+                        </div>
+                        <pre><code><span class="kw">from</span> <span class="mod">isha</span> <span class="kw">import</span> <span class="cls">Isha</span>
+
+app = <span class="cls">Isha</span>(<span class="str">"smart_app"</span>)
+app.enable_sare()  <span class="cmt"># 🧬 Self-optimization ON</span>
+
+<span class="dec">@app.route</span>(<span class="str">"/api/data"</span>)
+<span class="kw">async def</span> <span class="fn">data</span>(request):
+    <span class="kw">return</span> {<span class="str">"items"</span>: <span class="kw">await</span> fetch_items()}
+
+<span class="dec">@app.route</span>(<span class="str">"/sare/report"</span>)
+<span class="kw">async def</span> <span class="fn">intelligence</span>(request):
+    <span class="kw">return</span> app.sare.report()
+    <span class="cmt"># 📊 Returns full intelligence dashboard:</span>
+    <span class="cmt">#   traffic heat map, latency predictions,</span>
+    <span class="cmt">#   middleware reorder log, optimization history</span>
+
+app.run()  <span class="cmt"># Routes auto-optimize under load</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     GETTING STARTED SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="getstarted-section" id="getting-started">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Quick Start</span>
+            <h2 class="section-title">Up and Running<br><span class="gradient-text">In 60 Seconds</span></h2>
+            <p class="section-description">From zero to a live web app — it's that simple.</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Install</h3>
+                <div class="code-window code-window-sm">
+                    <div class="code-window-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="code-filename">terminal</span>
+                    </div>
+                    <pre><code><span class="prompt">$</span> pip install isha</code></pre>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Scaffold</h3>
+                <div class="code-window code-window-sm">
+                    <div class="code-window-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="code-filename">terminal</span>
+                    </div>
+                    <pre><code><span class="prompt">$</span> isha new myproject
+<span class="cmt">✦ Created myproject/</span></code></pre>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Run</h3>
+                <div class="code-window code-window-sm">
+                    <div class="code-window-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="code-filename">terminal</span>
+                    </div>
+                    <pre><code><span class="prompt">$</span> python app.py
+<span class="cmt">✦ Serving on http://127.0.0.1:8000</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     ECOSYSTEM SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="ecosystem-section" id="ecosystem">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Ecosystem</span>
+            <h2 class="section-title">One Framework,<br><span class="gradient-text">Complete Toolkit</span></h2>
+            <p class="section-description">Everything ships together — no hunting for third-party packages.</p>
+        </div>
+        <div class="ecosystem-grid">
+            <div class="eco-card">
+                <div class="eco-icon">🔀</div>
+                <h4>Routing</h4>
+                <p>Dynamic path params, methods, async handlers</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">📦</div>
+                <h4>Blueprints</h4>
+                <p>Modular app structure with prefix routing</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🗄️</div>
+                <h4>ORM</h4>
+                <p>SQLite models with fields &amp; migrations</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🔐</div>
+                <h4>JWT Auth</h4>
+                <p>Token-based authentication built in</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🛡️</div>
+                <h4>CORS &amp; CSRF</h4>
+                <p>Cross-origin &amp; forgery protection</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">⏱️</div>
+                <h4>Rate Limiting</h4>
+                <p>Protect endpoints from abuse</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">📄</div>
+                <h4>Templates</h4>
+                <p>Jinja2-style rendering with layouts</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">📁</div>
+                <h4>Static Files</h4>
+                <p>Serve assets via plugin system</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🧪</div>
+                <h4>Test Client</h4>
+                <p>Built-in HTTP testing utilities</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🔒</div>
+                <h4>Security Headers</h4>
+                <p>Auto-added protective HTTP headers</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🪝</div>
+                <h4>Lifecycle Hooks</h4>
+                <p>Startup &amp; shutdown event handlers</p>
+            </div>
+            <div class="eco-card">
+                <div class="eco-icon">🔌</div>
+                <h4>Plugins</h4>
+                <p>Extend the framework your way</p>
+            </div>
+            <div class="eco-card eco-card-sare">
+                <div class="eco-icon">🧬</div>
+                <h4>SARE Engine</h4>
+                <p>Self-evolving adaptive routing</p>
+            </div>
+            <div class="eco-card eco-card-sare">
+                <div class="eco-icon">📊</div>
+                <h4>Traffic Intel</h4>
+                <p>Real-time heat maps &amp; metrics</p>
+            </div>
+            <div class="eco-card eco-card-sare">
+                <div class="eco-icon">🔮</div>
+                <h4>Latency Predictor</h4>
+                <p>AI-assisted spike &amp; trend detection</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     CTA SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <h2>Ready to Build Something Amazing?</h2>
+            <p>Join the growing community of developers building with Isha Framework.</p>
+            <div class="cta-group">
+                <a href="https://github.com/jayanthansenthilkumar/ISHA_Framework" target="_blank" class="btn btn-primary btn-lg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Star on GitHub
+                </a>
+                <a href="#getting-started" class="btn btn-secondary btn-lg">Get Started Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
