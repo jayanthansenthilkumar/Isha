@@ -16,7 +16,7 @@ async def ping(request):
 async def stats(request):
     """Return framework stats for the landing page."""
     return {
-        "version": "1.0.0",
+        "version": "1.2.0",
         "stars": "Growing",
         "async_first": True,
         "built_in_orm": True,
