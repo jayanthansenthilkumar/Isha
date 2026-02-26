@@ -8,7 +8,7 @@ Install:  pip install ishaa
 Docs:     https://github.com/jayanthansenthilkumar/ISHAA_Framework
 """
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __author__ = "Jayanthan Senthilkumar"
 
 from .app import Ishaa
@@ -18,6 +18,8 @@ from .routing import Router, Route
 from .middleware import Middleware
 from .blueprints import Blueprint
 from .sare import SARE
+from .reality import RealityModeFramework
+from .seqp import SelfEvolvingQualityPipeline
 
 __all__ = [
     "Ishaa",
@@ -31,5 +33,7 @@ __all__ = [
     "Middleware",
     "Blueprint",
     "SARE",
+    "RealityModeFramework",
+    "SelfEvolvingQualityPipeline",
     "__version__",
 ]
