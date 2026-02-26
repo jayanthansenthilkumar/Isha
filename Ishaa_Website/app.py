@@ -1,5 +1,5 @@
 """
-Ishaa Framework — Official Landing Page
+Ishaa Framework - Official Landing Page
 The modern async Python web framework.
 """
 
@@ -55,7 +55,7 @@ async def health(request):
 
 @app.route("/api/hello/<name>")
 async def hello(request, name):
-    """Greeting endpoint — a live demo of Ishaa routing."""
+    """Greeting endpoint - a live demo of Ishaa routing."""
     return {"message": f"Hello, {name}! Welcome to Ishaa Framework."}
 
 

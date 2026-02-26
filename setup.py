@@ -1,5 +1,5 @@
 """
-Ishaa Framework — Setup Configuration
+Ishaa Framework - Setup Configuration
 
 This file exists for backwards compatibility with older pip versions.
 The primary configuration is in pyproject.toml.

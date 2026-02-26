@@ -1,5 +1,5 @@
 """
-Ishaa Authentication — Session-based auth, JWT, password hashing.
+Ishaa Authentication - Session-based auth, JWT, password hashing.
 """
 
 import hashlib
@@ -291,7 +291,7 @@ class AuthMiddleware:
                     request.state["session_id"] = session_id
                     return None
 
-        # No auth found — return 401
+        # No auth found - return 401
         from .response import JSONResponse
         return JSONResponse({"error": "Authentication required"}, status_code=401)
 

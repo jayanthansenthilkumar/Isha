@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Ishaa Framework — Official Landing Page Styles
+   Ishaa Framework - Official Landing Page Styles
    ═══════════════════════════════════════════════════════ */
 
 /* ── Design Tokens ──────────────────────────────────── */
@@ -148,9 +148,12 @@
     color: var(--primary-light);
     background: var(--surface-hover);
 }
-.theme-toggle svg {
+.theme-toggle svg,
+.theme-toggle i {
     width: 18px;
     height: 18px;
+    font-size: 18px;
+    line-height: 1;
 }
 .theme-toggle .icon-sun { display: none; }
 .theme-toggle .icon-moon { display: block; }
@@ -289,6 +292,7 @@ img { max-width: 100%; height: auto; }
     border: 1px solid var(--border);
     padding: 0.45rem 1rem !important;
     border-radius: 8px !important;
+    font-size: 0.9rem;
 }
 .nav-github:hover {
     border-color: var(--border-hover) !important;
@@ -641,6 +645,7 @@ img { max-width: 100%; height: auto; }
     color: var(--primary-light);
     margin-bottom: 1.4rem;
     transition: var(--transition);
+    font-size: 1.5rem;
 }
 .feature-card:hover .feature-icon {
     background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(167,139,250,0.12));
@@ -729,6 +734,7 @@ img { max-width: 100%; height: auto; }
     background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(167,139,250,0.08));
     border-radius: 12px;
     color: var(--primary-light);
+    font-size: 1.25rem;
 }
 .sare-flow-arrow {
     font-size: 1.4rem;

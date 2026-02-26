@@ -2,7 +2,7 @@
 Database models for Ishaa Framework Landing Page
 """
 
-# This landing page is static — no database models needed.
+# This landing page is static - no database models needed.
 # But here's an example of what Ishaa ORM looks like:
 #
 # from ishaa.orm import Database, Model, TextField, IntegerField, BooleanField

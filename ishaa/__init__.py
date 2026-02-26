@@ -1,5 +1,5 @@
 """
-Ishaa — A Modern Python Web Framework
+Ishaa - A Modern Python Web Framework
 
 Simplicity of Flask. Structure of Django. Performance mindset of FastAPI.
 Clean. Powerful. Elegant. Self-Evolving.

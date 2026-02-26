@@ -21,12 +21,12 @@
 
 ## What is Ishaa?
 
-**Ishaa** is a lightweight, modular, high-performance Python web framework built from scratch with **zero required external dependencies**. It provides a complete ASGI-compatible architecture including a custom ORM, built-in authentication, a Jinja-like template engine, WebSocket support, GraphQL, dependency injection, background tasks, and a CLI — all implemented in pure Python standard library.
+**Ishaa** is a lightweight, modular, high-performance Python web framework built from scratch with **zero required external dependencies**. It provides a complete ASGI-compatible architecture including a custom ORM, built-in authentication, a Jinja-like template engine, WebSocket support, GraphQL, dependency injection, background tasks, and a CLI - all implemented in pure Python standard library.
 
 Ishaa v1.2.0 introduces **three world-first engines**:
-- **SARE** — Self-Evolving Adaptive Routing Engine (self-optimizing routing & middleware)
-- **RMF** — Reality-Mode Framework: One Codebase, Multiple Realities (parallel behavioral universes per route)
-- **SEQP** — Self-Evolving Quality Pipeline (auto risk analysis, test generation, CI/CD rewriting)
+- **SARE** - Self-Evolving Adaptive Routing Engine (self-optimizing routing & middleware)
+- **RMF** - Reality-Mode Framework: One Codebase, Multiple Realities (parallel behavioral universes per route)
+- **SEQP** - Self-Evolving Quality Pipeline (auto risk analysis, test generation, CI/CD rewriting)
 
 ---
 
@@ -50,8 +50,8 @@ Ishaa v1.2.0 introduces **three world-first engines**:
 - [CLI Tool](#-cli-tool)
 - [Testing](#-testing)
 - [SARE Engine](#-sare--self-evolving-adaptive-routing-engine)
-- [RMF — Reality-Mode Framework](#-rmf--reality-mode-framework)
-- [SEQP — Self-Evolving Quality Pipeline](#-seqp--self-evolving-quality-pipeline)
+- [RMF - Reality-Mode Framework](#-rmf--reality-mode-framework)
+- [SEQP - Self-Evolving Quality Pipeline](#-seqp--self-evolving-quality-pipeline)
 - [Architecture](#-architecture)
 - [Version History](#-version-history)
 - [Requirements](#-requirements)
@@ -653,7 +653,7 @@ myapp/
 
 ## 🧪 Testing
 
-Built-in test client — make requests without a running server:
+Built-in test client - make requests without a running server:
 
 ```python
 from ishaa.testing import TestClient
@@ -692,7 +692,7 @@ pytest tests/ -v
 
 ---
 
-## 🧬 SARE — Self-Evolving Adaptive Routing Engine
+## 🧬 SARE - Self-Evolving Adaptive Routing Engine
 
 > **The world's first web framework with self-optimizing routing and middleware intelligence.**
 
@@ -704,7 +704,7 @@ SARE automatically **observes**, **decides**, **adapts**, and **evolves** your a
 from ishaa import Ishaa
 
 app = Ishaa("myapp")
-app.enable_sare()  # One line — self-optimization begins immediately
+app.enable_sare()  # One line - self-optimization begins immediately
 
 @app.route("/api/data")
 async def data(request):
@@ -724,7 +724,7 @@ app.run()
 | **Observation** | `sare_traffic.py` | Tracks per-route latency (p50/p95/p99), requests per second, error rates, and computes heat scores |
 | **Decision** | `sare_optimizer.py` | Promotes hot routes to O(1) fast-path cache; reorders middleware by measured efficiency ratios |
 | **Prediction** | `sare_predictor.py` | EWMA + linear regression forecasting, z-score spike detection, reinforcement-based heuristics |
-| **Execution** | `sare_codepath.py` | Response memoization, JSON pre-encoding, handler result caching — all applied automatically |
+| **Execution** | `sare_codepath.py` | Response memoization, JSON pre-encoding, handler result caching - all applied automatically |
 | **Reporting** | `sare_reporter.py` | Generates intelligence reports: performance deltas, evolution history, optimization recommendations |
 
 ### Configuration Options
@@ -761,11 +761,11 @@ app.sare.stats()         # Get quick stats dict
 
 ---
 
-## 🌐 RMF — Reality-Mode Framework
+## 🌐 RMF - Reality-Mode Framework
 
 > **One Codebase. Multiple Realities. The world's first execution-layer abstraction for web frameworks.**
 
-RMF allows the **same route** to exist in **multiple behavioral universes**. Each request can enter a different "reality" with different logic, middleware, caching, and security rules — without conditional clutter or branching code.
+RMF allows the **same route** to exist in **multiple behavioral universes**. Each request can enter a different "reality" with different logic, middleware, caching, and security rules - without conditional clutter or branching code.
 
 ### Enable RMF
 
@@ -879,11 +879,11 @@ async def rmf_report(request):
 
 ---
 
-## 🔬 SEQP — Self-Evolving Quality Pipeline
+## 🔬 SEQP - Self-Evolving Quality Pipeline
 
 > **Ishaa doesn't just run your app. It evolves your delivery system.**
 
-SEQP continuously analyzes your application code, generates adversarial tests, rewrites CI/CD pipeline configurations, and enforces dynamic deployment policies — all based on code risk analysis and runtime behavior.
+SEQP continuously analyzes your application code, generates adversarial tests, rewrites CI/CD pipeline configurations, and enforces dynamic deployment policies - all based on code risk analysis and runtime behavior.
 
 ### Enable SEQP
 
@@ -952,7 +952,7 @@ print(f"Security sensitive: {metrics.security_sensitive}")
 
 ### Layer 2: Auto Test Generator
 
-Risk-targeted test generation — not random fuzzing:
+Risk-targeted test generation - not random fuzzing:
 
 | Risk Signal | Test Types Generated |
 |---|---|
@@ -1085,9 +1085,9 @@ ishaa/
 
 | Principle | Description |
 |-----------|-------------|
-| **Zero Dependencies** | Core runs entirely on Python standard library — no pip installs required |
+| **Zero Dependencies** | Core runs entirely on Python standard library - no pip installs required |
 | **ASGI-Native** | Full async support, compatible with uvicorn, hypercorn, and any ASGI server |
-| **Modular** | Import and use only what you need — each module is self-contained |
+| **Modular** | Import and use only what you need - each module is self-contained |
 | **Convention over Configuration** | Sensible defaults with easy overrides |
 | **Developer-First** | Clear error messages, intuitive API, minimal boilerplate |
 | **Self-Evolving** | SARE optimizes routing, RMF enables parallel realities, SEQP evolves your CI/CD |
@@ -1097,7 +1097,7 @@ ishaa/
 ## 📋 Version History
 
 ### v1.2.0 (Current)
-- **RMF Engine** — Reality-Mode Framework: One Codebase, Multiple Realities
+- **RMF Engine** - Reality-Mode Framework: One Codebase, Multiple Realities
   - Same route exists in multiple behavioral universes simultaneously
   - Reality Selector Engine: header → cookie → behavior → time → traffic % routing
   - Time-bound realities with automatic schedule-based activation
@@ -1106,7 +1106,7 @@ ishaa/
   - Reality-scoped middleware, caching, and security rules
   - `@app.reality()` decorator with traffic splitting and behavior rules
   - Live stats, reports, and intelligence dashboard
-- **SEQP Engine** — Self-Evolving Quality Pipeline
+- **SEQP Engine** - Self-Evolving Quality Pipeline
   - Risk Analyzer: AST-based code analysis (branch density, complexity, mutation risk)
   - Auto Test Generator: risk-targeted test creation (boundary, concurrency, security, load)
   - Pipeline Rewriter Engine: auto-generates GitHub Actions / GitLab CI configs
@@ -1116,7 +1116,7 @@ ishaa/
   - Full evolution cycle: `app.seqp.evolve()` runs analysis → tests → pipeline → policy
 
 ### v1.1.0
-- **SARE Engine** — Self-Evolving Adaptive Routing Engine with 5-layer architecture
+- **SARE Engine** - Self-Evolving Adaptive Routing Engine with 5-layer architecture
   - Traffic heat mapping and per-route latency tracking (p50/p95/p99)
   - Adaptive middleware reordering based on efficiency measurements
   - AI-assisted latency prediction with EWMA and linear regression
@@ -1170,12 +1170,12 @@ pip install ishaa[full]
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
 <p align="center">
   <strong>Built with ❤️ by Jayanthan Senthilkumar</strong><br>
-  <strong>The Ishaa Framework</strong> — Simplicity · Structure · Performance · Self-Evolution · Multiple Realities<br>
+  <strong>The Ishaa Framework</strong> - Simplicity · Structure · Performance · Self-Evolution · Multiple Realities<br>
   <a href="https://github.com/jayanthansenthilkumar/ISHAA_Framework">GitHub</a>
 </p>

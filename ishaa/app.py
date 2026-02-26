@@ -1,5 +1,5 @@
 """
-Ishaa App — The core application class that ties everything together.
+Ishaa App - The core application class that ties everything together.
 """
 
 import asyncio
@@ -54,13 +54,13 @@ class Ishaa:
         self._template_engine = None
         self._blueprints: List[Blueprint] = []
 
-        # SARE — Self-Evolving Adaptive Routing Engine
+        # SARE - Self-Evolving Adaptive Routing Engine
         self.sare = None  # initialized via enable_sare()
 
-        # RMF — Reality-Mode Framework
+        # RMF - Reality-Mode Framework
         self.rmf = None  # initialized via enable_rmf()
 
-        # SEQP — Self-Evolving Quality Pipeline
+        # SEQP - Self-Evolving Quality Pipeline
         self.seqp = None  # initialized via enable_seqp()
 
         # Setup logging
@@ -69,14 +69,14 @@ class Ishaa:
         else:
             logging.basicConfig(level=logging.INFO)
 
-    # ── SARE — Self-Evolving Adaptive Routing Engine ────────────────
+    # ── SARE - Self-Evolving Adaptive Routing Engine ────────────────
 
     def enable_sare(self, **kwargs):
         """
         Enable the Self-Evolving Adaptive Routing Engine.
 
         SARE autonomously optimizes routing, middleware ordering,
-        response caching, and predicts traffic patterns — all in real time.
+        response caching, and predicts traffic patterns - all in real time.
 
         Args:
             optimize_interval: Seconds between optimization cycles (default: 10)
@@ -106,10 +106,10 @@ class Ishaa:
         self.sare = SARE(**sare_kwargs)
         self.sare.attach(self)
 
-        logger.info("SARE engine enabled — Self-Evolving Adaptive Routing Engine active")
+        logger.info("SARE engine enabled - Self-Evolving Adaptive Routing Engine active")
         return self.sare
 
-    # ── RMF — Reality-Mode Framework ────────────────────────────────
+    # ── RMF - Reality-Mode Framework ────────────────────────────────
 
     def enable_rmf(self, **kwargs):
         """
@@ -145,7 +145,7 @@ class Ishaa:
         self.rmf = RealityModeFramework(**kwargs)
         self.rmf.attach(self)
 
-        logger.info("RMF engine enabled — Reality-Mode Framework active")
+        logger.info("RMF engine enabled - Reality-Mode Framework active")
         return self.rmf
 
     def reality(self, name: str, **config):
@@ -195,7 +195,7 @@ class Ishaa:
         self.rmf.selector.add_behavior_rule(func)
         return func
 
-    # ── SEQP — Self-Evolving Quality Pipeline ───────────────────────
+    # ── SEQP - Self-Evolving Quality Pipeline ───────────────────────
 
     def enable_seqp(self, **kwargs):
         """
@@ -228,7 +228,7 @@ class Ishaa:
         self.seqp = SelfEvolvingQualityPipeline(**kwargs)
         self.seqp.attach(self)
 
-        logger.info("SEQP engine enabled — Self-Evolving Quality Pipeline active")
+        logger.info("SEQP engine enabled - Self-Evolving Quality Pipeline active")
         return self.seqp
 
     def critical(self, level: str = "standard", description: str = ""):
@@ -694,7 +694,7 @@ class Ishaa:
             print(f"  SARE:       ACTIVE (Self-Evolving Adaptive Routing Engine)")
         if self.rmf is not None:
             rmf_count = len(self.rmf._routes)
-            print(f"  RMF:        ACTIVE (Reality-Mode Framework — {rmf_count} reality routes)")
+            print(f"  RMF:        ACTIVE (Reality-Mode Framework - {rmf_count} reality routes)")
         if self.seqp is not None:
             print(f"  SEQP:       ACTIVE (Self-Evolving Quality Pipeline)")
         print(f"  Press Ctrl+C to stop\n")

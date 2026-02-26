@@ -1,5 +1,5 @@
 """
-Ishaa Blueprints — Modular route grouping (like Flask blueprints).
+Ishaa Blueprints - Modular route grouping (like Flask blueprints).
 """
 
 from typing import Callable, List, Optional

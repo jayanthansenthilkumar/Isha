@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ title }} — Ishaa Framework{% endblock %}
+{% block title %}{{ title }} - Ishaa Framework{% endblock %}
 
 {% block head %}
 <style>
@@ -386,20 +386,20 @@
         <!-- ─── INTRODUCTION ─────────────────────────── -->
         <h1>Ishaa Framework Documentation <span class="docs-version">v1.2.0</span></h1>
         <p class="docs-subtitle">
-            Complete guide to building modern, async-first web applications with Ishaa — the batteries-included Python framework with zero required dependencies, a self-evolving routing engine, multi-reality execution, and intelligent quality pipeline.
+            Complete guide to building modern, async-first web applications with Ishaa - the batteries-included Python framework with zero required dependencies, a self-evolving routing engine, multi-reality execution, and intelligent quality pipeline.
         </p>
 
         <h2 id="introduction">Introduction</h2>
-        <p>Ishaa is a lightweight, modular, high-performance Python web framework built from scratch with <strong>zero required external dependencies</strong>. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more — all in pure Python.</p>
+        <p>Ishaa is a lightweight, modular, high-performance Python web framework built from scratch with <strong>zero required external dependencies</strong>. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more - all in pure Python.</p>
 
         <p>Ishaa brings together:</p>
         <ul>
-            <li><strong>Simplicity of Flask</strong> — intuitive routing decorators and a minimal learning curve</li>
-            <li><strong>Structure of Django</strong> — built-in ORM, templates, admin, and middleware pipeline</li>
-            <li><strong>Performance of FastAPI</strong> — async-first ASGI architecture with dependency injection</li>
-            <li><strong>Self-Evolution (SARE)</strong> — the world's first web framework that optimizes itself at runtime</li>
-            <li><strong>Multi-Reality Execution (RMF)</strong> — one route, multiple behavioral universes with auto-promotion</li>
-            <li><strong>Intelligent Quality (SEQP)</strong> — auto risk analysis, test generation, CI/CD rewriting, and deployment gates</li>
+            <li><strong>Simplicity of Flask</strong> - intuitive routing decorators and a minimal learning curve</li>
+            <li><strong>Structure of Django</strong> - built-in ORM, templates, admin, and middleware pipeline</li>
+            <li><strong>Performance of FastAPI</strong> - async-first ASGI architecture with dependency injection</li>
+            <li><strong>Self-Evolution (SARE)</strong> - the world's first web framework that optimizes itself at runtime</li>
+            <li><strong>Multi-Reality Execution (RMF)</strong> - one route, multiple behavioral universes with auto-promotion</li>
+            <li><strong>Intelligent Quality (SEQP)</strong> - auto risk analysis, test generation, CI/CD rewriting, and deployment gates</li>
         </ul>
 
         <div class="docs-tip docs-tip-info">
@@ -634,7 +634,7 @@ return StreamingResponse(generate(), content_type="text/event-stream")</code></p
     SecurityHeadersMiddleware,
 )
 
-# CORS — Cross-Origin Resource Sharing
+# CORS - Cross-Origin Resource Sharing
 app.add_middleware(CORSMiddleware(
     allow_origins=["https://example.com"],
     allow_methods=["GET", "POST", "PUT", "DELETE"],
@@ -642,7 +642,7 @@ app.add_middleware(CORSMiddleware(
     max_age=600,
 ))
 
-# Rate Limiting — per-IP, in-memory
+# Rate Limiting - per-IP, in-memory
 app.add_middleware(RateLimitMiddleware(
     max_requests=100, window_seconds=60
 ))
@@ -738,7 +738,7 @@ class User(Model):
             <tbody>
                 <tr><td><code>IntegerField</code></td><td>INTEGER</td><td><code>primary_key</code>, <code>unique</code>, <code>index</code></td></tr>
                 <tr><td><code>TextField</code></td><td>TEXT / VARCHAR(n)</td><td><code>max_length</code></td></tr>
-                <tr><td><code>FloatField</code></td><td>REAL</td><td>—</td></tr>
+                <tr><td><code>FloatField</code></td><td>REAL</td><td>-</td></tr>
                 <tr><td><code>BooleanField</code></td><td>INTEGER</td><td>Auto bool↔int conversion</td></tr>
                 <tr><td><code>DateTimeField</code></td><td>TEXT (ISO)</td><td><code>auto_now</code>, <code>auto_now_add</code></td></tr>
                 <tr><td><code>JSONField</code></td><td>TEXT</td><td>Auto JSON serialization</td></tr>
@@ -852,7 +852,7 @@ async def admin_panel(request):
 
         <!-- ─── TEMPLATES ────────────────────────────── -->
         <h2 id="templates">Template Engine</h2>
-        <p>Jinja-like template syntax with inheritance, includes, loops, conditionals, and filters — all built in.</p>
+        <p>Jinja-like template syntax with inheritance, includes, loops, conditionals, and filters - all built in.</p>
 
         <h3>Rendering Templates</h3>
         <pre><code>app = Ishaa("myapp")  # templates/ dir by default
@@ -1136,9 +1136,9 @@ $ ishaa version</code></pre>
             <tbody>
                 <tr><td><code>ishaa create project &lt;name&gt;</code></td><td>Scaffold project</td><td><code>--minimal</code></td></tr>
                 <tr><td><code>ishaa run</code></td><td>Run dev server</td><td><code>--host</code>, <code>--port</code>, <code>--debug</code>, <code>--reload</code></td></tr>
-                <tr><td><code>ishaa routes</code></td><td>List routes</td><td>—</td></tr>
-                <tr><td><code>ishaa shell</code></td><td>Interactive shell</td><td>—</td></tr>
-                <tr><td><code>ishaa version</code></td><td>Show version</td><td>—</td></tr>
+                <tr><td><code>ishaa routes</code></td><td>List routes</td><td>-</td></tr>
+                <tr><td><code>ishaa shell</code></td><td>Interactive shell</td><td>-</td></tr>
+                <tr><td><code>ishaa version</code></td><td>Show version</td><td>-</td></tr>
             </tbody>
         </table>
 
@@ -1146,15 +1146,15 @@ $ ishaa version</code></pre>
         <!-- ═══════════════════════════════════════════════
              SARE ENGINE
              ═══════════════════════════════════════════════ -->
-        <h2 id="sare-overview">SARE — Self-Evolving Adaptive Routing Engine</h2>
-        <p>SARE is the world's first web framework feature that <strong>automatically observes, decides, adapts, and evolves</strong> its own routing and middleware execution based on real-time traffic intelligence. No external ML libraries required — everything runs in pure Python.</p>
+        <h2 id="sare-overview">SARE - Self-Evolving Adaptive Routing Engine</h2>
+        <p>SARE is the world's first web framework feature that <strong>automatically observes, decides, adapts, and evolves</strong> its own routing and middleware execution based on real-time traffic intelligence. No external ML libraries required - everything runs in pure Python.</p>
 
         <h3>How SARE Works</h3>
         <ol>
-            <li><strong>Observe</strong> — The Traffic Analyzer collects per-route metrics: latency percentiles, RPS, error rates, response sizes, and heat scores.</li>
-            <li><strong>Decide</strong> — The Adaptive Optimizer identifies hot routes and evaluates middleware ordering efficiency.</li>
-            <li><strong>Adapt</strong> — Hot routes are promoted to O(1) fast-path caches. Middleware is auto-reordered for maximum short-circuit efficiency.</li>
-            <li><strong>Evolve</strong> — The Latency Predictor uses EWMA, trend detection, spike detection, and reinforcement heuristics to continuously improve predictions and strategy selection.</li>
+            <li><strong>Observe</strong> - The Traffic Analyzer collects per-route metrics: latency percentiles, RPS, error rates, response sizes, and heat scores.</li>
+            <li><strong>Decide</strong> - The Adaptive Optimizer identifies hot routes and evaluates middleware ordering efficiency.</li>
+            <li><strong>Adapt</strong> - Hot routes are promoted to O(1) fast-path caches. Middleware is auto-reordered for maximum short-circuit efficiency.</li>
+            <li><strong>Evolve</strong> - The Latency Predictor uses EWMA, trend detection, spike detection, and reinforcement heuristics to continuously improve predictions and strategy selection.</li>
         </ol>
 
 
@@ -1162,7 +1162,7 @@ $ ishaa version</code></pre>
         <pre><code>from ishaa import Ishaa
 
 app = Ishaa("myapp")
-app.enable_sare()  # That's it — self-optimization begins
+app.enable_sare()  # That's it - self-optimization begins
 
 @app.route("/api/data")
 async def data(request):
@@ -1226,7 +1226,7 @@ stats = app.sare.stats()</code></pre>
 
 
         <h2 id="sare-predictor">Latency Predictor</h2>
-        <p>AI-assisted prediction engine using pure Python — no external ML dependencies.</p>
+        <p>AI-assisted prediction engine using pure Python - no external ML dependencies.</p>
 
         <h3>Prediction Algorithms</h3>
         <table>
@@ -1251,9 +1251,9 @@ predictions = report["predictions"]
 
         <h3>Features</h3>
         <ul>
-            <li><strong>Response Memoization</strong> — LRU cache with TTL-aware expiration. GET requests to hot endpoints are cached and served without re-executing handlers.</li>
-            <li><strong>JSON Pre-Encoding</strong> — Learns structural patterns of JSON responses and creates encoding templates for repeated structures, reducing serialization overhead.</li>
-            <li><strong>Handler Caching</strong> — Compiled handler references are cached to avoid repeated lookups.</li>
+            <li><strong>Response Memoization</strong> - LRU cache with TTL-aware expiration. GET requests to hot endpoints are cached and served without re-executing handlers.</li>
+            <li><strong>JSON Pre-Encoding</strong> - Learns structural patterns of JSON responses and creates encoding templates for repeated structures, reducing serialization overhead.</li>
+            <li><strong>Handler Caching</strong> - Compiled handler references are cached to avoid repeated lookups.</li>
         </ul>
 
         <div class="docs-tip docs-tip-info">
@@ -1333,15 +1333,15 @@ app.sare.reset()</code></pre>
         <!-- ═══════════════════════════════════════════════
              RMF ENGINE
              ═══════════════════════════════════════════════ -->
-        <h2 id="rmf-overview">RMF — Reality-Mode Framework</h2>
-        <p>RMF is the world's first execution-layer abstraction that allows the <strong>same route to exist in multiple behavioral universes</strong>. Each request can enter a different "reality" with different logic, middleware, caching, and security rules — without conditional clutter or branching code.</p>
+        <h2 id="rmf-overview">RMF - Reality-Mode Framework</h2>
+        <p>RMF is the world's first execution-layer abstraction that allows the <strong>same route to exist in multiple behavioral universes</strong>. Each request can enter a different "reality" with different logic, middleware, caching, and security rules - without conditional clutter or branching code.</p>
 
         <h3>How RMF Works</h3>
         <ol>
-            <li><strong>Define Realities</strong> — Use <code>@app.reality()</code> decorators to create multiple handlers for the same route, each in a named reality (e.g., "stable", "experimental", "beta").</li>
-            <li><strong>Reality Selection</strong> — The Reality Selector Engine routes each request into the appropriate reality via traffic percentage, sticky sessions, behavior rules, or time windows.</li>
-            <li><strong>Parallel Simulation</strong> — Optionally run shadow realities in parallel to compare outputs and measure drift — without affecting production users.</li>
-            <li><strong>Self-Retiring</strong> — Experimental realities auto-promote to stable once they prove themselves through low error rates and acceptable latency.</li>
+            <li><strong>Define Realities</strong> - Use <code>@app.reality()</code> decorators to create multiple handlers for the same route, each in a named reality (e.g., "stable", "experimental", "beta").</li>
+            <li><strong>Reality Selection</strong> - The Reality Selector Engine routes each request into the appropriate reality via traffic percentage, sticky sessions, behavior rules, or time windows.</li>
+            <li><strong>Parallel Simulation</strong> - Optionally run shadow realities in parallel to compare outputs and measure drift - without affecting production users.</li>
+            <li><strong>Self-Retiring</strong> - Experimental realities auto-promote to stable once they prove themselves through low error rates and acceptable latency.</li>
         </ol>
 
 
@@ -1351,7 +1351,7 @@ app.sare.reset()</code></pre>
 app = Ishaa("myapp")
 app.enable_rmf()
 
-# Same route — two realities
+# Same route - two realities
 @app.route("/recommend")
 @app.reality("stable")
 async def recommend_v1(request):
@@ -1518,16 +1518,16 @@ async def search_v2(request):
         <!-- ═══════════════════════════════════════════════
              SEQP ENGINE
              ═══════════════════════════════════════════════ -->
-        <h2 id="seqp-overview">SEQP — Self-Evolving Quality Pipeline</h2>
+        <h2 id="seqp-overview">SEQP - Self-Evolving Quality Pipeline</h2>
         <p>SEQP is the world's first framework feature that <strong>continuously analyzes application logic, generates adversarial tests, rewrites CI/CD pipelines, and enforces dynamic deployment policies</strong> based on code complexity and runtime behavior. Five layers work together to evolve your quality pipeline.</p>
 
         <h3>The Five Layers</h3>
         <ol>
-            <li><strong>Risk Analyzer</strong> — AST-powered code analysis measuring branch density, complexity, state mutation risk, and more</li>
-            <li><strong>Auto Test Generator</strong> — Risk-targeted test generation (boundary, concurrency, security, load)</li>
-            <li><strong>Pipeline Rewriter</strong> — Auto-generates/updates GitHub Actions or GitLab CI configurations</li>
-            <li><strong>Deployment Guard</strong> — Dynamic coverage thresholds and quality gates per route criticality</li>
-            <li><strong>Drift Intelligence</strong> — Trend tracking, anomaly detection, and health scoring over time</li>
+            <li><strong>Risk Analyzer</strong> - AST-powered code analysis measuring branch density, complexity, state mutation risk, and more</li>
+            <li><strong>Auto Test Generator</strong> - Risk-targeted test generation (boundary, concurrency, security, load)</li>
+            <li><strong>Pipeline Rewriter</strong> - Auto-generates/updates GitHub Actions or GitLab CI configurations</li>
+            <li><strong>Deployment Guard</strong> - Dynamic coverage thresholds and quality gates per route criticality</li>
+            <li><strong>Drift Intelligence</strong> - Trend tracking, anomaly detection, and health scoring over time</li>
         </ol>
 
 
@@ -1599,7 +1599,7 @@ print(profile["recommended_tests"])        # ["unit", "boundary", ...]</code></p
 
 
         <h2 id="seqp-testgen">Auto Test Generator</h2>
-        <p>SEQP generates test specifications based on route risk profiles — not random fuzzing, but <strong>risk-targeted generation</strong>.</p>
+        <p>SEQP generates test specifications based on route risk profiles - not random fuzzing, but <strong>risk-targeted generation</strong>.</p>
 
         <h3>Test Types Generated</h3>
         <table>
@@ -1811,19 +1811,19 @@ app.config["PORT"] = 3000</code></pre>
 ├── sare_predictor.py     # Latency predictor
 ├── sare_codepath.py      # Code path optimizer
 ├── sare_reporter.py      # Intelligence reporter
-├── reality.py            # RMF — Reality-Mode Framework
-└── seqp.py               # SEQP — Self-Evolving Quality Pipeline</code></pre>
+├── reality.py            # RMF - Reality-Mode Framework
+└── seqp.py               # SEQP - Self-Evolving Quality Pipeline</code></pre>
 
         <h3>Design Principles</h3>
         <ul>
-            <li><strong>Zero dependencies</strong> — Core runs on Python standard library only</li>
-            <li><strong>ASGI-native</strong> — Full async support, compatible with uvicorn / hypercorn</li>
-            <li><strong>Modular</strong> — Use only what you need</li>
-            <li><strong>Convention over configuration</strong> — Sensible defaults, easy overrides</li>
-            <li><strong>Developer-first</strong> — Clear errors, intuitive API, minimal boilerplate</li>
-            <li><strong>Self-evolving</strong> — SARE observes, decides, adapts, and evolves automatically</li>
-            <li><strong>Multi-reality</strong> — RMF lets the same route have multiple behavioral universes</li>
-            <li><strong>Quality-intelligent</strong> — SEQP analyzes risk, generates tests, and guards deployments</li>
+            <li><strong>Zero dependencies</strong> - Core runs on Python standard library only</li>
+            <li><strong>ASGI-native</strong> - Full async support, compatible with uvicorn / hypercorn</li>
+            <li><strong>Modular</strong> - Use only what you need</li>
+            <li><strong>Convention over configuration</strong> - Sensible defaults, easy overrides</li>
+            <li><strong>Developer-first</strong> - Clear errors, intuitive API, minimal boilerplate</li>
+            <li><strong>Self-evolving</strong> - SARE observes, decides, adapts, and evolves automatically</li>
+            <li><strong>Multi-reality</strong> - RMF lets the same route have multiple behavioral universes</li>
+            <li><strong>Quality-intelligent</strong> - SEQP analyzes risk, generates tests, and guards deployments</li>
         </ul>
 
     </main>

@@ -1,5 +1,5 @@
 /**
- * Ishaa Framework — Landing Page Interactions
+ * Ishaa Framework - Landing Page Interactions
  */
 
 (function () {
