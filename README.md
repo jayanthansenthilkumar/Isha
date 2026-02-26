@@ -9,10 +9,12 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  <img src="https://img.shields.io/badge/version-1.1.0-orange.svg" alt="Version 1.1.0">
+  <img src="https://img.shields.io/badge/version-1.2.0-orange.svg" alt="Version 1.2.0">
   <img src="https://img.shields.io/badge/ASGI-3.0-purple.svg" alt="ASGI 3.0">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen.svg" alt="Zero Dependencies">
   <img src="https://img.shields.io/badge/SARE-Self--Evolving-ff69b4.svg" alt="SARE Engine">
+  <img src="https://img.shields.io/badge/RMF-Multiple--Realities-blueviolet.svg" alt="RMF Engine">
+  <img src="https://img.shields.io/badge/SEQP-Quality--Pipeline-critical.svg" alt="SEQP Engine">
 </p>
 
 ---
@@ -21,7 +23,10 @@
 
 **Ishaa** is a lightweight, modular, high-performance Python web framework built from scratch with **zero required external dependencies**. It provides a complete ASGI-compatible architecture including a custom ORM, built-in authentication, a Jinja-like template engine, WebSocket support, GraphQL, dependency injection, background tasks, and a CLI — all implemented in pure Python standard library.
 
-Ishaa v1.1.0 introduces **SARE (Self-Evolving Adaptive Routing Engine)** — the world's first web framework with built-in self-optimizing routing and middleware intelligence.
+Ishaa v1.2.0 introduces **three world-first engines**:
+- **SARE** — Self-Evolving Adaptive Routing Engine (self-optimizing routing & middleware)
+- **RMF** — Reality-Mode Framework: One Codebase, Multiple Realities (parallel behavioral universes per route)
+- **SEQP** — Self-Evolving Quality Pipeline (auto risk analysis, test generation, CI/CD rewriting)
 
 ---
 
@@ -45,6 +50,8 @@ Ishaa v1.1.0 introduces **SARE (Self-Evolving Adaptive Routing Engine)** — the
 - [CLI Tool](#-cli-tool)
 - [Testing](#-testing)
 - [SARE Engine](#-sare--self-evolving-adaptive-routing-engine)
+- [RMF — Reality-Mode Framework](#-rmf--reality-mode-framework)
+- [SEQP — Self-Evolving Quality Pipeline](#-seqp--self-evolving-quality-pipeline)
 - [Architecture](#-architecture)
 - [Version History](#-version-history)
 - [Requirements](#-requirements)
@@ -58,6 +65,8 @@ Ishaa v1.1.0 introduces **SARE (Self-Evolving Adaptive Routing Engine)** — the
 |----------|-------------|
 | **Core** | ASGI 3.0 interface, async/sync handler support, full middleware pipeline, modular blueprints |
 | **SARE Engine** | Self-evolving routing, traffic heat mapping, middleware auto-reordering, AI latency prediction, code path optimization, intelligence reports |
+| **RMF Engine** | Reality-Mode Framework: same route in multiple realities, traffic-based selection, time-bound realities, parallel simulation, self-retiring experiments |
+| **SEQP Engine** | Self-Evolving Quality Pipeline: risk analysis, auto test generation, CI/CD pipeline rewriting, deployment guards, drift intelligence |
 | **Routing** | Typed parameters (`int`, `float`, `uuid`, `slug`, `path`), regex matching, named routes, `url_for()` reverse lookup |
 | **ORM** | SQLite adapter, model metaclass, chainable QueryBuilder, auto-migrations, field types (Text, Integer, Boolean, DateTime, Float) |
 | **Auth** | PBKDF2-HMAC-SHA256 password hashing, HMAC-SHA256 JWT tokens, session management, `@login_required` and `@role_required` decorators |
@@ -752,6 +761,291 @@ app.sare.stats()         # Get quick stats dict
 
 ---
 
+## 🌐 RMF — Reality-Mode Framework
+
+> **One Codebase. Multiple Realities. The world's first execution-layer abstraction for web frameworks.**
+
+RMF allows the **same route** to exist in **multiple behavioral universes**. Each request can enter a different "reality" with different logic, middleware, caching, and security rules — without conditional clutter or branching code.
+
+### Enable RMF
+
+```python
+from ishaa import Ishaa
+
+app = Ishaa("myapp")
+app.enable_rmf()
+
+@app.route("/recommend")
+@app.reality("stable")
+async def recommend_v1(request):
+    return {"algo": "classic", "version": 1}
+
+@app.route("/recommend")
+@app.reality("experimental", traffic_pct=20, auto_promote=True)
+async def recommend_v2(request):
+    return {"algo": "neural_v2", "version": 2}
+
+app.run()
+```
+
+80% of users see `stable`, 20% see `experimental`. When the experimental reality proves stable (low error rate, acceptable latency), it auto-promotes to become the new default.
+
+### Reality Selection Engine
+
+Requests are routed to realities using a priority chain:
+
+| Priority | Method | Description |
+|----------|--------|-------------|
+| 1 | **Header** | `X-Reality: experimental` forces a specific reality |
+| 2 | **Cookie** | Sticky session remembers the user's assigned reality |
+| 3 | **Behavior Rules** | Custom functions evaluate request properties |
+| 4 | **Time Window** | Realities active only during specified hours |
+| 5 | **Traffic %** | Deterministic hash-based traffic splitting |
+
+### Behavior Rules
+
+```python
+@app.rmf_behavior_rule
+def route_premium_users(request, realities):
+    if request.headers.get("x-user-tier") == "premium":
+        return "premium" if "premium" in realities else None
+    return None
+```
+
+### Time-Bound Realities
+
+```python
+@app.route("/api/feed")
+@app.reality("night_mode", active_between="22:00-06:00")
+async def feed_night(request):
+    return {"theme": "dark", "content": "curated_night"}
+```
+
+### Parallel Simulation Mode
+
+```python
+app.enable_rmf(enable_parallel_sim=True, sim_sample_rate=0.1)
+```
+
+Runs **shadow realities** alongside the primary one, compares outputs, and logs drift without affecting the user's response.
+
+### Self-Retiring Realities
+
+```python
+@app.route("/api/search")
+@app.reality("experimental", auto_promote=True,
+             promote_after_requests=500,
+             promote_error_threshold=0.01,
+             promote_latency_ratio=1.1)
+async def search_v2(request):
+    return {"engine": "semantic"}
+```
+
+When the experimental reality completes 500+ requests with <1% error rate and latency within 110% of stable, it automatically promotes to default.
+
+### Configuration
+
+```python
+app.enable_rmf(
+    auto_promote_threshold=1000,      # Min requests before promotion
+    auto_promote_error_max=0.02,      # Max error rate for promotion
+    auto_promote_latency_ratio=1.5,   # Max latency ratio vs stable
+    enable_parallel_sim=False,        # Enable parallel simulation
+    enable_self_retiring=True,        # Enable self-retiring engine
+)
+```
+
+### RMF Reports
+
+```python
+app.rmf.print_report()  # Console report
+app.rmf.stats()          # Stats dict
+
+@app.route("/rmf/report")
+async def rmf_report(request):
+    return app.rmf.report()  # JSON report
+```
+
+### RMF Architecture
+
+| Component | What It Does |
+|-----------|-------------|
+| **RealityConfig** | Per-reality configuration: traffic %, time windows, middleware, caching |
+| **RealityHandler** | Wraps handler with config + live metrics (requests, errors, latency) |
+| **RealityRoute** | Multi-reality container: same path, multiple handlers |
+| **RealitySelectorEngine** | Selects reality per request via header → cookie → behavior → time → traffic |
+| **ParallelSimulationEngine** | Runs shadow realities, measures drift (latency/status/body comparison) |
+| **SelfRetiringEngine** | Auto-promotes experimental realities when proven stable |
+
+---
+
+## 🔬 SEQP — Self-Evolving Quality Pipeline
+
+> **Ishaa doesn't just run your app. It evolves your delivery system.**
+
+SEQP continuously analyzes your application code, generates adversarial tests, rewrites CI/CD pipeline configurations, and enforces dynamic deployment policies — all based on code risk analysis and runtime behavior.
+
+### Enable SEQP
+
+```python
+from ishaa import Ishaa
+
+app = Ishaa("myapp")
+app.enable_seqp(pipeline_platform="github_actions")
+
+@app.route("/payment")
+@app.critical(level="financial_core")
+async def process_payment(request):
+    data = await request.json()
+    # ... payment logic ...
+    return {"status": "ok"}
+
+# Run full evolution cycle
+result = app.seqp.evolve(output_dir="./generated")
+app.seqp.print_report()
+```
+
+### Business Criticality Tagging
+
+Tag routes with business criticality to enforce stronger quality gates:
+
+```python
+@app.route("/transfer")
+@app.critical(level="financial_core", description="Inter-bank wire transfer")
+async def transfer(request):
+    ...
+
+@app.route("/auth/login")
+@app.critical(level="security_critical")
+async def login(request):
+    ...
+
+@app.route("/data/migrate")
+@app.critical(level="data_critical")
+async def migrate(request):
+    ...
+```
+
+| Criticality Level | Coverage Threshold | Extra Test Types |
+|---|---|---|
+| `financial_core` | 95% | load_burst, mutation_testing, concurrency, security |
+| `security_critical` | 92% | security_audit, mutation_testing |
+| `data_critical` | 90% | schema_drift, integration |
+| `standard` | 75-85% | unit, boundary (if complex) |
+
+### Layer 1: Risk Analyzer
+
+Analyzes Python source code to produce risk profiles:
+
+```python
+from ishaa.seqp import RiskAnalyzer
+
+ra = RiskAnalyzer()
+metrics = ra.analyze_file("app.py")
+print(f"Risk: {metrics.risk_score:.2f} [{metrics.risk_level}]")
+print(f"Complexity: {metrics.cyclomatic_complexity}")
+print(f"DB interactions: {metrics.db_interactions}")
+print(f"Security sensitive: {metrics.security_sensitive}")
+```
+
+**Metrics measured:** Branch density, cyclomatic complexity, nesting depth, state mutations, DB interactions, concurrency indicators, external calls, input parsing surface, security sensitivity.
+
+### Layer 2: Auto Test Generator
+
+Risk-targeted test generation — not random fuzzing:
+
+| Risk Signal | Test Types Generated |
+|---|---|
+| High branch density | Boundary value tests (empty, null, oversized, negative, unicode) |
+| Concurrency indicators | Race condition simulation (20 concurrent requests) |
+| Input parsing | Security payloads (SQL injection, XSS, command injection, path traversal) |
+| DB interactions | Schema drift validation |
+| Financial criticality | Load burst + mutation testing |
+
+```python
+# Generate tests for all routes
+test_code = app.seqp.generate_tests(output_path="tests/test_seqp_auto.py")
+```
+
+### Layer 3: Pipeline Rewriter Engine
+
+Auto-generates CI/CD configurations based on risk analysis:
+
+```python
+# Generate GitHub Actions workflow
+pipeline = app.seqp.rewrite_pipeline(
+    output_path=".github/workflows/seqp_pipeline.yml"
+)
+```
+
+**Supported platforms:** GitHub Actions, GitLab CI, Generic YAML.
+
+Stages are dynamically added/removed based on detected risk:
+- Always: lint, unit tests, build, deploy
+- If DB interactions: schema drift validation
+- If concurrency: race condition simulation
+- If input parsing/security: security scan
+- If high risk: mutation testing, deep logical tests
+- If financial: load testing, shadow deployment
+
+### Layer 4: Deployment Guard
+
+Dynamic deployment policies that adapt to code risk:
+
+```python
+result = app.seqp.check_deployment_readiness(
+    current_latency=45.2,
+    baseline_latency=40.0,
+    current_error_rate=0.01,
+)
+print(result["allowed"])         # True/False
+print(result["recommendation"])  # "proceed" / "block_latency_regression" / "immediate_rollback"
+```
+
+### Layer 5: Drift Intelligence
+
+Tracks trends over time to detect instability patterns:
+
+```python
+trends = app.seqp.drift_intelligence.detect_trends()
+actions = app.seqp.drift_intelligence.recommend_actions()
+```
+
+**Tracked metrics:** Latency drift, error rate trends, test pass rate decline.
+**Actions:** Add regression replay, enable strict rollback, activate shadow deployment, pipeline freeze.
+
+### Full Evolution Cycle
+
+```python
+result = app.seqp.evolve(output_dir="./generated")
+# Returns: profiles_count, tests_generated, pipeline_generated, policy, trends, actions
+```
+
+### SEQP Configuration
+
+```python
+app.enable_seqp(
+    scan_paths=[".", "src/"],           # Paths to analyze
+    pipeline_platform="github_actions", # CI/CD platform
+    latency_drift_tolerance=0.20,       # 20% max latency regression
+    error_rate_threshold=0.02,          # 2% max error rate
+    auto_generate_tests=True,           # Auto-generate test files
+    auto_rewrite_pipeline=True,         # Auto-rewrite CI/CD config
+)
+```
+
+### SEQP Architecture
+
+| Layer | Component | What It Does |
+|-------|-----------|-------------|
+| **Analysis** | `RiskAnalyzer` | AST-based code analysis: branch density, complexity, mutation risk, DB/concurrency/security detection |
+| **Generation** | `AutoTestGenerator` | Risk-targeted test creation: boundary, concurrency, security, load, mutation tests |
+| **Pipeline** | `PipelineRewriterEngine` | Auto-generates CI/CD YAML configs based on detected risk levels |
+| **Guard** | `DeploymentGuard` | Dynamic deployment policies: latency budget, error rate, rollback triggers |
+| **Intelligence** | `DriftIntelligence` | Trend analysis: latency drift, error frequency, test pass rate decline detection |
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -782,7 +1076,9 @@ ishaa/
 ├── sare_optimizer.py    # SARE: Adaptive optimizer (decision)
 ├── sare_predictor.py    # SARE: AI latency predictor (prediction)
 ├── sare_codepath.py     # SARE: Code path optimizer (execution)
-└── sare_reporter.py     # SARE: Intelligence reporter (reporting)
+├── sare_reporter.py     # SARE: Intelligence reporter (reporting)
+├── reality.py           # RMF: Reality-Mode Framework engine
+└── seqp.py              # SEQP: Self-Evolving Quality Pipeline engine
 ```
 
 ### Design Principles
@@ -794,13 +1090,32 @@ ishaa/
 | **Modular** | Import and use only what you need — each module is self-contained |
 | **Convention over Configuration** | Sensible defaults with easy overrides |
 | **Developer-First** | Clear error messages, intuitive API, minimal boilerplate |
-| **Self-Evolving** | SARE automatically optimizes routing and middleware at runtime |
+| **Self-Evolving** | SARE optimizes routing, RMF enables parallel realities, SEQP evolves your CI/CD |
 
 ---
 
 ## 📋 Version History
 
-### v1.1.0 (Current)
+### v1.2.0 (Current)
+- **RMF Engine** — Reality-Mode Framework: One Codebase, Multiple Realities
+  - Same route exists in multiple behavioral universes simultaneously
+  - Reality Selector Engine: header → cookie → behavior → time → traffic % routing
+  - Time-bound realities with automatic schedule-based activation
+  - Self-retiring realities that auto-promote when proven stable
+  - Parallel simulation mode for shadow testing without user impact
+  - Reality-scoped middleware, caching, and security rules
+  - `@app.reality()` decorator with traffic splitting and behavior rules
+  - Live stats, reports, and intelligence dashboard
+- **SEQP Engine** — Self-Evolving Quality Pipeline
+  - Risk Analyzer: AST-based code analysis (branch density, complexity, mutation risk)
+  - Auto Test Generator: risk-targeted test creation (boundary, concurrency, security, load)
+  - Pipeline Rewriter Engine: auto-generates GitHub Actions / GitLab CI configs
+  - Deployment Guard: dynamic coverage thresholds and rollback policies
+  - Drift Intelligence: trend detection for latency, error rate, and test pass rate
+  - Business criticality tagging: `@app.critical(level="financial_core")`
+  - Full evolution cycle: `app.seqp.evolve()` runs analysis → tests → pipeline → policy
+
+### v1.1.0
 - **SARE Engine** — Self-Evolving Adaptive Routing Engine with 5-layer architecture
   - Traffic heat mapping and per-route latency tracking (p50/p95/p99)
   - Adaptive middleware reordering based on efficiency measurements
@@ -861,6 +1176,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 <p align="center">
   <strong>Built with ❤️ by Jayanthan Senthilkumar</strong><br>
-  <strong>The Ishaa Framework</strong> — Simplicity · Structure · Performance · Self-Evolution<br>
+  <strong>The Ishaa Framework</strong> — Simplicity · Structure · Performance · Self-Evolution · Multiple Realities<br>
   <a href="https://github.com/jayanthansenthilkumar/ISHAA_Framework">GitHub</a>
 </p>

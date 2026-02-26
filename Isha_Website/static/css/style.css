@@ -904,6 +904,62 @@ img { max-width: 100%; height: auto; }
 }
 
 /* ═══════════════════════════════════════════════════════
+   RMF SECTION
+   ═══════════════════════════════════════════════════════ */
+.rmf-section {
+    background: var(--bg-alt) !important;
+}
+.rmf-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.rmf-badge {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee) !important;
+}
+
+/* RMF eco-card highlight */
+.eco-card-rmf {
+    border-color: rgba(34,211,238,0.2) !important;
+    background: linear-gradient(135deg, rgba(34,211,238,0.07), var(--surface)) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SEQP SECTION
+   ═══════════════════════════════════════════════════════ */
+.seqp-section {
+    background: var(--bg) !important;
+}
+.seqp-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.seqp-badge {
+    background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+}
+
+/* SEQP eco-card highlight */
+.eco-card-seqp {
+    border-color: rgba(34,197,94,0.2) !important;
+    background: linear-gradient(135deg, rgba(34,197,94,0.07), var(--surface)) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
    CODE SHOWCASE
    ═══════════════════════════════════════════════════════ */
 .code-section {

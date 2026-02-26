@@ -352,6 +352,27 @@
             <a class="sidebar-link" href="#sare-config">Configuration</a>
         </div>
         <div class="sidebar-section">
+            <span class="sidebar-label">RMF Engine</span>
+            <a class="sidebar-link" href="#rmf-overview">Overview</a>
+            <a class="sidebar-link" href="#rmf-quickstart">Quick Start</a>
+            <a class="sidebar-link" href="#rmf-selector">Reality Selector</a>
+            <a class="sidebar-link" href="#rmf-time-bound">Time-Bound Realities</a>
+            <a class="sidebar-link" href="#rmf-parallel">Parallel Simulation</a>
+            <a class="sidebar-link" href="#rmf-self-retiring">Self-Retiring</a>
+            <a class="sidebar-link" href="#rmf-config">Configuration</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">SEQP Engine</span>
+            <a class="sidebar-link" href="#seqp-overview">Overview</a>
+            <a class="sidebar-link" href="#seqp-quickstart">Quick Start</a>
+            <a class="sidebar-link" href="#seqp-risk">Risk Analyzer</a>
+            <a class="sidebar-link" href="#seqp-testgen">Auto Test Generator</a>
+            <a class="sidebar-link" href="#seqp-pipeline">Pipeline Rewriter</a>
+            <a class="sidebar-link" href="#seqp-guard">Deployment Guard</a>
+            <a class="sidebar-link" href="#seqp-drift">Drift Intelligence</a>
+            <a class="sidebar-link" href="#seqp-config">Configuration</a>
+        </div>
+        <div class="sidebar-section">
             <span class="sidebar-label">Reference</span>
             <a class="sidebar-link" href="#api-reference">API Reference</a>
             <a class="sidebar-link" href="#configuration">Configuration</a>
@@ -363,9 +384,9 @@
     <main class="docs-content">
 
         <!-- ─── INTRODUCTION ─────────────────────────── -->
-        <h1>Ishaa Framework Documentation <span class="docs-version">v1.1.0</span></h1>
+        <h1>Ishaa Framework Documentation <span class="docs-version">v1.2.0</span></h1>
         <p class="docs-subtitle">
-            Complete guide to building modern, async-first web applications with Ishaa — the batteries-included Python framework with zero required dependencies and a self-evolving routing engine.
+            Complete guide to building modern, async-first web applications with Ishaa — the batteries-included Python framework with zero required dependencies, a self-evolving routing engine, multi-reality execution, and intelligent quality pipeline.
         </p>
 
         <h2 id="introduction">Introduction</h2>
@@ -377,6 +398,8 @@
             <li><strong>Structure of Django</strong> — built-in ORM, templates, admin, and middleware pipeline</li>
             <li><strong>Performance of FastAPI</strong> — async-first ASGI architecture with dependency injection</li>
             <li><strong>Self-Evolution (SARE)</strong> — the world's first web framework that optimizes itself at runtime</li>
+            <li><strong>Multi-Reality Execution (RMF)</strong> — one route, multiple behavioral universes with auto-promotion</li>
+            <li><strong>Intelligent Quality (SEQP)</strong> — auto risk analysis, test generation, CI/CD rewriting, and deployment gates</li>
         </ul>
 
         <div class="docs-tip docs-tip-info">
@@ -1307,6 +1330,426 @@ app.sare.enable()
 app.sare.reset()</code></pre>
 
 
+        <!-- ═══════════════════════════════════════════════
+             RMF ENGINE
+             ═══════════════════════════════════════════════ -->
+        <h2 id="rmf-overview">RMF — Reality-Mode Framework</h2>
+        <p>RMF is the world's first execution-layer abstraction that allows the <strong>same route to exist in multiple behavioral universes</strong>. Each request can enter a different "reality" with different logic, middleware, caching, and security rules — without conditional clutter or branching code.</p>
+
+        <h3>How RMF Works</h3>
+        <ol>
+            <li><strong>Define Realities</strong> — Use <code>@app.reality()</code> decorators to create multiple handlers for the same route, each in a named reality (e.g., "stable", "experimental", "beta").</li>
+            <li><strong>Reality Selection</strong> — The Reality Selector Engine routes each request into the appropriate reality via traffic percentage, sticky sessions, behavior rules, or time windows.</li>
+            <li><strong>Parallel Simulation</strong> — Optionally run shadow realities in parallel to compare outputs and measure drift — without affecting production users.</li>
+            <li><strong>Self-Retiring</strong> — Experimental realities auto-promote to stable once they prove themselves through low error rates and acceptable latency.</li>
+        </ol>
+
+
+        <h2 id="rmf-quickstart">RMF Quick Start</h2>
+        <pre><code>from ishaa import Ishaa
+
+app = Ishaa("myapp")
+app.enable_rmf()
+
+# Same route — two realities
+@app.route("/recommend")
+@app.reality("stable")
+async def recommend_v1(request):
+    return {"algo": "classic"}
+
+@app.route("/recommend")
+@app.reality("experimental", traffic_pct=20)
+async def recommend_v2(request):
+    return {"algo": "neural"}
+# 80% of users see "classic", 20% see "neural"
+
+# Access RMF report
+@app.route("/rmf/report")
+async def rmf_report(request):
+    return app.rmf.report()
+
+app.run()</code></pre>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Tip</strong>
+            The "stable" reality is always the default. If no other reality qualifies, users are routed to stable.
+        </div>
+
+
+        <h2 id="rmf-selector">Reality Selector Engine</h2>
+        <p>The Reality Selector routes each request using a priority-based selection chain:</p>
+
+        <h3>Selection Priority</h3>
+        <table>
+            <thead><tr><th>Priority</th><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td><strong>Explicit Header</strong></td><td><code>X-Reality: experimental</code> header overrides all other selection</td></tr>
+                <tr><td>2</td><td><strong>Sticky Cookie</strong></td><td>Returning users stay in the same reality for consistency</td></tr>
+                <tr><td>3</td><td><strong>Behavior Rules</strong></td><td>Custom functions evaluate request properties to choose reality</td></tr>
+                <tr><td>4</td><td><strong>Time Windows</strong></td><td>Only time-active realities are considered</td></tr>
+                <tr><td>5</td><td><strong>Traffic Percentage</strong></td><td>Deterministic hash-based allocation using client IP + user-agent</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Custom Behavior Rules</h3>
+        <pre><code>@app.rmf_behavior_rule
+def route_by_header(request, realities):
+    if request.headers.get("x-beta") == "1":
+        return "beta" if "beta" in realities else None
+    return None
+
+@app.rmf_behavior_rule
+def route_premium_users(request, realities):
+    if request.headers.get("x-plan") == "premium":
+        return "premium" if "premium" in realities else None
+    return None</code></pre>
+
+
+        <h2 id="rmf-time-bound">Time-Bound Realities</h2>
+        <p>Schedule realities to activate during specific date ranges. Ideal for holiday features, seasonal promotions, or staged rollouts.</p>
+        <pre><code>@app.route("/pricing")
+@app.reality("holiday_sale", active_between="Dec 20 - Jan 05",
+             traffic_pct=100)
+async def holiday_pricing(request):
+    return {"discount": "30%", "event": "Holiday Sale"}
+
+@app.route("/pricing")
+@app.reality("stable")
+async def normal_pricing(request):
+    return {"discount": "0%"}</code></pre>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Supported Formats</strong>
+            Time windows accept: <code>Mon DD - Mon DD</code>, <code>YYYY-MM-DD - YYYY-MM-DD</code>, <code>B DD - B DD</code> (full month names), and <code>MM/DD - MM/DD</code>.
+        </div>
+
+
+        <h2 id="rmf-parallel">Parallel Simulation</h2>
+        <p>Run multiple realities simultaneously for the same request. The user sees the primary reality's response while shadow realities execute silently for comparison.</p>
+
+        <pre><code># Enable parallel simulation
+app.enable_rmf(enable_parallel_sim=True)
+
+# All realities run in parallel
+# Primary response goes to user
+# Shadow results logged for drift analysis</code></pre>
+
+        <h3>Drift Measurement</h3>
+        <table>
+            <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>drift_score</code></td><td>0.0–1.0 behavioral difference (0 = identical, 1 = completely different)</td></tr>
+                <tr><td><code>shadow_latency</code></td><td>Execution time of the shadow reality</td></tr>
+                <tr><td><code>primary_latency</code></td><td>Execution time of the primary reality</td></tr>
+                <tr><td><code>shadow_status</code></td><td>Success/error status of shadow execution</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Access parallel simulation comparison logs
+report = app.rmf.report()
+comparisons = report["parallel_simulations"]</code></pre>
+
+
+        <h2 id="rmf-self-retiring">Self-Retiring Realities</h2>
+        <p>Experimental realities can auto-promote to replace the stable handler when they prove reliability:</p>
+
+        <pre><code>@app.route("/api/search")
+@app.reality("experimental",
+    traffic_pct=10,
+    auto_promote=True,
+    promote_after_requests=1000,
+    promote_error_threshold=0.02,
+    promote_latency_ratio=1.1)
+async def search_v2(request):
+    return {"engine": "upgraded"}
+# After 1000 requests, if error rate &lt; 2%
+# and latency within 110% of stable:
+#   → auto-promotes to new "stable"</code></pre>
+
+        <h3>Promotion Criteria</h3>
+        <table>
+            <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>auto_promote</code></td><td><code>False</code></td><td>Enable auto-promotion for this reality</td></tr>
+                <tr><td><code>promote_after_requests</code></td><td>1000</td><td>Minimum requests before considering promotion</td></tr>
+                <tr><td><code>promote_error_threshold</code></td><td>0.02</td><td>Maximum error rate (2%) to qualify</td></tr>
+                <tr><td><code>promote_latency_ratio</code></td><td>1.1</td><td>Max latency vs stable (110%)</td></tr>
+            </tbody>
+        </table>
+
+
+        <h2 id="rmf-config">RMF Configuration</h2>
+        <p>Configure RMF via <code>enable_rmf()</code>:</p>
+        <pre><code>app.enable_rmf(
+    auto_promote_threshold=1000,    # Default request threshold
+    auto_promote_error_max=0.02,    # Max error rate for promotion
+    auto_promote_latency_ratio=1.5, # Max latency ratio vs stable
+    enable_parallel_sim=False,      # Enable parallel simulation
+    enable_self_retiring=True,      # Enable self-retiring engine
+)</code></pre>
+
+        <table>
+            <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>auto_promote_threshold</code></td><td>1000</td><td>Default request threshold for auto-promotion</td></tr>
+                <tr><td><code>auto_promote_error_max</code></td><td>0.02</td><td>Maximum error rate for promotion eligibility</td></tr>
+                <tr><td><code>auto_promote_latency_ratio</code></td><td>1.5</td><td>Experimental latency must be within this ratio of stable</td></tr>
+                <tr><td><code>enable_parallel_sim</code></td><td><code>False</code></td><td>Enable parallel simulation mode</td></tr>
+                <tr><td><code>enable_self_retiring</code></td><td><code>True</code></td><td>Enable the self-retiring engine</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Reality Decorator Options</h3>
+        <table>
+            <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>traffic_pct</code></td><td><code>float</code></td><td>Percentage of traffic (0–100)</td></tr>
+                <tr><td><code>active_between</code></td><td><code>str</code></td><td>Time window for auto-activation</td></tr>
+                <tr><td><code>sticky</code></td><td><code>bool</code></td><td>Enable sticky sessions (default: True)</td></tr>
+                <tr><td><code>auto_promote</code></td><td><code>bool</code></td><td>Enable auto-promotion</td></tr>
+                <tr><td><code>middleware</code></td><td><code>list</code></td><td>Reality-scoped middleware</td></tr>
+                <tr><td><code>cache_ttl</code></td><td><code>float</code></td><td>Cache TTL override for this reality</td></tr>
+                <tr><td><code>priority</code></td><td><code>int</code></td><td>Selection priority (higher = preferred)</td></tr>
+                <tr><td><code>tags</code></td><td><code>dict</code></td><td>Metadata tags</td></tr>
+            </tbody>
+        </table>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SEQP ENGINE
+             ═══════════════════════════════════════════════ -->
+        <h2 id="seqp-overview">SEQP — Self-Evolving Quality Pipeline</h2>
+        <p>SEQP is the world's first framework feature that <strong>continuously analyzes application logic, generates adversarial tests, rewrites CI/CD pipelines, and enforces dynamic deployment policies</strong> based on code complexity and runtime behavior. Five layers work together to evolve your quality pipeline.</p>
+
+        <h3>The Five Layers</h3>
+        <ol>
+            <li><strong>Risk Analyzer</strong> — AST-powered code analysis measuring branch density, complexity, state mutation risk, and more</li>
+            <li><strong>Auto Test Generator</strong> — Risk-targeted test generation (boundary, concurrency, security, load)</li>
+            <li><strong>Pipeline Rewriter</strong> — Auto-generates/updates GitHub Actions or GitLab CI configurations</li>
+            <li><strong>Deployment Guard</strong> — Dynamic coverage thresholds and quality gates per route criticality</li>
+            <li><strong>Drift Intelligence</strong> — Trend tracking, anomaly detection, and health scoring over time</li>
+        </ol>
+
+
+        <h2 id="seqp-quickstart">SEQP Quick Start</h2>
+        <pre><code>from ishaa import Ishaa
+
+app = Ishaa("myapp")
+app.enable_seqp(pipeline_platform="github_actions")
+
+@app.route("/payment")
+@app.critical(level="financial_core")
+async def process_payment(request):
+    data = await request.json()
+    return {"status": "processed", "amount": data["amount"]}
+
+@app.route("/api/health")
+async def health(request):
+    return {"status": "ok"}
+
+# Trigger analysis + test generation + pipeline rewrite
+report = app.seqp.evolve()
+
+# View quality report
+quality = app.seqp.report()
+app.run()</code></pre>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Tip</strong>
+            The <code>@app.critical()</code> decorator tags routes with business criticality. SEQP uses this to calibrate risk thresholds, test intensity, and deployment gates.
+        </div>
+
+
+        <h2 id="seqp-risk">Risk Analyzer</h2>
+        <p>The Risk Analyzer uses Python's AST module to parse and analyze source code, producing risk metrics per route handler.</p>
+
+        <h3>Metrics Collected</h3>
+        <table>
+            <thead><tr><th>Metric</th><th>Description</th><th>Risk Weight</th></tr></thead>
+            <tbody>
+                <tr><td><code>branch_density</code></td><td>Ratio of decision points to lines of code</td><td>20%</td></tr>
+                <tr><td><code>cyclomatic_complexity</code></td><td>Number of independent code paths</td><td>20%</td></tr>
+                <tr><td><code>nesting_depth</code></td><td>Maximum nesting level of control structures</td><td>10%</td></tr>
+                <tr><td><code>state_mutations</code></td><td>Assignments to <code>self.*</code> or globals</td><td>15%</td></tr>
+                <tr><td><code>db_interactions</code></td><td>SQL/ORM pattern matches</td><td>10%</td></tr>
+                <tr><td><code>concurrency_indicators</code></td><td>Async, threading, lock patterns</td><td>10%</td></tr>
+                <tr><td><code>external_calls</code></td><td>HTTP, SMTP, Redis pattern matches</td><td>5%</td></tr>
+                <tr><td><code>input_parsing</code></td><td>Request body/JSON/form parsing</td><td>5%</td></tr>
+                <tr><td><code>security_sensitive</code></td><td>Password, token, payment patterns</td><td>5%</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Risk Levels</h3>
+        <table>
+            <thead><tr><th>Level</th><th>Score Range</th><th>Recommended Coverage</th></tr></thead>
+            <tbody>
+                <tr><td><code>LOW</code></td><td>0.0 – 0.29</td><td>75%</td></tr>
+                <tr><td><code>MEDIUM</code></td><td>0.30 – 0.49</td><td>85%</td></tr>
+                <tr><td><code>HIGH</code></td><td>0.50 – 0.69</td><td>90%</td></tr>
+                <tr><td><code>CRITICAL</code></td><td>0.70 – 1.0</td><td>95%</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Analyze a specific handler
+profile = app.seqp.risk_analyzer.profile_route(process_payment, "financial_core")
+print(profile["metrics"]["risk_score"])    # 0.0 – 1.0
+print(profile["metrics"]["risk_level"])    # LOW / MEDIUM / HIGH / CRITICAL
+print(profile["recommended_coverage"])     # 0.95
+print(profile["recommended_tests"])        # ["unit", "boundary", ...]</code></pre>
+
+
+        <h2 id="seqp-testgen">Auto Test Generator</h2>
+        <p>SEQP generates test specifications based on route risk profiles — not random fuzzing, but <strong>risk-targeted generation</strong>.</p>
+
+        <h3>Test Types Generated</h3>
+        <table>
+            <thead><tr><th>Test Type</th><th>Trigger</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>basic</code></td><td>Always</td><td>Happy-path request validation</td></tr>
+                <tr><td><code>boundary</code></td><td>Branch density &gt; 3</td><td>Edge case inputs, empty values, type mismatches</td></tr>
+                <tr><td><code>concurrency</code></td><td>Async/threading detected</td><td>Parallel request simulation for race conditions</td></tr>
+                <tr><td><code>security_payload</code></td><td>Input parsing detected</td><td>SQL injection, XSS, path traversal payloads</td></tr>
+                <tr><td><code>schema_drift</code></td><td>DB interactions &gt; 2</td><td>Schema consistency validation</td></tr>
+                <tr><td><code>load_burst</code></td><td>Critical or high risk</td><td>Concurrent request stress testing</td></tr>
+                <tr><td><code>mutation</code></td><td>Financial core or risk &gt; 0.7</td><td>Mutation testing for logic correctness</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Generate test code for all routes
+tests = app.seqp.generate_all_tests()
+test_code = app.seqp.test_generator.generate_test_code(tests)
+# Produces executable pytest-compatible test file</code></pre>
+
+
+        <h2 id="seqp-pipeline">Pipeline Rewriter</h2>
+        <p>SEQP automatically generates CI/CD pipeline configurations based on your application's risk profile.</p>
+
+        <h3>Supported Platforms</h3>
+        <table>
+            <thead><tr><th>Platform</th><th>Value</th><th>Output Format</th></tr></thead>
+            <tbody>
+                <tr><td>GitHub Actions</td><td><code>"github_actions"</code></td><td>YAML workflow</td></tr>
+                <tr><td>GitLab CI</td><td><code>"gitlab_ci"</code></td><td>YAML pipeline</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code>app.enable_seqp(
+    pipeline_platform="github_actions",
+    pipeline_output=".github/workflows/seqp.yml"
+)
+
+# Generates pipeline with:
+# - Dynamic coverage thresholds per criticality
+# - Risk-based test stages
+# - Deployment gates
+# - Quality checkpoints</code></pre>
+
+        <div class="docs-tip docs-tip-info">
+            <strong>Tip</strong>
+            The generated pipeline adapts as your code changes. Run <code>app.seqp.evolve()</code> to re-analyze and regenerate.
+        </div>
+
+
+        <h2 id="seqp-guard">Deployment Guard</h2>
+        <p>Dynamic quality gates that adjust coverage requirements based on route criticality.</p>
+
+        <h3>Criticality Levels</h3>
+        <table>
+            <thead><tr><th>Level</th><th>Description</th><th>Min Coverage</th></tr></thead>
+            <tbody>
+                <tr><td><code>financial_core</code></td><td>Payment, billing, transactions</td><td>95%</td></tr>
+                <tr><td><code>security_critical</code></td><td>Auth, encryption, token routes</td><td>92%</td></tr>
+                <tr><td><code>data_critical</code></td><td>Data mutation, migrations</td><td>90%</td></tr>
+                <tr><td><code>standard</code></td><td>Normal routes (default)</td><td>75%</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code>@app.route("/payment")
+@app.critical(level="financial_core")
+async def payment(request):
+    ...
+
+@app.route("/auth/login")
+@app.critical(level="security_critical")
+async def login(request):
+    ...
+
+@app.route("/api/users", methods=["DELETE"])
+@app.critical(level="data_critical", description="Deletes user data")
+async def delete_user(request):
+    ...
+
+# Check deployment readiness
+guard = app.seqp.deployment_check()
+# {"allowed": True/False, "gates": [...], "coverage": {...}}</code></pre>
+
+
+        <h2 id="seqp-drift">Drift Intelligence</h2>
+        <p>Continuously tracks quality metrics over time to detect degradation trends and anomalies.</p>
+
+        <h3>Tracked Metrics</h3>
+        <table>
+            <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>latency_drift</code></td><td>Change in response latency over rolling baseline</td></tr>
+                <tr><td><code>error_rate_drift</code></td><td>Change in error rate vs historical average</td></tr>
+                <tr><td><code>risk_evolution</code></td><td>How risk scores change as code evolves</td></tr>
+                <tr><td><code>deployment_health</code></td><td>Composite health score post-deployment</td></tr>
+                <tr><td><code>anomaly_flags</code></td><td>Statistical anomaly detection triggers</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Access drift intelligence
+report = app.seqp.report()
+drift = report.get("drift_intelligence", {})
+# Timeline of risk changes, latency trends, health scores</code></pre>
+
+        <div class="docs-tip docs-tip-warn">
+            <strong>Warning</strong>
+            When <code>latency_drift_tolerance</code> is exceeded (default: 20%), SEQP flags the deployment as degraded and may block future deployments until the issue is addressed.
+        </div>
+
+
+        <h2 id="seqp-config">SEQP Configuration</h2>
+        <p>Configure SEQP via <code>enable_seqp()</code>:</p>
+        <pre><code>app.enable_seqp(
+    scan_paths=["./"],                # Paths to scan for risk analysis
+    pipeline_platform="github_actions", # CI/CD platform
+    pipeline_output=".github/workflows/seqp.yml",
+    latency_drift_tolerance=0.20,     # 20% max latency increase
+    error_rate_threshold=0.02,        # 2% max error rate
+    auto_generate_tests=True,         # Auto-generate tests on evolve
+    auto_rewrite_pipeline=True,       # Auto-rewrite CI/CD config
+)</code></pre>
+
+        <table>
+            <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>scan_paths</code></td><td><code>["./"]</code></td><td>Paths to scan for code risk analysis</td></tr>
+                <tr><td><code>pipeline_platform</code></td><td><code>"github_actions"</code></td><td>CI/CD platform target</td></tr>
+                <tr><td><code>pipeline_output</code></td><td><code>None</code></td><td>Output path for generated pipeline</td></tr>
+                <tr><td><code>latency_drift_tolerance</code></td><td>0.20</td><td>Max allowed latency increase (20%)</td></tr>
+                <tr><td><code>error_rate_threshold</code></td><td>0.02</td><td>Max error rate for deployment</td></tr>
+                <tr><td><code>auto_generate_tests</code></td><td><code>True</code></td><td>Auto-generate tests on evolve()</td></tr>
+                <tr><td><code>auto_rewrite_pipeline</code></td><td><code>True</code></td><td>Auto-rewrite CI/CD on evolve()</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Full Evolution Cycle</h3>
+        <pre><code># Run the full SEQP evolution cycle
+result = app.seqp.evolve()
+# 1. Scans all handlers for risk
+# 2. Generates adversarial tests
+# 3. Rewrites CI/CD pipeline
+# 4. Updates deployment gates
+# 5. Records drift baseline
+
+print(result["routes_analyzed"])
+print(result["tests_generated"])
+print(result["pipeline_updated"])
+print(result["deployment_status"])</code></pre>
+
+
         <!-- ─── API REFERENCE ────────────────────────── -->
         <h2 id="api-reference">API Reference</h2>
 
@@ -1322,6 +1765,8 @@ app.sare.reset()</code></pre>
                 <tr><td><code>HTMLResponse</code></td><td>response</td><td>HTML response helper</td></tr>
                 <tr><td><code>RedirectResponse</code></td><td>response</td><td>Redirect helper</td></tr>
                 <tr><td><code>SARE</code></td><td>sare</td><td>Self-Evolving Adaptive Routing Engine</td></tr>
+                <tr><td><code>RealityModeFramework</code></td><td>reality</td><td>Multi-reality route execution engine</td></tr>
+                <tr><td><code>SelfEvolvingQualityPipeline</code></td><td>seqp</td><td>Intelligent CI/CD quality pipeline</td></tr>
             </tbody>
         </table>
 
@@ -1365,7 +1810,9 @@ app.config["PORT"] = 3000</code></pre>
 ├── sare_optimizer.py     # Adaptive optimizer
 ├── sare_predictor.py     # Latency predictor
 ├── sare_codepath.py      # Code path optimizer
-└── sare_reporter.py      # Intelligence reporter</code></pre>
+├── sare_reporter.py      # Intelligence reporter
+├── reality.py            # RMF — Reality-Mode Framework
+└── seqp.py               # SEQP — Self-Evolving Quality Pipeline</code></pre>
 
         <h3>Design Principles</h3>
         <ul>
@@ -1375,6 +1822,8 @@ app.config["PORT"] = 3000</code></pre>
             <li><strong>Convention over configuration</strong> — Sensible defaults, easy overrides</li>
             <li><strong>Developer-first</strong> — Clear errors, intuitive API, minimal boilerplate</li>
             <li><strong>Self-evolving</strong> — SARE observes, decides, adapts, and evolves automatically</li>
+            <li><strong>Multi-reality</strong> — RMF lets the same route have multiple behavioral universes</li>
+            <li><strong>Quality-intelligent</strong> — SEQP analyzes risk, generates tests, and guards deployments</li>
         </ul>
 
     </main>

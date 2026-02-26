@@ -57,6 +57,12 @@ class Ishaa:
         # SARE — Self-Evolving Adaptive Routing Engine
         self.sare = None  # initialized via enable_sare()
 
+        # RMF — Reality-Mode Framework
+        self.rmf = None  # initialized via enable_rmf()
+
+        # SEQP — Self-Evolving Quality Pipeline
+        self.seqp = None  # initialized via enable_seqp()
+
         # Setup logging
         if debug:
             logging.basicConfig(level=logging.DEBUG)
@@ -103,11 +109,167 @@ class Ishaa:
         logger.info("SARE engine enabled — Self-Evolving Adaptive Routing Engine active")
         return self.sare
 
+    # ── RMF — Reality-Mode Framework ────────────────────────────────
+
+    def enable_rmf(self, **kwargs):
+        """
+        Enable the Reality-Mode Framework.
+
+        RMF allows the same route to exist in multiple behavioral universes.
+        Each request enters a different "reality" with different logic,
+        middleware, caching, and security rules.
+
+        Args:
+            auto_promote_threshold: Requests before promotion (default: 1000)
+            auto_promote_error_max: Max error rate for promotion (default: 0.02)
+            auto_promote_latency_ratio: Max latency ratio vs stable (default: 1.5)
+            enable_parallel_sim: Enable parallel simulation mode (default: False)
+            enable_self_retiring: Enable self-retiring engine (default: True)
+
+        Example:
+            app = Ishaa()
+            app.enable_rmf()
+
+            @app.route("/recommend")
+            @app.reality("stable")
+            async def recommend_v1(request):
+                return {"algo": "classic"}
+
+            @app.route("/recommend")
+            @app.reality("experimental", traffic_pct=20)
+            async def recommend_v2(request):
+                return {"algo": "neural"}
+        """
+        from .reality import RealityModeFramework
+
+        self.rmf = RealityModeFramework(**kwargs)
+        self.rmf.attach(self)
+
+        logger.info("RMF engine enabled — Reality-Mode Framework active")
+        return self.rmf
+
+    def reality(self, name: str, **config):
+        """
+        Decorator to assign a route handler to a named reality.
+
+        Args:
+            name: Reality name (e.g. "stable", "experimental", "beta")
+            traffic_pct: Percentage of traffic to route here (0-100)
+            active_between: Time window ("09:00-17:00")
+            auto_promote: Whether to auto-promote if proven stable
+            middleware: List of middleware for this reality
+            cache_ttl: Cache TTL override for this reality
+            priority: Priority for reality selection (higher = preferred)
+            tags: Metadata tags
+
+        Example:
+            @app.route("/api/data")
+            @app.reality("experimental", traffic_pct=10, auto_promote=True)
+            async def data_v2(request):
+                return {"version": 2}
+        """
+        if self.rmf is None:
+            raise RuntimeError(
+                "RMF is not enabled. Call app.enable_rmf() before using @app.reality()"
+            )
+        return self.rmf.reality_decorator(name, **config)
+
+    def rmf_behavior_rule(self, func: Callable):
+        """
+        Register a behavior-based reality selection rule.
+
+        The function receives (request, available_realities) and returns
+        a reality name or None.
+
+        Example:
+            @app.rmf_behavior_rule
+            def route_by_header(request, realities):
+                if request.headers.get("x-beta") == "1":
+                    return "beta" if "beta" in realities else None
+                return None
+        """
+        if self.rmf is None:
+            raise RuntimeError(
+                "RMF is not enabled. Call app.enable_rmf() before using @app.rmf_behavior_rule"
+            )
+        self.rmf.selector.add_behavior_rule(func)
+        return func
+
+    # ── SEQP — Self-Evolving Quality Pipeline ───────────────────────
+
+    def enable_seqp(self, **kwargs):
+        """
+        Enable the Self-Evolving Quality Pipeline.
+
+        SEQP continuously analyzes application code, generates adversarial
+        tests, rewrites CI/CD pipelines, and enforces dynamic deployment
+        policies based on code risk and runtime behavior.
+
+        Args:
+            scan_paths: List of paths to scan for risk analysis
+            pipeline_platform: CI/CD platform ("github_actions", "gitlab_ci")
+            pipeline_output: Path to write generated pipeline config
+            latency_drift_tolerance: Max allowed latency increase (default: 0.20)
+            error_rate_threshold: Max error rate for deployment (default: 0.02)
+            auto_generate_tests: Auto-generate tests on evolve (default: True)
+            auto_rewrite_pipeline: Auto-rewrite CI/CD config (default: True)
+
+        Example:
+            app = Ishaa()
+            app.enable_seqp(pipeline_platform="github_actions")
+
+            @app.route("/payment")
+            @app.critical(level="financial_core")
+            async def process_payment(request):
+                ...
+        """
+        from .seqp import SelfEvolvingQualityPipeline
+
+        self.seqp = SelfEvolvingQualityPipeline(**kwargs)
+        self.seqp.attach(self)
+
+        logger.info("SEQP engine enabled — Self-Evolving Quality Pipeline active")
+        return self.seqp
+
+    def critical(self, level: str = "standard", description: str = ""):
+        """
+        Decorator to tag a route handler with business criticality.
+
+        Criticality levels affect SEQP test generation, coverage thresholds,
+        deployment gates, and pipeline configuration.
+
+        Levels:
+            - "financial_core": Highest scrutiny (payment, billing)
+            - "security_critical": Auth, encryption, token routes
+            - "data_critical": Data mutation, migration routes
+            - "standard": Normal routes (default)
+
+        Example:
+            @app.route("/payment")
+            @app.critical(level="financial_core")
+            async def process_payment(request):
+                ...
+        """
+        if self.seqp is None:
+            raise RuntimeError(
+                "SEQP is not enabled. Call app.enable_seqp() before using @app.critical()"
+            )
+        return self.seqp.critical_decorator(level=level, description=description)
+
     # ── Routing ──────────────────────────────────────────────────────
 
     def route(self, path: str, methods: List[str] = None, name: str = None):
         """Decorator to register a route."""
-        return self.router.route(path, methods, name)
+        original_decorator = self.router.route(path, methods, name)
+
+        def wrapper(func):
+            result = original_decorator(func)
+            # If RMF is enabled and handler has pending reality registrations
+            if self.rmf is not None and hasattr(result, "_rmf_pending") and result._rmf_pending:
+                self.rmf.finalize_route(path, result, methods)
+            return result
+
+        return wrapper
 
     def get(self, path: str, name: str = None):
         """Shortcut for GET routes."""
@@ -263,11 +425,13 @@ class Ishaa:
         Main request handling pipeline:
         1. SARE pre-route (cache check + optimization trigger)
         2. Run before_request middleware (with timing for SARE)
-        3. Route resolution (hot-path aware)
-        4. Call handler
-        5. Run after_request middleware
-        6. SARE post-route (record metrics + learn patterns)
-        7. Error handling
+        3. RMF reality-mode routing (if active)
+        4. Route resolution (hot-path aware)
+        5. Call handler
+        6. Run after_request middleware
+        7. SARE post-route (record metrics + learn patterns)
+        8. SEQP metrics recording
+        9. Error handling
         """
         import time as _time
         request_start = _time.monotonic()
@@ -299,7 +463,31 @@ class Ishaa:
             if early_response is not None:
                 return self._ensure_response(early_response)
 
-            # 3. Resolve route
+            # 3. RMF reality-mode routing
+            if self.rmf is not None and self.rmf.has_reality_route(request.path):
+                response = await self.rmf.handle_request(request, self._call_handler)
+                if response is not None:
+                    response = self._ensure_response(response)
+
+                    # Run after-request middleware
+                    if self.sare is not None:
+                        response = await self._run_middleware_with_sare_timing(
+                            request, phase="after", response=response
+                        )
+                    else:
+                        response = await self.middleware.run_after(request, response)
+
+                    # SEQP metrics recording
+                    if self.seqp is not None:
+                        latency_ms = (_time.monotonic() - request_start) * 1000
+                        is_error = response.status_code >= 500
+                        self.seqp.record_request_metrics(
+                            request.path, latency_ms, error=is_error
+                        )
+
+                    return response
+
+            # 4. Resolve route (normal flow)
             route, params = self.router.resolve(request.path, request.method)
             matched_route = route
 
@@ -332,6 +520,14 @@ class Ishaa:
                     request, response, route=matched_route, latency=latency
                 )
 
+            # 8. SEQP runtime metrics recording
+            if self.seqp is not None:
+                latency_ms = (_time.monotonic() - request_start) * 1000
+                is_error = response.status_code >= 500
+                self.seqp.record_request_metrics(
+                    request.path, latency_ms, error=is_error
+                )
+
             return response
 
         except Exception as exc:
@@ -348,6 +544,11 @@ class Ishaa:
                     latency=latency,
                     status_code=500,
                 )
+
+            # Record error in SEQP
+            if self.seqp is not None:
+                latency_ms = (_time.monotonic() - request_start) * 1000
+                self.seqp.record_request_metrics(request.path, latency_ms, error=True)
 
             # Try exception middleware
             error_response = await self.middleware.run_exception(request, exc)
@@ -491,6 +692,11 @@ class Ishaa:
         print(f"  Debug mode: {'ON' if self.debug else 'OFF'}")
         if self.sare is not None:
             print(f"  SARE:       ACTIVE (Self-Evolving Adaptive Routing Engine)")
+        if self.rmf is not None:
+            rmf_count = len(self.rmf._routes)
+            print(f"  RMF:        ACTIVE (Reality-Mode Framework — {rmf_count} reality routes)")
+        if self.seqp is not None:
+            print(f"  SEQP:       ACTIVE (Self-Evolving Quality Pipeline)")
         print(f"  Press Ctrl+C to stop\n")
 
         try:
