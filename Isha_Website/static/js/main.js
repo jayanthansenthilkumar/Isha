@@ -1,5 +1,5 @@
 /**
- * Isha Framework — Landing Page Interactions
+ * Ishaa Framework — Landing Page Interactions
  */
 
 (function () {
@@ -11,11 +11,11 @@
 
     function setTheme(theme) {
         root.setAttribute("data-theme", theme);
-        localStorage.setItem("isha-theme", theme);
+        localStorage.setItem("ishaa-theme", theme);
     }
 
     // Load saved preference or respect system setting
-    const saved = localStorage.getItem("isha-theme");
+    const saved = localStorage.getItem("ishaa-theme");
     if (saved) {
         setTheme(saved);
     } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {

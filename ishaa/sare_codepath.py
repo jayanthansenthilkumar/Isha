@@ -1,5 +1,5 @@
 """
-Isha SARE — Code Path Optimizer
+Ishaa SARE — Code Path Optimizer
 
 Automatically optimizes hot code paths at runtime:
 
@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, Optional, Set, Tuple
 from collections import OrderedDict
 from functools import wraps
 
-logger = logging.getLogger("isha.sare.codepath")
+logger = logging.getLogger("ishaa.sare.codepath")
 
 
 # ── LRU Response Cache ───────────────────────────────────────────────

@@ -1,5 +1,5 @@
 """
-Isha SARE — Traffic Analyzer
+Ishaa SARE — Traffic Analyzer
 
 Real-time traffic intelligence engine that tracks per-route metrics:
 request frequency, latency, error rates, and resource usage.
@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 
-logger = logging.getLogger("isha.sare.traffic")
+logger = logging.getLogger("ishaa.sare.traffic")
 
 # ── Data Structures ──────────────────────────────────────────────────
 

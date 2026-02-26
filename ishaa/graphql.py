@@ -1,5 +1,5 @@
 """
-Isha GraphQL Support — Basic GraphQL query execution engine.
+Ishaa GraphQL Support — Basic GraphQL query execution engine.
 """
 
 import json
@@ -7,12 +7,12 @@ import re
 import logging
 from typing import Any, Callable, Dict, List, Optional
 
-logger = logging.getLogger("isha.graphql")
+logger = logging.getLogger("ishaa.graphql")
 
 
 class GraphQLSchema:
     """
-    A simple GraphQL schema for the Isha framework.
+    A simple GraphQL schema for the Ishaa framework.
     
     Example:
         schema = GraphQLSchema()
@@ -264,7 +264,7 @@ class GraphQLSchema:
 
 def mount_graphql(app, schema: GraphQLSchema, path: str = "/graphql"):
     """
-    Mount a GraphQL endpoint on the Isha app.
+    Mount a GraphQL endpoint on the Ishaa app.
     
     Supports:
         - POST requests with JSON body: {"query": "...", "variables": {...}}
@@ -302,7 +302,7 @@ def _graphiql_html(endpoint: str) -> str:
     return f"""<!DOCTYPE html>
 <html>
 <head>
-    <title>Isha GraphQL IDE</title>
+    <title>Ishaa GraphQL IDE</title>
     <link href="https://unpkg.com/graphiql/graphiql.min.css" rel="stylesheet" />
 </head>
 <body style="margin: 0; height: 100vh;">

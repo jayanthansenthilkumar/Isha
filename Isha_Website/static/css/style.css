@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Isha Framework — Official Landing Page Styles
+   Ishaa Framework — Official Landing Page Styles
    ═══════════════════════════════════════════════════════ */
 
 /* ── Design Tokens ──────────────────────────────────── */
@@ -854,13 +854,13 @@ img { max-width: 100%; height: auto; }
 .sare-compare-others h4 {
     color: var(--text-faint);
 }
-.sare-compare-isha {
+.sare-compare-ishaa {
     background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(167,139,250,0.05));
 }
-.sare-compare-isha h4 {
+.sare-compare-ishaa h4 {
     color: var(--primary-light);
 }
-.sare-compare-isha li {
+.sare-compare-ishaa li {
     color: var(--text);
 }
 .sare-compare-vs {

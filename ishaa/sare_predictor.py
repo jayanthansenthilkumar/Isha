@@ -1,5 +1,5 @@
 """
-Isha SARE — AI-Assisted Latency Predictor
+Ishaa SARE — AI-Assisted Latency Predictor
 
 Lightweight, zero-dependency prediction engine that uses reinforcement-style
 heuristics and pattern-based analysis to predict:
@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 
 from .sare_traffic import TrafficAnalyzer
 
-logger = logging.getLogger("isha.sare.predictor")
+logger = logging.getLogger("ishaa.sare.predictor")
 
 
 # ── Exponential Weighted Moving Average ──────────────────────────────

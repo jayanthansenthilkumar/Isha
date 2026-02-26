@@ -1,5 +1,5 @@
 """
-Isha Response Objects — Build and send HTTP responses.
+Ishaa Response Objects — Build and send HTTP responses.
 """
 
 import json

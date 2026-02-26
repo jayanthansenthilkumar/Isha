@@ -1,5 +1,5 @@
 """
-Isha Background Tasks — Async task queue and thread pool execution.
+Ishaa Background Tasks — Async task queue and thread pool execution.
 """
 
 import asyncio
@@ -11,7 +11,7 @@ from typing import Any, Callable, Dict, Optional
 from enum import Enum
 from functools import wraps
 
-logger = logging.getLogger("isha.tasks")
+logger = logging.getLogger("ishaa.tasks")
 
 
 class TaskStatus(Enum):

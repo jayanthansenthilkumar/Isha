@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ title }} — Isha Framework{% endblock %}
+{% block title %}{{ title }} — Ishaa Framework{% endblock %}
 
 {% block head %}
 <style>
@@ -363,15 +363,15 @@
     <main class="docs-content">
 
         <!-- ─── INTRODUCTION ─────────────────────────── -->
-        <h1>Isha Framework Documentation <span class="docs-version">v1.1.0</span></h1>
+        <h1>Ishaa Framework Documentation <span class="docs-version">v1.1.0</span></h1>
         <p class="docs-subtitle">
-            Complete guide to building modern, async-first web applications with Isha — the batteries-included Python framework with zero required dependencies and a self-evolving routing engine.
+            Complete guide to building modern, async-first web applications with Ishaa — the batteries-included Python framework with zero required dependencies and a self-evolving routing engine.
         </p>
 
         <h2 id="introduction">Introduction</h2>
-        <p>Isha is a lightweight, modular, high-performance Python web framework built from scratch with <strong>zero required external dependencies</strong>. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more — all in pure Python.</p>
+        <p>Ishaa is a lightweight, modular, high-performance Python web framework built from scratch with <strong>zero required external dependencies</strong>. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more — all in pure Python.</p>
 
-        <p>Isha brings together:</p>
+        <p>Ishaa brings together:</p>
         <ul>
             <li><strong>Simplicity of Flask</strong> — intuitive routing decorators and a minimal learning curve</li>
             <li><strong>Structure of Django</strong> — built-in ORM, templates, admin, and middleware pipeline</li>
@@ -381,7 +381,7 @@
 
         <div class="docs-tip docs-tip-info">
             <strong>Tip</strong>
-            Isha requires Python 3.8+ and has no mandatory third-party dependencies. All features work out of the box with the standard library.
+            Ishaa requires Python 3.8+ and has no mandatory third-party dependencies. All features work out of the box with the standard library.
         </div>
 
 
@@ -389,8 +389,8 @@
         <h2 id="installation">Installation</h2>
 
         <h3>From Source (Recommended during development)</h3>
-        <pre><code>git clone https://github.com/jayanthansenthilkumar/ISHA_Framework.git
-cd ISHA_Framework
+        <pre><code>git clone https://github.com/jayanthansenthilkumar/ISHAA_Framework.git
+cd ISHAA_Framework
 pip install -e .</code></pre>
 
         <h3>With Optional Dependencies</h3>
@@ -411,13 +411,13 @@ pip install -e ".[full]"</code></pre>
         <!-- ─── HELLO WORLD ──────────────────────────── -->
         <h2 id="hello-world">Hello World</h2>
         <p>Create a file called <code>app.py</code>:</p>
-        <pre><code>from isha import Isha
+        <pre><code>from ishaa import Ishaa
 
-app = Isha("myapp")
+app = Ishaa("myapp")
 
 @app.route("/")
 async def hello(request):
-    return {"message": "Hello from Isha! 🌟"}
+    return {"message": "Hello from Ishaa! 🌟"}
 
 @app.route("/hello/&lt;name&gt;")
 async def greet(request, name):
@@ -426,12 +426,12 @@ async def greet(request, name):
 app.run()</code></pre>
         <p>Run it:</p>
         <pre><code>$ python app.py
-✦ Isha server running on http://127.0.0.1:8000</code></pre>
+✦ Ishaa server running on http://127.0.0.1:8000</code></pre>
 
 
         <!-- ─── PROJECT STRUCTURE ─────────────────────── -->
         <h2 id="project-structure">Project Structure</h2>
-        <p>When you scaffold a project with <code>isha create project myapp</code>, you get:</p>
+        <p>When you scaffold a project with <code>ishaa create project myapp</code>, you get:</p>
         <pre><code>myapp/
 ├── app.py              # Main application entry
 ├── config.py           # Configuration settings
@@ -449,12 +449,12 @@ app.run()</code></pre>
 
         <!-- ─── APPLICATION ──────────────────────────── -->
         <h2 id="application">Application</h2>
-        <p>The <code>Isha</code> class is the core entry point. It manages routing, middleware, plugins, templates, lifecycle events, and the ASGI interface.</p>
+        <p>The <code>Ishaa</code> class is the core entry point. It manages routing, middleware, plugins, templates, lifecycle events, and the ASGI interface.</p>
 
         <h3>Creating an App</h3>
-        <pre><code>from isha import Isha
+        <pre><code>from ishaa import Ishaa
 
-app = Isha("myapp", debug=True)</code></pre>
+app = Ishaa("myapp", debug=True)</code></pre>
 
         <h3>Default Configuration</h3>
         <table>
@@ -484,7 +484,7 @@ async def shutdown():
 
         <!-- ─── ROUTING ──────────────────────────────── -->
         <h2 id="routing">Routing</h2>
-        <p>Isha supports typed URL parameters, multiple HTTP methods, named routes, and method shortcuts.</p>
+        <p>Ishaa supports typed URL parameters, multiple HTTP methods, named routes, and method shortcuts.</p>
 
         <h3>Basic Routes</h3>
         <pre><code>@app.route("/")
@@ -565,7 +565,7 @@ async def example(request):
 
         <!-- ─── RESPONSE ─────────────────────────────── -->
         <h2 id="response">Response</h2>
-        <p>Isha auto-detects response types from return values, or you can use explicit response classes.</p>
+        <p>Ishaa auto-detects response types from return values, or you can use explicit response classes.</p>
 
         <h3>Auto-Detection</h3>
         <pre><code>return "Hello"              # → HTMLResponse
@@ -574,8 +574,8 @@ return [1, 2, 3]            # → JSONResponse
 return {"data": "ok"}, 201  # → JSONResponse with status 201</code></pre>
 
         <h3>Explicit Responses</h3>
-        <pre><code>from isha import Response, JSONResponse, HTMLResponse, RedirectResponse
-from isha.response import StreamingResponse
+        <pre><code>from ishaa import Response, JSONResponse, HTMLResponse, RedirectResponse
+from ishaa.response import StreamingResponse
 
 return Response("Plain text", status_code=200, content_type="text/plain")
 return JSONResponse({"ok": True}, status_code=201)
@@ -590,7 +590,7 @@ resp.delete_cookie("old_cookie")
 return resp</code></pre>
 
         <h3>Streaming</h3>
-        <pre><code>from isha.response import StreamingResponse
+        <pre><code>from ishaa.response import StreamingResponse
 
 async def generate():
     for i in range(10):
@@ -601,10 +601,10 @@ return StreamingResponse(generate(), content_type="text/event-stream")</code></p
 
         <!-- ─── MIDDLEWARE ────────────────────────────── -->
         <h2 id="middleware">Middleware</h2>
-        <p>Isha provides a flexible middleware pipeline with built-in security middleware and support for custom classes.</p>
+        <p>Ishaa provides a flexible middleware pipeline with built-in security middleware and support for custom classes.</p>
 
         <h3>Built-in Middleware</h3>
-        <pre><code>from isha.middleware import (
+        <pre><code>from ishaa.middleware import (
     CORSMiddleware,
     RateLimitMiddleware,
     CSRFMiddleware,
@@ -639,11 +639,11 @@ async def log_request(request):
 
 @app.after_request
 async def add_header(request, response):
-    response.headers["X-Powered-By"] = "Isha"
+    response.headers["X-Powered-By"] = "Ishaa"
     return response</code></pre>
 
         <h3>Custom Middleware Class</h3>
-        <pre><code>from isha.middleware import Middleware
+        <pre><code>from ishaa.middleware import Middleware
 
 class TimingMiddleware(Middleware):
     async def before_request(self, request):
@@ -663,7 +663,7 @@ app.add_middleware(TimingMiddleware())</code></pre>
         <!-- ─── BLUEPRINTS ───────────────────────────── -->
         <h2 id="blueprints">Blueprints</h2>
         <p>Organize your application into modular sections with prefix routing.</p>
-        <pre><code>from isha import Blueprint
+        <pre><code>from ishaa import Blueprint
 
 api = Blueprint("api", prefix="/api/v1")
 
@@ -691,7 +691,7 @@ app.register_blueprint(api)
         <p>A lightweight ORM with SQLite support, model definitions, chainable query builder, and migrations.</p>
 
         <h3>Define Models</h3>
-        <pre><code>from isha.orm import (
+        <pre><code>from ishaa.orm import (
     Database, Model,
     IntegerField, TextField, FloatField,
     BooleanField, DateTimeField, JSONField, ForeignKeyField,
@@ -763,7 +763,7 @@ User.query().filter(age__lt=18).update(is_active=False)
 #                  __like, __ilike, __in, __notin, __is</code></pre>
 
         <h3>Migrations</h3>
-        <pre><code>from isha.orm import MigrationManager
+        <pre><code>from ishaa.orm import MigrationManager
 
 mgr = MigrationManager(db)
 mgr.init()
@@ -784,14 +784,14 @@ mgr.run_migrations()</code></pre>
         <p>Built-in password hashing, JWT tokens, session management, and route protection decorators.</p>
 
         <h3>Password Hashing</h3>
-        <pre><code>from isha.auth import PasswordHasher
+        <pre><code>from ishaa.auth import PasswordHasher
 
 hasher = PasswordHasher()
 hashed = hasher.hash("my_password")          # PBKDF2-HMAC-SHA256
 is_valid = hasher.verify("my_password", hashed)  # True</code></pre>
 
         <h3>JWT Tokens</h3>
-        <pre><code>from isha.auth import JWT
+        <pre><code>from ishaa.auth import JWT
 
 jwt = JWT(secret="your-secret-key", expiry_seconds=3600)
 token = jwt.encode({"user_id": 1, "role": "admin"})
@@ -799,7 +799,7 @@ payload = jwt.decode(token)
 # {"user_id": 1, "role": "admin", "exp": ..., "iat": ...}</code></pre>
 
         <h3>Session Management</h3>
-        <pre><code>from isha.auth import SessionManager
+        <pre><code>from ishaa.auth import SessionManager
 
 sessions = SessionManager(max_age=3600)
 session_id = sessions.create_session()
@@ -808,7 +808,7 @@ value = sessions.get(session_id, "user_id")  # 1
 sessions.destroy_session(session_id)</code></pre>
 
         <h3>Route Protection</h3>
-        <pre><code>from isha.auth import AuthMiddleware, login_required, role_required
+        <pre><code>from ishaa.auth import AuthMiddleware, login_required, role_required
 
 # Middleware approach
 app.add_middleware(AuthMiddleware(
@@ -832,7 +832,7 @@ async def admin_panel(request):
         <p>Jinja-like template syntax with inheritance, includes, loops, conditionals, and filters — all built in.</p>
 
         <h3>Rendering Templates</h3>
-        <pre><code>app = Isha("myapp")  # templates/ dir by default
+        <pre><code>app = Ishaa("myapp")  # templates/ dir by default
 
 @app.route("/page")
 async def page(request):
@@ -887,7 +887,7 @@ async def page(request):
         <!-- ─── WEBSOCKET ────────────────────────────── -->
         <h2 id="websocket">WebSocket</h2>
         <p>Full-duplex WebSocket communication with rooms and broadcasting.</p>
-        <pre><code>from isha.websocket import websocket_route, WebSocketRoom
+        <pre><code>from ishaa.websocket import websocket_route, WebSocketRoom
 
 chat_room = WebSocketRoom("chat")
 
@@ -926,7 +926,7 @@ async def ws_handler(ws):
         <!-- ─── BACKGROUND TASKS ─────────────────────── -->
         <h2 id="background-tasks">Background Tasks</h2>
         <p>Run tasks asynchronously with status tracking and periodic scheduling.</p>
-        <pre><code>from isha.tasks import TaskQueue, task
+        <pre><code>from ishaa.tasks import TaskQueue, task
 
 queue = TaskQueue(max_workers=4)
 
@@ -950,7 +950,7 @@ async def cleanup():
         <!-- ─── GRAPHQL ──────────────────────────────── -->
         <h2 id="graphql">GraphQL</h2>
         <p>Built-in GraphQL engine with queries, mutations, subscriptions, and an interactive GraphiQL IDE.</p>
-        <pre><code>from isha.graphql import GraphQLSchema, mount_graphql
+        <pre><code>from ishaa.graphql import GraphQLSchema, mount_graphql
 
 schema = GraphQLSchema()
 
@@ -973,7 +973,7 @@ mount_graphql(app, schema, path="/graphql")
         <!-- ─── DEPENDENCY INJECTION ──────────────────── -->
         <h2 id="dependency-injection">Dependency Injection</h2>
         <p>FastAPI-style dependency injection with async support and automatic cleanup.</p>
-        <pre><code>from isha.di import Depends, inject
+        <pre><code>from ishaa.di import Depends, inject
 
 async def get_db():
     db = Database("app.db")
@@ -982,7 +982,7 @@ async def get_db():
 async def get_current_user(request):
     token = request.headers.get("authorization", "").replace("Bearer ", "")
     if not token:
-        from isha.di import HTTPException
+        from ishaa.di import HTTPException
         raise HTTPException(401, "Not authenticated")
     return jwt.decode(token)
 
@@ -999,10 +999,10 @@ async def profile(request, user=Depends(get_current_user), db=Depends(get_db)):
 
         <!-- ─── PLUGINS ──────────────────────────────── -->
         <h2 id="plugins">Plugins</h2>
-        <p>Extend Isha with a clean plugin system for caching, static files, mail, and admin.</p>
+        <p>Extend Ishaa with a clean plugin system for caching, static files, mail, and admin.</p>
 
         <h3>Cache Plugin</h3>
-        <pre><code>from isha.plugins import CachePlugin
+        <pre><code>from ishaa.plugins import CachePlugin
 
 cache = CachePlugin(default_ttl=300, max_size=1000)
 app.register_plugin(cache)
@@ -1013,14 +1013,14 @@ async def expensive(request):
     return {"result": compute_something()}</code></pre>
 
         <h3>Static Files Plugin</h3>
-        <pre><code>from isha.plugins import StaticFilesPlugin
+        <pre><code>from ishaa.plugins import StaticFilesPlugin
 
 static = StaticFilesPlugin(directory="static", prefix="/static")
 app.register_plugin(static)
 # Serves files from ./static/ at /static/...</code></pre>
 
         <h3>Mail Plugin</h3>
-        <pre><code>from isha.plugins import MailPlugin
+        <pre><code>from ishaa.plugins import MailPlugin
 
 mail = MailPlugin(host="smtp.example.com", port=587,
     username="user", password="pass", use_tls=True)
@@ -1029,7 +1029,7 @@ app.register_plugin(mail)
 await mail.send(to="user@example.com", subject="Hello", body="Welcome!")</code></pre>
 
         <h3>Admin Plugin</h3>
-        <pre><code>from isha.plugins import AdminPlugin
+        <pre><code>from ishaa.plugins import AdminPlugin
 
 admin = AdminPlugin(prefix="/admin", title="My Admin")
 admin.register_model(User)
@@ -1041,7 +1041,7 @@ app.register_plugin(admin)
         <!-- ─── OPENAPI ──────────────────────────────── -->
         <h2 id="openapi">OpenAPI / Swagger</h2>
         <p>Auto-generated API documentation with Swagger UI.</p>
-        <pre><code>from isha.openapi import mount_docs
+        <pre><code>from ishaa.openapi import mount_docs
 
 mount_docs(app, title="My API", version="1.0.0", description="My awesome API")
 # Swagger UI at /docs
@@ -1051,7 +1051,7 @@ mount_docs(app, title="My API", version="1.0.0", description="My awesome API")
         <!-- ─── TESTING ──────────────────────────────── -->
         <h2 id="testing">Testing</h2>
         <p>Built-in test client for HTTP-level testing without running the server.</p>
-        <pre><code>from isha.testing import TestClient, assert_status, assert_json
+        <pre><code>from ishaa.testing import TestClient, assert_status, assert_json
 
 client = TestClient(app)
 
@@ -1088,34 +1088,34 @@ assert_redirect(response, "/login")</code></pre>
 
         <!-- ─── CLI ──────────────────────────────────── -->
         <h2 id="cli">CLI Tool</h2>
-        <p>Isha includes a command-line tool for common development tasks.</p>
+        <p>Ishaa includes a command-line tool for common development tasks.</p>
         <pre><code># Scaffold a new project
-$ isha create project myapp
+$ ishaa create project myapp
 
 # Start development server
-$ isha run --host 0.0.0.0 --port 8000 --reload
+$ ishaa run --host 0.0.0.0 --port 8000 --reload
 
 # Database migrations
-$ isha migrate run
-$ isha migrate create add_users_table
+$ ishaa migrate run
+$ ishaa migrate create add_users_table
 
 # List registered routes
-$ isha routes
+$ ishaa routes
 
 # Interactive shell
-$ isha shell
+$ ishaa shell
 
 # Version info
-$ isha version</code></pre>
+$ ishaa version</code></pre>
 
         <table>
             <thead><tr><th>Command</th><th>Description</th><th>Key Options</th></tr></thead>
             <tbody>
-                <tr><td><code>isha create project &lt;name&gt;</code></td><td>Scaffold project</td><td><code>--minimal</code></td></tr>
-                <tr><td><code>isha run</code></td><td>Run dev server</td><td><code>--host</code>, <code>--port</code>, <code>--debug</code>, <code>--reload</code></td></tr>
-                <tr><td><code>isha routes</code></td><td>List routes</td><td>—</td></tr>
-                <tr><td><code>isha shell</code></td><td>Interactive shell</td><td>—</td></tr>
-                <tr><td><code>isha version</code></td><td>Show version</td><td>—</td></tr>
+                <tr><td><code>ishaa create project &lt;name&gt;</code></td><td>Scaffold project</td><td><code>--minimal</code></td></tr>
+                <tr><td><code>ishaa run</code></td><td>Run dev server</td><td><code>--host</code>, <code>--port</code>, <code>--debug</code>, <code>--reload</code></td></tr>
+                <tr><td><code>ishaa routes</code></td><td>List routes</td><td>—</td></tr>
+                <tr><td><code>ishaa shell</code></td><td>Interactive shell</td><td>—</td></tr>
+                <tr><td><code>ishaa version</code></td><td>Show version</td><td>—</td></tr>
             </tbody>
         </table>
 
@@ -1136,9 +1136,9 @@ $ isha version</code></pre>
 
 
         <h2 id="sare-quickstart">SARE Quick Start</h2>
-        <pre><code>from isha import Isha
+        <pre><code>from ishaa import Ishaa
 
-app = Isha("myapp")
+app = Ishaa("myapp")
 app.enable_sare()  # That's it — self-optimization begins
 
 @app.route("/api/data")
@@ -1310,11 +1310,11 @@ app.sare.reset()</code></pre>
         <!-- ─── API REFERENCE ────────────────────────── -->
         <h2 id="api-reference">API Reference</h2>
 
-        <h3>Core Exports (<code>from isha import ...</code>)</h3>
+        <h3>Core Exports (<code>from ishaa import ...</code>)</h3>
         <table>
             <thead><tr><th>Export</th><th>Module</th><th>Description</th></tr></thead>
             <tbody>
-                <tr><td><code>Isha</code></td><td>app</td><td>Core application class</td></tr>
+                <tr><td><code>Ishaa</code></td><td>app</td><td>Core application class</td></tr>
                 <tr><td><code>Blueprint</code></td><td>blueprints</td><td>Modular route grouping</td></tr>
                 <tr><td><code>Request</code></td><td>request</td><td>HTTP request object</td></tr>
                 <tr><td><code>Response</code></td><td>response</td><td>HTTP response base class</td></tr>
@@ -1329,7 +1329,7 @@ app.sare.reset()</code></pre>
         <!-- ─── CONFIGURATION ────────────────────────── -->
         <h2 id="configuration">Configuration</h2>
         <p>Configuration can be set during initialization or modified at runtime:</p>
-        <pre><code>app = Isha("myapp", debug=True)
+        <pre><code>app = Ishaa("myapp", debug=True)
 
 # Access config
 app.config["SECRET_KEY"] = "your-secret"
@@ -1339,7 +1339,7 @@ app.config["PORT"] = 3000</code></pre>
 
         <!-- ─── ARCHITECTURE ─────────────────────────── -->
         <h2 id="architecture">Architecture</h2>
-        <pre><code>isha/
+        <pre><code>ishaa/
 ├── __init__.py           # Package exports
 ├── app.py                # Core application (ASGI interface)
 ├── routing.py            # URL routing &amp; pattern matching

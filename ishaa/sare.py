@@ -1,5 +1,5 @@
 """
-Isha SARE — Self-Evolving Adaptive Routing Engine
+Ishaa SARE — Self-Evolving Adaptive Routing Engine
 
 The world's first web framework feature that automatically rewrites and
 optimizes its own routing + middleware execution flow based on real-time
@@ -27,9 +27,9 @@ Architecture:
     Response
 
 Usage:
-    from isha import Isha
+    from ishaa import Ishaa
 
-    app = Isha()
+    app = Ishaa()
     app.enable_sare()           # one line to enable
 
     # Or with config:
@@ -62,7 +62,7 @@ from .sare_predictor import LatencyPredictor
 from .sare_codepath import CodePathOptimizer
 from .sare_reporter import IntelligenceReporter
 
-logger = logging.getLogger("isha.sare")
+logger = logging.getLogger("ishaa.sare")
 
 
 class SARE:
@@ -70,7 +70,7 @@ class SARE:
     Self-Evolving Adaptive Routing Engine.
 
     Integrates all SARE components into a unified engine that plugs into
-    the Isha request pipeline.
+    the Ishaa request pipeline.
 
     The engine operates in three phases per request:
     1. PRE-ROUTE:  Check hot cache + response memoization
@@ -131,12 +131,12 @@ class SARE:
 
         logger.info("SARE engine initialized — Self-Evolving Adaptive Routing Engine active")
 
-    # ── Integration with Isha App ────────────────────────────────────
+    # ── Integration with Ishaa App ────────────────────────────────────
 
     def attach(self, app):
-        """Attach SARE to an Isha application instance."""
+        """Attach SARE to an Ishaa application instance."""
         self._app = app
-        logger.info("SARE attached to Isha application")
+        logger.info("SARE attached to Ishaa application")
 
     # ── Request Pipeline Hooks ───────────────────────────────────────
 

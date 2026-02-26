@@ -3,7 +3,7 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "isha"
+name = "ishaa"
 version = "1.1.0"
 description = "A modern, lightweight, high-performance Python web framework"
 readme = "README.md"
@@ -36,16 +36,16 @@ uvicorn = ["uvicorn>=0.20.0"]
 dev = ["pytest>=7.0.0", "pytest-asyncio>=0.20.0", "httpx>=0.23.0"]
 
 [project.scripts]
-isha = "isha.cli:main"
+ishaa = "ishaa.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/jayanthansenthilkumar/ISHA_Framework"
-Documentation = "https://github.com/jayanthansenthilkumar/ISHA_Framework#readme"
-Repository = "https://github.com/jayanthansenthilkumar/ISHA_Framework"
-Issues = "https://github.com/jayanthansenthilkumar/ISHA_Framework/issues"
+Homepage = "https://github.com/jayanthansenthilkumar/ISHAA_Framework"
+Documentation = "https://github.com/jayanthansenthilkumar/ISHAA_Framework#readme"
+Repository = "https://github.com/jayanthansenthilkumar/ISHAA_Framework"
+Issues = "https://github.com/jayanthansenthilkumar/ISHAA_Framework/issues"
 
 [tool.setuptools.packages.find]
-include = ["isha*"]
+include = ["ishaa*"]
 exclude = ["tests*", "examples*"]
 
 [tool.pytest.ini_options]

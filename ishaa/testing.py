@@ -1,8 +1,8 @@
 """
-Isha Testing Framework — Built-in test client and utilities.
+Ishaa Testing Framework — Built-in test client and utilities.
 
 Example:
-    from isha.testing import TestClient
+    from ishaa.testing import TestClient
     from app import app
     
     client = TestClient(app)
@@ -18,7 +18,7 @@ import logging
 from typing import Any, Dict, Optional
 from urllib.parse import urlencode
 
-logger = logging.getLogger("isha.testing")
+logger = logging.getLogger("ishaa.testing")
 
 
 class TestResponse:
@@ -64,7 +64,7 @@ class TestResponse:
 
 class TestClient:
     """
-    Test client for making requests to an Isha app without a real server.
+    Test client for making requests to an Ishaa app without a real server.
     
     Example:
         client = TestClient(app)

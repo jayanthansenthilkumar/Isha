@@ -1,5 +1,5 @@
 """
-Isha OpenAPI Documentation Generator — Auto-generate API docs.
+Ishaa OpenAPI Documentation Generator — Auto-generate API docs.
 """
 
 import json
@@ -8,12 +8,12 @@ import re
 import logging
 from typing import Any, Dict, List, Optional
 
-logger = logging.getLogger("isha.openapi")
+logger = logging.getLogger("ishaa.openapi")
 
 
 class OpenAPIGenerator:
     """
-    Generates OpenAPI 3.0 documentation from Isha routes.
+    Generates OpenAPI 3.0 documentation from Ishaa routes.
     
     Example:
         docs = OpenAPIGenerator(app, title="My API", version="1.0.0")
@@ -22,7 +22,7 @@ class OpenAPIGenerator:
         # Access docs at /docs (Swagger UI) or /openapi.json
     """
 
-    def __init__(self, app, title="Isha API", version="1.0.0", description=""):
+    def __init__(self, app, title="Ishaa API", version="1.0.0", description=""):
         self.app = app
         self.title = title
         self.version = version
@@ -66,7 +66,7 @@ class OpenAPIGenerator:
         return spec
 
     def _convert_path(self, path: str) -> str:
-        """Convert Isha path format to OpenAPI format: /user/<int:id> -> /user/{id}"""
+        """Convert Ishaa path format to OpenAPI format: /user/<int:id> -> /user/{id}"""
         return re.sub(r"<(?:\w+:)?(\w+)>", r"{\1}", path)
 
     def _build_operation(self, route, method: str) -> Dict:

@@ -1,5 +1,5 @@
 """
-Isha Request Object — Parses and wraps incoming HTTP requests.
+Ishaa Request Object — Parses and wraps incoming HTTP requests.
 """
 
 import json

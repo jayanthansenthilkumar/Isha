@@ -1,5 +1,5 @@
 """
-Isha Routing Engine — Static routes, dynamic routes, and method-based routing.
+Ishaa Routing Engine — Static routes, dynamic routes, and method-based routing.
 """
 
 import re
@@ -97,7 +97,7 @@ class Route:
 
 class Router:
     """
-    The routing engine for Isha.
+    The routing engine for Ishaa.
     
     Manages route registration and URL matching with support for:
         - Static and dynamic routes

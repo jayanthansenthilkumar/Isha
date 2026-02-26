@@ -1,8 +1,8 @@
 """
-Route blueprints for Isha Framework Landing Page
+Route blueprints for Ishaa Framework Landing Page
 """
 
-from isha import Blueprint
+from ishaa import Blueprint
 
 api = Blueprint("api", prefix="/api/v1")
 

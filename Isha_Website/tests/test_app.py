@@ -1,9 +1,9 @@
-"""Tests for Isha Framework Landing Page"""
+"""Tests for Ishaa Framework Landing Page"""
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from isha.testing import TestClient
+from ishaa.testing import TestClient
 from app import app
 
 client = TestClient(app)
@@ -14,7 +14,7 @@ def test_health():
     assert response.ok
     data = response.json()
     assert data["status"] == "ok"
-    assert data["framework"] == "Isha"
+    assert data["framework"] == "Ishaa"
 
 
 def test_hello():
@@ -22,13 +22,13 @@ def test_hello():
     assert response.ok
     data = response.json()
     assert "Hello" in data["message"]
-    assert "Isha Framework" in data["message"]
+    assert "Ishaa Framework" in data["message"]
 
 
 def test_landing_page():
     response = client.get("/")
     assert response.ok
-    assert "Isha Framework" in response.text
+    assert "Ishaa Framework" in response.text
     assert "Lightning Speed" in response.text
 
 

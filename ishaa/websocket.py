@@ -1,5 +1,5 @@
 """
-Isha WebSocket Support — Real-time bidirectional communication.
+Ishaa WebSocket Support — Real-time bidirectional communication.
 """
 
 import asyncio
@@ -7,7 +7,7 @@ import json
 import logging
 from typing import Any, Callable, Dict, List, Optional, Set
 
-logger = logging.getLogger("isha.websocket")
+logger = logging.getLogger("ishaa.websocket")
 
 
 class WebSocket:
@@ -110,7 +110,7 @@ class WebSocketDisconnect(Exception):
 
 
 class WebSocketHandler:
-    """Handles WebSocket connections for the Isha app."""
+    """Handles WebSocket connections for the Ishaa app."""
 
     def __init__(self, app, scope, receive, send):
         self.app = app

@@ -1,5 +1,5 @@
 """
-Isha Template Engine — A mini template parser with Jinja-like syntax.
+Ishaa Template Engine — A mini template parser with Jinja-like syntax.
 
 Supports:
     - Variable interpolation: {{ variable }}
@@ -18,7 +18,7 @@ import logging
 from typing import Any, Callable, Dict, Optional
 from pathlib import Path
 
-logger = logging.getLogger("isha.template")
+logger = logging.getLogger("ishaa.template")
 
 # Regex patterns for template syntax
 VARIABLE_RE = re.compile(r"\{\{\s*(.+?)\s*\}\}")
@@ -28,7 +28,7 @@ COMMENT_RE = re.compile(r"\{#.*?#\}", re.DOTALL)
 
 class TemplateEngine:
     """
-    The Isha template engine.
+    The Ishaa template engine.
     
     Example:
         engine = TemplateEngine("templates/")

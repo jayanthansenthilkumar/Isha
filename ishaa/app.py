@@ -1,5 +1,5 @@
 """
-Isha App — The core application class that ties everything together.
+Ishaa App — The core application class that ties everything together.
 """
 
 import asyncio
@@ -15,24 +15,24 @@ from .middleware import MiddlewareStack, Middleware
 from .blueprints import Blueprint
 from .utils import Config
 
-logger = logging.getLogger("isha")
+logger = logging.getLogger("ishaa")
 
 
-class Isha:
+class Ishaa:
     """
-    The main Isha application class.
+    The main Ishaa application class.
     
     Example:
-        app = Isha()
+        app = Ishaa()
         
         @app.route("/")
         async def index(request):
-            return JSONResponse({"message": "Hello from Isha!"})
+            return JSONResponse({"message": "Hello from Ishaa!"})
         
         app.run()
     """
 
-    def __init__(self, name: str = "isha", debug: bool = False):
+    def __init__(self, name: str = "ishaa", debug: bool = False):
         self.name = name
         self.debug = debug
         self.config = Config({
@@ -82,7 +82,7 @@ class Isha:
             auto_memoize: Auto-enable caching for hot GET routes (default: True)
 
         Example:
-            app = Isha()
+            app = Ishaa()
             app.enable_sare(cache_ttl=60, hot_route_slots=30)
         """
         from .sare import SARE
@@ -486,7 +486,7 @@ class Isha:
             self.debug = debug
 
         from . import __version__
-        print(f"""\n✦ Isha Framework v{__version__}""")
+        print(f"""\n✦ Ishaa Framework v{__version__}""")
         print(f"  Running on: http://{host}:{port}")
         print(f"  Debug mode: {'ON' if self.debug else 'OFF'}")
         if self.sare is not None:
@@ -497,7 +497,7 @@ class Isha:
             from .server import run_server
             run_server(self, host, port)
         except KeyboardInterrupt:
-            print("\n✦ Isha server stopped.")
+            print("\n✦ Ishaa server stopped.")
 
     def __repr__(self):
-        return f"<Isha '{self.name}' routes={len(self.router.routes)}>"
+        return f"<Ishaa '{self.name}' routes={len(self.router.routes)}>"

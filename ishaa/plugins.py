@@ -1,5 +1,5 @@
 """
-Isha Plugin System — Extensible plugin architecture.
+Ishaa Plugin System — Extensible plugin architecture.
 
 Supports:
     - Plugin registration and lifecycle
@@ -14,7 +14,7 @@ import mimetypes
 from typing import Any, Dict, Optional
 from pathlib import Path
 
-logger = logging.getLogger("isha.plugin")
+logger = logging.getLogger("ishaa.plugin")
 
 
 class Plugin:
@@ -215,7 +215,7 @@ class MailPlugin(Plugin):
         await mail.send(
             to="user@example.com",
             subject="Hello",
-            body="Welcome to Isha!",
+            body="Welcome to Ishaa!",
         )
     """
 
@@ -279,7 +279,7 @@ class AdminPlugin(Plugin):
 
     name = "admin"
 
-    def __init__(self, prefix="/admin", title="Isha Admin"):
+    def __init__(self, prefix="/admin", title="Ishaa Admin"):
         self.prefix = prefix.rstrip("/")
         self.title = title
         self._models = []

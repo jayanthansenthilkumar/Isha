@@ -1,5 +1,5 @@
 """
-Isha Framework — Setup Configuration
+Ishaa Framework — Setup Configuration
 
 This file exists for backwards compatibility with older pip versions.
 The primary configuration is in pyproject.toml.
@@ -12,18 +12,18 @@ readme = Path("README.md")
 long_description = readme.read_text(encoding="utf-8") if readme.exists() else ""
 
 setup(
-    name="isha",
+    name="ishaa",
     version="1.1.0",
     author="Jayanthan Senthilkumar",
     author_email="jayanthansenthilkumar@gmail.com",
     description="A modern, lightweight, high-performance Python web framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/jayanthansenthilkumar/ISHA_Framework",
+    url="https://github.com/jayanthansenthilkumar/ISHAA_Framework",
     project_urls={
-        "Documentation": "https://github.com/jayanthansenthilkumar/ISHA_Framework#readme",
-        "Source": "https://github.com/jayanthansenthilkumar/ISHA_Framework",
-        "Issues": "https://github.com/jayanthansenthilkumar/ISHA_Framework/issues",
+        "Documentation": "https://github.com/jayanthansenthilkumar/ISHAA_Framework#readme",
+        "Source": "https://github.com/jayanthansenthilkumar/ISHAA_Framework",
+        "Issues": "https://github.com/jayanthansenthilkumar/ISHAA_Framework/issues",
     },
     packages=find_packages(exclude=["tests*", "examples*"]),
     python_requires=">=3.8",
@@ -45,7 +45,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "isha=isha.cli:main",
+            "ishaa=ishaa.cli:main",
         ],
     },
     classifiers=[
@@ -59,6 +59,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
         "Topic :: Software Development :: Libraries :: Application Frameworks",

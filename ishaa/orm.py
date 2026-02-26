@@ -1,5 +1,5 @@
 """
-Isha ORM — A lightweight Object-Relational Mapper.
+Ishaa ORM — A lightweight Object-Relational Mapper.
 
 Supports SQLite out of the box, with an adapter pattern for PostgreSQL/MySQL.
 """
@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional, Type, Tuple
 from datetime import datetime, timezone
 from pathlib import Path
 
-logger = logging.getLogger("isha.orm")
+logger = logging.getLogger("ishaa.orm")
 
 
 # ── Field Types ──────────────────────────────────────────────────────
@@ -178,7 +178,7 @@ class DatabaseAdapter:
 class SQLiteAdapter(DatabaseAdapter):
     """SQLite database adapter."""
 
-    def __init__(self, database="isha.db"):
+    def __init__(self, database="ishaa.db"):
         self.database = database
         self._connection = None
 
@@ -239,7 +239,7 @@ class Database:
         cls._adapter = adapter
 
     @classmethod
-    def connect(cls, database="isha.db", adapter_class=SQLiteAdapter):
+    def connect(cls, database="ishaa.db", adapter_class=SQLiteAdapter):
         cls._adapter = adapter_class(database)
 
     @classmethod
@@ -444,7 +444,7 @@ class ModelMeta(type):
 
 class Model(metaclass=ModelMeta):
     """
-    Base model class for the Isha ORM.
+    Base model class for the Ishaa ORM.
     
     Example:
         class User(Model):
@@ -649,7 +649,7 @@ class Model(metaclass=ModelMeta):
 class MigrationManager:
     """Simple migration manager for tracking schema changes."""
 
-    MIGRATION_TABLE = "_isha_migrations"
+    MIGRATION_TABLE = "_ishaa_migrations"
 
     @classmethod
     def init(cls):

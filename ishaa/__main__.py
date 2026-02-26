@@ -1,10 +1,10 @@
 """
-Allow running Isha as a module: python -m isha
+Allow running Ishaa as a module: python -m ishaa
 
 This delegates to the CLI entry point.
 """
 
-from isha.cli import main
+from ishaa.cli import main
 
 if __name__ == "__main__":
     main()

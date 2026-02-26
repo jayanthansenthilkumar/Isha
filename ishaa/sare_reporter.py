@@ -1,5 +1,5 @@
 """
-Isha SARE — Intelligence Reporter
+Ishaa SARE — Intelligence Reporter
 
 Generates comprehensive self-improvement reports showing:
 
@@ -18,7 +18,7 @@ import logging
 from typing import Any, Dict, List, Optional
 from datetime import datetime, timezone
 
-logger = logging.getLogger("isha.sare.reporter")
+logger = logging.getLogger("ishaa.sare.reporter")
 
 
 class IntelligenceReporter:
@@ -59,7 +59,7 @@ class IntelligenceReporter:
 
         report = {
             "header": {
-                "title": "Isha SARE Intelligence Report",
+                "title": "Ishaa SARE Intelligence Report",
                 "generated_at": datetime.fromtimestamp(now, tz=timezone.utc).isoformat(),
                 "report_number": self._report_count,
                 "uptime_seconds": round(uptime, 1),
@@ -292,7 +292,7 @@ class IntelligenceReporter:
         lines = [
             "",
             "╔══════════════════════════════════════════════════════════════════╗",
-            "║           Isha SARE — Intelligence Report                      ║",
+            "║           Ishaa SARE — Intelligence Report                      ║",
             "╠══════════════════════════════════════════════════════════════════╣",
             f"║  Generated: {header['generated_at'][:19]}                       ║",
             f"║  Report #{header['report_number']:>4}   Uptime: {header['uptime_seconds']:>8.1f}s                      ║",

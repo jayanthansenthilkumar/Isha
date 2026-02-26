@@ -1,6 +1,6 @@
 <p align="center">
-  <h1 align="center">🌟 Isha Framework</h1>
-  <p align="center"><strong>A Modern Python Web Framework</strong></p>
+  <h1 align="center">✦ Ishaa Framework</h1>
+  <p align="center"><strong>A Modern, High-Performance Python Web Framework</strong></p>
   <p align="center">
     <em>Simplicity of Flask · Structure of Django · Performance mindset of FastAPI</em>
   </p>
@@ -9,35 +9,67 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  <img src="https://img.shields.io/badge/version-1.1.0-orange.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.1.0-orange.svg" alt="Version 1.1.0">
   <img src="https://img.shields.io/badge/ASGI-3.0-purple.svg" alt="ASGI 3.0">
+  <img src="https://img.shields.io/badge/dependencies-zero-brightgreen.svg" alt="Zero Dependencies">
   <img src="https://img.shields.io/badge/SARE-Self--Evolving-ff69b4.svg" alt="SARE Engine">
 </p>
 
 ---
 
-**Isha** is a lightweight, modular, high-performance Python web framework built from scratch with **zero required external dependencies**. It features a complete ASGI-compatible architecture, a custom ORM, built-in authentication, a template engine, WebSocket support, GraphQL, dependency injection, and much more — all in pure Python.
+## What is Ishaa?
+
+**Ishaa** is a lightweight, modular, high-performance Python web framework built from scratch with **zero required external dependencies**. It provides a complete ASGI-compatible architecture including a custom ORM, built-in authentication, a Jinja-like template engine, WebSocket support, GraphQL, dependency injection, background tasks, and a CLI — all implemented in pure Python standard library.
+
+Ishaa v1.1.0 introduces **SARE (Self-Evolving Adaptive Routing Engine)** — the world's first web framework with built-in self-optimizing routing and middleware intelligence.
 
 ---
 
-## ✨ Features at a Glance
+## Table of Contents
 
-| Category | Features |
-|----------|----------|
-| **Core** | ASGI 3.0, async/sync handlers, middleware pipeline, blueprints |
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Routing](#-routing)
+- [Request & Response](#-request--response)
+- [Middleware](#-middleware)
+- [Blueprints](#-blueprints)
+- [ORM (Database)](#-orm-database)
+- [Authentication](#-authentication)
+- [Template Engine](#-template-engine)
+- [WebSocket](#-websocket)
+- [Background Tasks](#-background-tasks)
+- [GraphQL](#-graphql)
+- [Dependency Injection](#-dependency-injection)
+- [Plugins](#-plugins)
+- [OpenAPI / Swagger](#-openapi--swagger)
+- [CLI Tool](#-cli-tool)
+- [Testing](#-testing)
+- [SARE Engine](#-sare--self-evolving-adaptive-routing-engine)
+- [Architecture](#-architecture)
+- [Version History](#-version-history)
+- [Requirements](#-requirements)
+- [License](#-license)
+
+---
+
+## ✨ Features
+
+| Category | What You Get |
+|----------|-------------|
+| **Core** | ASGI 3.0 interface, async/sync handler support, full middleware pipeline, modular blueprints |
 | **SARE Engine** | Self-evolving routing, traffic heat mapping, middleware auto-reordering, AI latency prediction, code path optimization, intelligence reports |
-| **Routing** | Typed params (`int`, `float`, `uuid`, `slug`, `path`), regex matching, named routes, `url_for()` |
-| **ORM** | SQLite adapter, model metaclass, chainable QueryBuilder, migrations, field types |
-| **Auth** | PBKDF2 password hashing, HMAC-SHA256 JWT, session management, decorators |
-| **Templates** | Jinja-like syntax, inheritance, includes, filters, auto-escaping |
-| **Middleware** | CORS, CSRF, rate limiting, security headers, custom middleware classes |
-| **WebSocket** | Full duplex, rooms, broadcast, JSON messaging |
-| **GraphQL** | Schema, queries, mutations, subscriptions, GraphiQL IDE |
-| **Plugins** | Cache (TTL), static files, mail (SMTP), admin panel |
-| **DI** | Dependency injection with `Depends()`, async support, generator cleanup |
-| **CLI** | Project scaffolding, dev server, migrations, route listing, interactive shell |
-| **Testing** | Built-in test client, assertion helpers, no server required |
-| **Docs** | Auto-generated OpenAPI 3.0 spec, Swagger UI |
+| **Routing** | Typed parameters (`int`, `float`, `uuid`, `slug`, `path`), regex matching, named routes, `url_for()` reverse lookup |
+| **ORM** | SQLite adapter, model metaclass, chainable QueryBuilder, auto-migrations, field types (Text, Integer, Boolean, DateTime, Float) |
+| **Auth** | PBKDF2-HMAC-SHA256 password hashing, HMAC-SHA256 JWT tokens, session management, `@login_required` and `@role_required` decorators |
+| **Templates** | Jinja-like syntax with `{% extends %}`, `{% block %}`, `{% include %}`, `{% for %}`, `{% if %}`, 16+ built-in filters, auto-escaping |
+| **Middleware** | CORS, CSRF protection, rate limiting, security headers, custom middleware classes with before/after hooks |
+| **WebSocket** | Full-duplex communication, rooms, broadcast, JSON messaging protocol |
+| **GraphQL** | Schema definition, queries, mutations, subscriptions, built-in GraphiQL IDE |
+| **Plugins** | Cache (TTL-based), static file serving, mail (SMTP), admin panel scaffold |
+| **DI** | FastAPI-style `Depends()`, async support, generator cleanup |
+| **CLI** | Project scaffolding, dev server with auto-reload, migration management, route listing, interactive shell |
+| **Testing** | Built-in `TestClient`, assertion helpers, no running server required |
+| **Docs** | Auto-generated OpenAPI 3.0 specification, Swagger UI endpoint |
 
 ---
 
@@ -47,24 +79,24 @@
 
 ```bash
 # From source
-git clone https://github.com/jayanthansenthilkumar/ISHA_Framework.git
-cd ISHA_Framework
+git clone https://github.com/jayanthansenthilkumar/ISHAA_Framework.git
+cd ISHAA_Framework
 pip install -e .
 
-# With optional dependencies
+# With all optional dependencies
 pip install -e ".[full]"    # uvicorn + bcrypt + jinja2
 ```
 
 ### Hello World
 
 ```python
-from isha import Isha
+from ishaa import Ishaa
 
-app = Isha()
+app = Ishaa()
 
 @app.route("/")
 async def hello(request):
-    return {"message": "Hello from Isha! 🌟"}
+    return {"message": "Hello from Ishaa! ✦"}
 
 @app.route("/hello/<name>")
 async def greet(request, name):
@@ -73,56 +105,34 @@ async def greet(request, name):
 app.run()
 ```
 
-Run it:
 ```bash
 python app.py
+# ✦ Ishaa Framework v1.1.0
 # Server running at http://127.0.0.1:8000
 ```
 
 ---
 
-## 📖 Documentation
+## 🛤️ Routing
 
-### Table of Contents
-
-- [Routing](#routing)
-- [Request & Response](#request--response)
-- [Middleware](#middleware)
-- [Blueprints](#blueprints)
-- [ORM (Database)](#orm-database)
-- [Authentication](#authentication)
-- [Template Engine](#template-engine)
-- [WebSocket](#websocket)
-- [Background Tasks](#background-tasks)
-- [GraphQL](#graphql)
-- [Dependency Injection](#dependency-injection)
-- [Plugins](#plugins)
-- [OpenAPI / Swagger](#openapi--swagger)
-- [CLI Tool](#cli-tool)
-- [Testing](#testing)
-
----
-
-### Routing
-
-Isha supports typed URL parameters, multiple HTTP methods, and named routes:
+Ishaa supports typed URL parameters, multiple HTTP methods, named routes, and reverse URL generation.
 
 ```python
-from isha import Isha
+from ishaa import Ishaa
 
-app = Isha()
+app = Ishaa()
 
 # Basic route
 @app.route("/")
 async def index(request):
-    return "Welcome!"
+    return "Welcome to Ishaa!"
 
-# Typed parameters
+# Typed URL parameters (auto-converted)
 @app.route("/users/<int:id>")
 async def get_user(request, id):
     return {"user_id": id}  # id is already an int
 
-# Multiple methods
+# Multiple HTTP methods
 @app.route("/items", methods=["GET", "POST"])
 async def items(request):
     if request.method == "POST":
@@ -130,7 +140,7 @@ async def items(request):
         return {"created": data}
     return {"items": []}
 
-# Method shortcuts
+# Method shortcut decorators
 @app.get("/health")
 async def health(request):
     return {"status": "ok"}
@@ -140,7 +150,7 @@ async def upload(request):
     body = await request.body()
     return {"size": len(body)}
 
-# Named routes & url_for
+# Named routes with url_for() reverse lookup
 @app.route("/profile/<username>", name="user_profile")
 async def profile(request, username):
     return f"Profile: {username}"
@@ -149,91 +159,97 @@ url = app.router.url_for("user_profile", username="alice")
 # => "/profile/alice"
 ```
 
-**Supported param types:** `str` (default), `int`, `float`, `uuid`, `slug`, `path`
+**Supported parameter types:** `str` (default), `int`, `float`, `uuid`, `slug`, `path`
 
 ---
 
-### Request & Response
+## 📨 Request & Response
 
-#### Request Object
+### Request Object
+
+Every handler receives a `Request` object with parsed HTTP data:
 
 ```python
 @app.route("/example", methods=["POST"])
 async def example(request):
-    # Properties
+    # Request properties
     request.method          # "POST"
     request.path            # "/example"
     request.query_params    # {"key": "value"}
-    request.headers         # {"content-type": "application/json"}
+    request.headers         # {"content-type": "application/json", ...}
     request.cookies         # {"session_id": "abc123"}
     request.content_type    # "application/json"
     request.client          # ("127.0.0.1", 5000)
     
-    # Body parsing
+    # Async body parsing
     body = await request.body()          # raw bytes
     text = await request.text()          # decoded string
     data = await request.json()          # parsed JSON dict
     form = await request.form()          # form data dict
 ```
 
-#### Response Types
+### Response Types
+
+Ishaa auto-detects response types from return values, or you can use explicit response classes:
 
 ```python
-from isha import Response, JSONResponse, HTMLResponse, RedirectResponse
-from isha.response import StreamingResponse
+from ishaa import Response, JSONResponse, HTMLResponse, RedirectResponse
+from ishaa.response import StreamingResponse
 
-# Auto-detection (return values from handlers)
+# Auto-detection (just return from handlers)
 return "Hello"                      # → HTMLResponse
 return {"key": "value"}             # → JSONResponse
 return [1, 2, 3]                    # → JSONResponse
 
-# Explicit responses
+# Explicit response classes
 return Response("Plain text", status=200, content_type="text/plain")
 return JSONResponse({"ok": True}, status=201)
 return HTMLResponse("<h1>Page</h1>")
 return RedirectResponse("/login")
 
-# Cookies
+# Cookie management
 resp = JSONResponse({"logged_in": True})
 resp.set_cookie("token", "abc123", max_age=3600, httponly=True, secure=True)
 resp.delete_cookie("old_cookie")
 return resp
 
-# Streaming
-async def generate():
+# Server-Sent Events / Streaming
+async def event_stream():
     for i in range(10):
         yield f"data: {i}\n\n"
-return StreamingResponse(generate(), content_type="text/event-stream")
+return StreamingResponse(event_stream(), content_type="text/event-stream")
 ```
 
 ---
 
-### Middleware
+## 🔗 Middleware
+
+Ishaa provides a middleware pipeline with built-in CORS, rate limiting, security headers, and CSRF protection.
 
 ```python
-from isha.middleware import Middleware, CORSMiddleware, RateLimitMiddleware
+from ishaa.middleware import Middleware, CORSMiddleware, RateLimitMiddleware
 
-app = Isha()
+app = Ishaa()
 
-# Built-in CORS
+# Built-in CORS middleware
 app.add_middleware(CORSMiddleware(
     allow_origins=["https://example.com"],
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_credentials=True
 ))
 
-# Rate limiting
+# Rate limiting (per-client IP)
 app.add_middleware(RateLimitMiddleware(max_requests=100, window_seconds=60))
 
-# Decorator-based
+# Decorator-based hooks
 @app.before_request
 async def log_request(request):
     print(f"{request.method} {request.path}")
-    return None  # Continue processing; return a Response to short-circuit
+    return None  # Continue; return a Response to short-circuit
 
 @app.after_request
 async def add_header(request, response):
-    response.headers["X-Powered-By"] = "Isha"
+    response.headers["X-Powered-By"] = "Ishaa"
     return response
 
 # Custom middleware class
@@ -254,14 +270,14 @@ app.add_middleware(TimingMiddleware())
 
 ---
 
-### Blueprints
+## 📦 Blueprints
 
-Organize your application into modular sections:
+Organize your application into modular, reusable sections:
 
 ```python
-from isha import Blueprint
+from ishaa import Blueprint
 
-# Create a blueprint
+# Create a blueprint with a URL prefix
 api = Blueprint("api", prefix="/api/v1")
 
 @api.route("/users")
@@ -272,24 +288,24 @@ async def list_users(request):
 async def get_user(request, id):
     return {"user": id}
 
-# Register with app
+# Register with the app
 app.register_blueprint(api)
 # Routes: /api/v1/users, /api/v1/users/<int:id>
 ```
 
 ---
 
-### ORM (Database)
+## 🗄️ ORM (Database)
 
-A lightweight ORM with SQLite support:
+A lightweight ORM with SQLite support, model definitions, chainable queries, and migrations:
 
 ```python
-from isha.orm import Database, Model, IntegerField, TextField, BooleanField, DateTimeField
+from ishaa.orm import Database, Model, IntegerField, TextField, BooleanField, DateTimeField
 
 # Initialize database
 db = Database("app.db")
 
-# Define models
+# Define models with typed fields
 class User(Model):
     _table = "users"
     _db = db
@@ -309,12 +325,12 @@ print(user.id)       # Auto-generated ID
 print(user.name)     # "Alice"
 
 user.age = 31
-user.save()           # Update
+user.save()           # Update existing record
 
-user = User.get(1)    # Get by ID
-users = User.all()    # Get all
+user = User.get(1)    # Fetch by primary key
+users = User.all()    # Fetch all records
 
-# Chainable queries
+# Chainable QueryBuilder
 active_users = (User.query()
     .filter(is_active=True)
     .filter(age__gt=18)
@@ -336,24 +352,24 @@ results = User.query().filter(age__in=[25, 30, 35]).all()
 
 ---
 
-### Authentication
+## 🔐 Authentication
 
-Built-in password hashing, JWT, and session management:
+Built-in password hashing (PBKDF2), JWT tokens, session management, and route protection decorators:
 
 ```python
-from isha.auth import PasswordHasher, JWT, SessionManager, login_required, role_required
+from ishaa.auth import PasswordHasher, JWT, SessionManager, login_required, role_required
 
-# Password hashing (PBKDF2-HMAC-SHA256)
+# Password hashing (PBKDF2-HMAC-SHA256, 260000 iterations)
 hasher = PasswordHasher()
 hashed = hasher.hash("my_password")
 is_valid = hasher.verify("my_password", hashed)  # True
 
-# JWT tokens
+# JWT tokens (HMAC-SHA256)
 jwt = JWT(secret="your-secret-key")
 token = jwt.encode({"user_id": 1, "role": "admin"}, expires_in=3600)
 payload = jwt.decode(token)  # {"user_id": 1, "role": "admin", "exp": ..., "iat": ...}
 
-# Session management
+# Session management (server-side, auto-expiry)
 sessions = SessionManager(max_age=3600)
 session_id = sessions.create({"user_id": 1})
 session = sessions.get(session_id)
@@ -375,12 +391,12 @@ async def admin_panel(request):
 
 ---
 
-### Template Engine
+## 📝 Template Engine
 
-Jinja-like template syntax with inheritance, loops, conditionals, and filters:
+A Jinja-like template engine with inheritance, loops, conditionals, includes, and 16+ built-in filters:
 
 ```python
-app = Isha(template_dir="templates")
+app = Ishaa(template_dir="templates")
 
 @app.route("/page")
 async def page(request):
@@ -424,12 +440,12 @@ async def page(request):
 
 ---
 
-### WebSocket
+## 🔌 WebSocket
 
-Full-duplex WebSocket communication with rooms:
+Full-duplex WebSocket communication with rooms and broadcast:
 
 ```python
-from isha.websocket import websocket_route, WebSocketRoom
+from ishaa.websocket import websocket_route, WebSocketRoom
 
 chat_room = WebSocketRoom("chat")
 
@@ -450,23 +466,22 @@ async def websocket_handler(ws):
 
 ---
 
-### Background Tasks
+## ⏱️ Background Tasks
 
-Run tasks asynchronously with status tracking:
+Async task queue with status tracking and periodic scheduling:
 
 ```python
-from isha.tasks import TaskQueue, task
+from ishaa.tasks import TaskQueue, task
 
 queue = TaskQueue(max_workers=4)
 
 @task(queue)
 async def send_email(to, subject, body):
-    # Simulate sending email
     import asyncio
-    await asyncio.sleep(2)
+    await asyncio.sleep(2)     # Simulate I/O
     return f"Email sent to {to}"
 
-# Dispatch a task
+# Dispatch a task (non-blocking)
 result = await send_email.delay("user@example.com", "Hello", "Welcome!")
 print(result.task_id)   # UUID
 print(result.status)    # TaskStatus.PENDING → RUNNING → COMPLETED
@@ -474,20 +489,20 @@ print(result.status)    # TaskStatus.PENDING → RUNNING → COMPLETED
 # Check status later
 status = queue.get_status(result.task_id)
 
-# Periodic tasks
-@queue.periodic(interval=300)  # Every 5 minutes
+# Periodic tasks (every 5 minutes)
+@queue.periodic(interval=300)
 async def cleanup():
-    print("Running cleanup...")
+    print("Running scheduled cleanup...")
 ```
 
 ---
 
-### GraphQL
+## 🔮 GraphQL
 
-Built-in GraphQL engine with GraphiQL IDE:
+Built-in GraphQL engine with query/mutation/subscription support and GraphiQL IDE:
 
 ```python
-from isha.graphql import GraphQLSchema, mount_graphql
+from ishaa.graphql import GraphQLSchema, mount_graphql
 
 schema = GraphQLSchema()
 
@@ -503,7 +518,7 @@ async def resolve_users():
 async def create_user(name: str, email: str):
     return {"id": 3, "name": name, "email": email}
 
-# Mount at /graphql with GraphiQL IDE
+# Mount at /graphql with interactive GraphiQL IDE
 mount_graphql(app, schema, path="/graphql")
 ```
 
@@ -511,12 +526,12 @@ Visit `http://localhost:8000/graphql` to use the interactive GraphiQL IDE.
 
 ---
 
-### Dependency Injection
+## 💉 Dependency Injection
 
-FastAPI-style dependency injection:
+FastAPI-style dependency injection with `Depends()`:
 
 ```python
-from isha.di import Depends, inject
+from ishaa.di import Depends, inject
 
 async def get_db():
     db = Database("app.db")
@@ -525,7 +540,7 @@ async def get_db():
 async def get_current_user(request):
     token = request.headers.get("authorization", "").replace("Bearer ", "")
     if not token:
-        raise HTTPException(401, "Not authenticated")
+        return None
     return jwt.decode(token)
 
 @app.route("/profile")
@@ -536,14 +551,14 @@ async def profile(request, user=Depends(get_current_user), db=Depends(get_db)):
 
 ---
 
-### Plugins
+## 🧩 Plugins
 
-Extend Isha with a plugin system:
+Extend Ishaa with the built-in plugin system:
 
 ```python
-from isha.plugins import CachePlugin, StaticFilesPlugin, AdminPlugin
+from ishaa.plugins import CachePlugin, StaticFilesPlugin, AdminPlugin
 
-# Caching
+# In-memory caching with TTL
 cache = CachePlugin(default_ttl=300)
 app.register_plugin(cache)
 
@@ -552,71 +567,72 @@ app.register_plugin(cache)
 async def expensive_computation(request):
     return {"result": compute_something()}
 
-# Static files
+# Static file serving
 static = StaticFilesPlugin(directory="static", prefix="/static")
 app.register_plugin(static)
-# Serves files from ./static/ at /static/...
+# Serves ./static/ files at /static/...
 
-# Admin panel
+# Admin panel scaffold
 admin = AdminPlugin(prefix="/admin")
 admin.register_model(User)
 admin.register_model(Post)
 app.register_plugin(admin)
-# Auto-generates list/detail views at /admin/users, /admin/posts
+# Auto-generates CRUD views at /admin/users, /admin/posts
 ```
 
 ---
 
-### OpenAPI / Swagger
+## 📄 OpenAPI / Swagger
 
 Auto-generated API documentation:
 
 ```python
-from isha.openapi import mount_docs
+from ishaa.openapi import mount_docs
 
 mount_docs(app, title="My API", version="1.0.0", description="My awesome API")
-# Swagger UI at /docs
-# OpenAPI JSON spec at /openapi.json
+# Swagger UI at:       http://localhost:8000/docs
+# OpenAPI JSON spec at: http://localhost:8000/openapi.json
 ```
 
 ---
 
-### CLI Tool
+## 🛠️ CLI Tool
 
-Isha includes a command-line tool for common tasks:
+Ishaa includes a command-line tool for project scaffolding, development, and management:
 
 ```bash
-# Create a new project
-isha create project myapp
+# Create a new project with full structure
+ishaa create project myapp
 
-# Start development server
-isha run --host 0.0.0.0 --port 8000 --reload
+# Start development server with auto-reload
+ishaa run --host 0.0.0.0 --port 8000 --reload
 
 # Database migrations
-isha migrate run
-isha migrate create add_users_table
-isha migrate status
+ishaa migrate run
+ishaa migrate create add_users_table
+ishaa migrate status
 
 # List all registered routes
-isha routes
+ishaa routes
 
 # Interactive Python shell with app context
-isha shell
+ishaa shell
 
 # Show version
-isha version
+ishaa version
 ```
 
 **Scaffolded project structure:**
 ```
 myapp/
-├── app.py              # Main application
-├── config.py           # Configuration
+├── app.py              # Main application entry point
+├── config.py           # Configuration settings
 ├── models.py           # Database models
+├── requirements.txt    # Dependencies (ishaa>=1.0.0)
 ├── routes/
 │   └── __init__.py     # Route blueprints
 ├── templates/
-│   └── base.html       # Base template
+│   └── base.html       # Base HTML template
 ├── static/
 │   ├── css/
 │   └── js/
@@ -626,12 +642,12 @@ myapp/
 
 ---
 
-### Testing
+## 🧪 Testing
 
-Built-in test client — no running server needed:
+Built-in test client — make requests without a running server:
 
 ```python
-from isha.testing import TestClient
+from ishaa.testing import TestClient
 
 client = TestClient(app)
 
@@ -644,14 +660,14 @@ response = client.post("/api/users", json={"name": "Alice"})
 assert response.status == 201
 assert response.json()["name"] == "Alice"
 
-# Test with headers
+# Test with authentication headers
 response = client.get("/protected", headers={"Authorization": "Bearer <token>"})
 
 # Test with cookies
 response = client.get("/dashboard", cookies={"session_id": "abc123"})
 
 # Assertion helpers
-from isha.testing import assert_status, assert_json, assert_html, assert_redirect
+from ishaa.testing import assert_status, assert_json, assert_html, assert_redirect
 
 assert_status(response, 200)
 assert_json(response, {"ok": True})
@@ -659,21 +675,27 @@ assert_html(response, contains="<h1>")
 assert_redirect(response, "/login")
 ```
 
+```bash
+# Run tests with pytest
+pip install pytest
+pytest tests/ -v
+```
+
 ---
 
 ## 🧬 SARE — Self-Evolving Adaptive Routing Engine
 
-> **World's first web framework with self-optimizing routing and middleware.**
+> **The world's first web framework with self-optimizing routing and middleware intelligence.**
 
-SARE automatically observes, decides, adapts, and evolves your application's routing and middleware execution — based on real-time traffic intelligence.
+SARE automatically **observes**, **decides**, **adapts**, and **evolves** your application's routing and middleware execution based on real-time traffic patterns.
 
-### Quick Start
+### Enable SARE
 
 ```python
-from isha import Isha
+from ishaa import Ishaa
 
-app = Isha("myapp")
-app.enable_sare()  # That's it — self-optimization begins
+app = Ishaa("myapp")
+app.enable_sare()  # One line — self-optimization begins immediately
 
 @app.route("/api/data")
 async def data(request):
@@ -686,17 +708,17 @@ async def intelligence(request):
 app.run()
 ```
 
-### What SARE Does
+### SARE Architecture (5 Layers)
 
-| Component | What It Does |
-|-----------|-------------|
-| **Traffic Analyzer** | Tracks per-route latency (p50/p95/p99), RPS, error rates, and heat scores |
-| **Adaptive Optimizer** | Promotes hot routes to O(1) fast-path cache; reorders middleware by efficiency |
-| **Latency Predictor** | EWMA + linear regression + z-score spike detection + reinforcement heuristics |
-| **Code Path Optimizer** | Response memoization, JSON pre-encoding, handler caching — all automatic |
-| **Intelligence Reporter** | Generates reports: performance deltas, evolution history, recommendations |
+| Layer | Module | What It Does |
+|-------|--------|-------------|
+| **Observation** | `sare_traffic.py` | Tracks per-route latency (p50/p95/p99), requests per second, error rates, and computes heat scores |
+| **Decision** | `sare_optimizer.py` | Promotes hot routes to O(1) fast-path cache; reorders middleware by measured efficiency ratios |
+| **Prediction** | `sare_predictor.py` | EWMA + linear regression forecasting, z-score spike detection, reinforcement-based heuristics |
+| **Execution** | `sare_codepath.py` | Response memoization, JSON pre-encoding, handler result caching — all applied automatically |
+| **Reporting** | `sare_reporter.py` | Generates intelligence reports: performance deltas, evolution history, optimization recommendations |
 
-### Configuration
+### Configuration Options
 
 ```python
 app.enable_sare(
@@ -710,22 +732,22 @@ app.enable_sare(
 )
 ```
 
-### Auto-Memoize Criteria
+### Auto-Memoization Criteria
 
-Routes are automatically memoized when:
+Routes are automatically memoized when all conditions are met:
 - HTTP method is **GET**
-- RPS ≥ 5.0
-- Error rate ≤ 2%
-- Total requests ≥ 50
+- Requests per second ≥ **5.0**
+- Error rate ≤ **2%**
+- Total request count ≥ **50**
 
 ### Runtime Control
 
 ```python
-app.sare.disable()       # Pause SARE
-app.sare.enable()        # Resume
+app.sare.disable()       # Pause SARE optimization
+app.sare.enable()        # Resume optimization
 app.sare.reset()         # Reset all collected data
-app.sare.print_report()  # Console output
-app.sare.stats()         # Quick stats dict
+app.sare.print_report()  # Print report to console
+app.sare.stats()         # Get quick stats dict
 ```
 
 ---
@@ -733,87 +755,101 @@ app.sare.stats()         # Quick stats dict
 ## 🏗️ Architecture
 
 ```
-isha/
-├── __init__.py          # Package exports
-├── app.py               # Core application (ASGI interface)
-├── routing.py           # URL routing & pattern matching
+ishaa/
+├── __init__.py          # Package exports & version
+├── __main__.py          # python -m ishaa support
+├── app.py               # Core Ishaa application class (ASGI interface)
+├── routing.py           # URL routing engine & pattern matching
 ├── request.py           # HTTP request parsing
-├── response.py          # HTTP response types
-├── middleware.py         # Middleware pipeline
+├── response.py          # HTTP response types (JSON, HTML, Redirect, Streaming)
+├── middleware.py         # Middleware pipeline (CORS, CSRF, Rate Limit, Security)
 ├── blueprints.py        # Modular route grouping
-├── server.py            # Built-in ASGI server
-├── utils.py             # Configuration & utilities
-├── orm.py               # Database ORM
-├── auth.py              # Authentication (JWT, sessions, passwords)
-├── template.py          # Template engine
-├── tasks.py             # Background task queue
-├── websocket.py         # WebSocket support
-├── graphql.py           # GraphQL engine
-├── openapi.py           # OpenAPI documentation
-├── di.py                # Dependency injection
-├── plugins.py           # Plugin system (cache, static, admin)
+├── server.py            # Built-in async HTTP/1.1 development server
+├── utils.py             # Configuration & utility helpers
+├── orm.py               # Database ORM (SQLite, Models, QueryBuilder, Migrations)
+├── auth.py              # Authentication (JWT, Sessions, Password Hashing)
+├── template.py          # Jinja-like template engine
+├── tasks.py             # Background task queue & scheduler
+├── websocket.py         # WebSocket support (rooms, broadcast)
+├── graphql.py           # GraphQL engine & GraphiQL IDE
+├── openapi.py           # OpenAPI 3.0 documentation generator
+├── di.py                # Dependency injection container
+├── plugins.py           # Plugin system (Cache, Static Files, Admin)
 ├── cli.py               # Command-line interface
-├── testing.py           # Test client & helpers
-├── sare.py              # SARE unified engine
-├── sare_traffic.py      # Traffic analyzer (observation layer)
-├── sare_optimizer.py    # Adaptive optimizer (decision layer)
-├── sare_predictor.py    # Latency predictor (AI layer)
-├── sare_codepath.py     # Code path optimizer (execution layer)
-└── sare_reporter.py     # Intelligence reporter (reporting layer)
+├── testing.py           # Test client & assertion helpers
+├── sare.py              # SARE unified engine (integration layer)
+├── sare_traffic.py      # SARE: Traffic analyzer (observation)
+├── sare_optimizer.py    # SARE: Adaptive optimizer (decision)
+├── sare_predictor.py    # SARE: AI latency predictor (prediction)
+├── sare_codepath.py     # SARE: Code path optimizer (execution)
+└── sare_reporter.py     # SARE: Intelligence reporter (reporting)
 ```
 
-**Design Principles:**
+### Design Principles
 
-- **Zero dependencies** — Core runs on Python standard library only
-- **ASGI-native** — Full async support, compatible with uvicorn/hypercorn
-- **Modular** — Use only what you need
-- **Convention over configuration** — Sensible defaults, easy overrides
-- **Developer-first** — Clear errors, intuitive API, minimal boilerplate
-- **Self-evolving** — SARE observes, decides, adapts, and evolves automatically
+| Principle | Description |
+|-----------|-------------|
+| **Zero Dependencies** | Core runs entirely on Python standard library — no pip installs required |
+| **ASGI-Native** | Full async support, compatible with uvicorn, hypercorn, and any ASGI server |
+| **Modular** | Import and use only what you need — each module is self-contained |
+| **Convention over Configuration** | Sensible defaults with easy overrides |
+| **Developer-First** | Clear error messages, intuitive API, minimal boilerplate |
+| **Self-Evolving** | SARE automatically optimizes routing and middleware at runtime |
 
 ---
 
-## 🧪 Running Tests
+## 📋 Version History
 
+### v1.1.0 (Current)
+- **SARE Engine** — Self-Evolving Adaptive Routing Engine with 5-layer architecture
+  - Traffic heat mapping and per-route latency tracking (p50/p95/p99)
+  - Adaptive middleware reordering based on efficiency measurements
+  - AI-assisted latency prediction with EWMA and linear regression
+  - Automatic response memoization and code path optimization
+  - Intelligence reporting with performance deltas and recommendations
+- Project renamed from **Isha** to **Ishaa**
+- CLI command updated to `ishaa`
+- Package name updated to `ishaa` on PyPI
+
+### v1.0.0
+- Initial release with full framework core
+- ASGI 3.0 application class with async/sync handler support
+- URL routing with typed parameters and named routes
+- Request/Response objects with auto-detection
+- Middleware pipeline (CORS, CSRF, Rate Limiting, Security Headers)
+- Blueprint system for modular applications
+- SQLite ORM with Model metaclass, QueryBuilder, and migrations
+- Authentication: PBKDF2 password hashing, HMAC-SHA256 JWT, sessions
+- Jinja-like template engine with inheritance, includes, and filters
+- WebSocket support with rooms and broadcast
+- Background task queue with periodic scheduling
+- GraphQL engine with GraphiQL IDE
+- Dependency injection with `Depends()`
+- Plugin system (Cache, Static Files, Admin Panel)
+- OpenAPI 3.0 specification generator with Swagger UI
+- CLI tool for scaffolding, dev server, migrations, and shell
+- Built-in test client with assertion helpers
+
+---
+
+## 📦 Requirements
+
+- **Python 3.8+** (tested on 3.8 through 3.13)
+- **Zero external dependencies** for core functionality
+
+### Optional Dependencies
+
+| Package | Install Command | Purpose |
+|---------|----------------|---------|
+| `uvicorn` | `pip install ishaa[uvicorn]` | Production-grade ASGI server |
+| `bcrypt` | `pip install bcrypt` | Alternative password hashing backend |
+| `jinja2` | `pip install jinja2` | Alternative template engine |
+| `pytest` | `pip install ishaa[dev]` | Test runner and async test support |
+
+Install everything at once:
 ```bash
-# Run all tests
-python tests/test_core.py
-python tests/test_middleware.py
-python tests/test_orm.py
-python tests/test_auth.py
-python tests/test_template.py
-
-# Or with pytest (if installed)
-pip install pytest
-pytest tests/ -v
+pip install ishaa[full]
 ```
-
----
-
-## 📦 Examples
-
-See the [examples/](examples/) directory:
-
-| Example | Description |
-|---------|-------------|
-| [minimal_app.py](examples/minimal_app.py) | Simplest possible Isha app — 3 routes |
-| [rest_api.py](examples/rest_api.py) | REST API with Blueprint, ORM, and CRUD |
-| [full_app.py](examples/full_app.py) | Complete app using all features |
-
----
-
-## 📋 Requirements
-
-- **Python 3.8+**
-- No external dependencies for core functionality
-
-**Optional dependencies:**
-| Package | Purpose |
-|---------|---------|
-| `uvicorn` | Production ASGI server |
-| `bcrypt` | Alternative password hashing |
-| `jinja2` | Alternative template engine |
-| `pytest` | Test runner |
 
 ---
 
@@ -824,6 +860,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-  <strong>Built with ❤️ — The Isha Framework</strong><br>
-  <em>Simplicity · Structure · Performance</em>
+  <strong>Built with ❤️ by Jayanthan Senthilkumar</strong><br>
+  <strong>The Ishaa Framework</strong> — Simplicity · Structure · Performance · Self-Evolution<br>
+  <a href="https://github.com/jayanthansenthilkumar/ISHAA_Framework">GitHub</a>
 </p>

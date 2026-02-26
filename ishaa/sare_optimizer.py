@@ -1,5 +1,5 @@
 """
-Isha SARE — Adaptive Optimizer Engine
+Ishaa SARE — Adaptive Optimizer Engine
 
 The decision-making core of SARE. Consumes traffic intelligence from the
 TrafficAnalyzer and applies real-time optimizations:
@@ -19,7 +19,7 @@ from collections import OrderedDict
 
 from .sare_traffic import TrafficAnalyzer, RouteMetrics, MiddlewareMetrics
 
-logger = logging.getLogger("isha.sare.optimizer")
+logger = logging.getLogger("ishaa.sare.optimizer")
 
 
 class AdaptiveOptimizer:

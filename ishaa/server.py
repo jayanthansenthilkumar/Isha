@@ -1,5 +1,5 @@
 """
-Isha Server — Built-in async HTTP/1.1 development server.
+Ishaa Server — Built-in async HTTP/1.1 development server.
 
 For production, use uvicorn or hypercorn:
     uvicorn app:app --host 0.0.0.0 --port 8000
@@ -10,12 +10,12 @@ import asyncio
 import logging
 import sys
 
-logger = logging.getLogger("isha.server")
+logger = logging.getLogger("ishaa.server")
 
 
 def run_server(app, host="127.0.0.1", port=8000):
     """
-    Run the Isha application.
+    Run the Ishaa application.
     Tries uvicorn first (production-quality), falls back to built-in dev server.
     """
     try:
@@ -23,7 +23,7 @@ def run_server(app, host="127.0.0.1", port=8000):
         uvicorn.run(app, host=host, port=port, log_level="info" if not getattr(app, "debug", False) else "debug")
     except ImportError:
         logger.info("uvicorn not installed — using built-in development server.")
-        logger.info("For production, install uvicorn: pip install isha[uvicorn]")
+        logger.info("For production, install uvicorn: pip install ishaa[uvicorn]")
         try:
             asyncio.run(_run_builtin_server(app, host, port))
         except KeyboardInterrupt:

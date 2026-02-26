@@ -1,5 +1,5 @@
 """
-Isha Middleware System — Before/after request hooks and exception handlers.
+Ishaa Middleware System — Before/after request hooks and exception handlers.
 """
 
 import asyncio

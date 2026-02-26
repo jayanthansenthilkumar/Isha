@@ -1,8 +1,8 @@
 """
-Isha Dependency Injection — Auto-inject dependencies into route handlers.
+Ishaa Dependency Injection — Auto-inject dependencies into route handlers.
 
 Example:
-    from isha.di import Depends, inject
+    from ishaa.di import Depends, inject
 
     async def get_db():
         db = Database.get_adapter()
@@ -29,7 +29,7 @@ import logging
 from typing import Any, Callable, Optional
 from functools import wraps
 
-logger = logging.getLogger("isha.di")
+logger = logging.getLogger("ishaa.di")
 
 
 class Depends:

@@ -1,5 +1,5 @@
 """
-Isha Authentication — Session-based auth, JWT, password hashing.
+Ishaa Authentication — Session-based auth, JWT, password hashing.
 """
 
 import hashlib
@@ -13,7 +13,7 @@ from typing import Optional, Dict, Any
 from functools import wraps
 from datetime import datetime, timezone, timedelta
 
-logger = logging.getLogger("isha.auth")
+logger = logging.getLogger("ishaa.auth")
 
 
 # ── Password Hashing ────────────────────────────────────────────────

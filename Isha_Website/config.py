@@ -1,5 +1,5 @@
 """
-Configuration for Isha Framework Landing Page
+Configuration for Ishaa Framework Landing Page
 """
 
 import os

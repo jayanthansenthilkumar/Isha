@@ -1,5 +1,5 @@
 """
-Isha Utilities — Helper functions and common utilities.
+Ishaa Utilities — Helper functions and common utilities.
 """
 
 import os
@@ -115,7 +115,7 @@ class Config:
         """Load config from a dictionary."""
         self._config.update(d)
 
-    def from_env(self, prefix="ISHA_"):
+    def from_env(self, prefix="ISHAA_"):
         """Load config from environment variables with the given prefix."""
         for key, value in os.environ.items():
             if key.startswith(prefix):

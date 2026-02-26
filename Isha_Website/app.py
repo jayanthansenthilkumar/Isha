@@ -1,5 +1,5 @@
 """
-Isha Framework — Official Landing Page
+Ishaa Framework — Official Landing Page
 The modern async Python web framework.
 """
 
@@ -11,11 +11,11 @@ mimetypes.add_type("text/css", ".css")
 mimetypes.add_type("image/svg+xml", ".svg")
 mimetypes.add_type("application/json", ".json")
 
-from isha import Isha, JSONResponse, HTMLResponse
-from isha.middleware import CORSMiddleware, SecurityHeadersMiddleware
-from isha.plugins import StaticFilesPlugin
+from ishaa import Ishaa, JSONResponse, HTMLResponse
+from ishaa.middleware import CORSMiddleware, SecurityHeadersMiddleware
+from ishaa.plugins import StaticFilesPlugin
 
-app = Isha("isha_framework", debug=True)
+app = Ishaa("isha_framework", debug=True)
 
 # Middleware
 app.add_middleware(CORSMiddleware(allow_origins=["*"]))
@@ -29,10 +29,10 @@ app.register_plugin(StaticFilesPlugin(directory="static", prefix="/static"))
 
 @app.route("/")
 async def index(request):
-    """Serve the Isha Framework landing page."""
+    """Serve the Ishaa Framework landing page."""
     return app.render(
         "index.html",
-        title="Isha Framework",
+        title="Ishaa Framework",
         tagline="The Modern Async Python Web Framework",
         description="Build blazing-fast web applications with an elegant, batteries-included framework designed for developer happiness.",
     )
@@ -40,7 +40,7 @@ async def index(request):
 
 @app.route("/docs")
 async def docs(request):
-    """Serve the Isha Framework documentation page."""
+    """Serve the Ishaa Framework documentation page."""
     return app.render(
         "docs.html",
         title="Documentation",
@@ -50,25 +50,25 @@ async def docs(request):
 @app.route("/api/health")
 async def health(request):
     """API health check endpoint."""
-    return {"status": "ok", "app": "isha_framework", "framework": "Isha"}
+    return {"status": "ok", "app": "isha_framework", "framework": "Ishaa"}
 
 
 @app.route("/api/hello/<name>")
 async def hello(request, name):
-    """Greeting endpoint — a live demo of Isha routing."""
-    return {"message": f"Hello, {name}! Welcome to Isha Framework."}
+    """Greeting endpoint — a live demo of Ishaa routing."""
+    return {"message": f"Hello, {name}! Welcome to Ishaa Framework."}
 
 
 # ── Startup / Shutdown ──────────────────────────────────
 
 @app.on_startup
 async def startup():
-    print("✦ Isha Framework landing page started!")
+    print("✦ Ishaa Framework landing page started!")
 
 
 @app.on_shutdown
 async def shutdown():
-    print("✦ Isha Framework landing page shutting down...")
+    print("✦ Ishaa Framework landing page shutting down...")
 
 
 # ── Run ─────────────────────────────────────────────────

@@ -1,12 +1,12 @@
 """
-Isha CLI — Command-line interface for creating and managing Isha projects.
+Ishaa CLI — Command-line interface for creating and managing Ishaa projects.
 
 Usage:
-    isha create project <name>  - Scaffold a new Isha project
-    isha run [app:app]          - Run the development server
-    isha routes [app:app]       - List all registered routes
-    isha shell                  - Start interactive shell
-    isha version                - Show Isha version
+    ishaa create project <name>  - Scaffold a new Ishaa project
+    ishaa run [app:app]          - Run the development server
+    ishaa routes [app:app]       - List all registered routes
+    ishaa shell                  - Start interactive shell
+    ishaa version                - Show Ishaa version
 """
 
 import argparse
@@ -18,16 +18,16 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="isha",
-        description="Isha — A Modern Python Web Framework",
+        prog="ishaa",
+        description="Ishaa — A Modern Python Web Framework",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  isha create project myapp     Create a new project
-  isha run                      Run dev server (loads app:app)
-  isha run myapp.main:app       Run a specific app module
-  isha routes                   Show all registered routes
-  isha version                  Print framework version
+  ishaa create project myapp     Create a new project
+  ishaa run                      Run dev server (loads app:app)
+  ishaa run myapp.main:app       Run a specific app module
+  ishaa routes                   Show all registered routes
+  ishaa version                  Print framework version
 """,
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
@@ -36,7 +36,7 @@ Examples:
     create_parser = subparsers.add_parser("create", help="Create a new project or component")
     create_sub = create_parser.add_subparsers(dest="create_type")
 
-    project_parser = create_sub.add_parser("project", help="Scaffold a new Isha project")
+    project_parser = create_sub.add_parser("project", help="Scaffold a new Ishaa project")
     project_parser.add_argument("name", help="Project name")
     project_parser.add_argument("--minimal", action="store_true", help="Minimal project (single file)")
 
@@ -54,10 +54,10 @@ Examples:
     routes_parser.add_argument("app", nargs="?", default=None, help="App import path")
 
     # ── shell ──
-    subparsers.add_parser("shell", help="Start interactive Python shell with Isha imports")
+    subparsers.add_parser("shell", help="Start interactive Python shell with Ishaa imports")
 
     # ── version ──
-    subparsers.add_parser("version", help="Show Isha framework version")
+    subparsers.add_parser("version", help="Show Ishaa framework version")
 
     args = parser.parse_args()
 
@@ -116,7 +116,7 @@ def _resolve_app(app_path=None):
 
         if app_path is None:
             print("Error: Could not auto-detect application.", file=sys.stderr)
-            print("Provide the app path explicitly: isha run mymodule:app", file=sys.stderr)
+            print("Provide the app path explicitly: ishaa run mymodule:app", file=sys.stderr)
             sys.exit(1)
 
     # Parse module:attribute
@@ -158,7 +158,7 @@ def cmd_run(args):
         # Use uvicorn for auto-reload support
         try:
             import uvicorn
-            print(f"\n✦ Isha Dev Server (uvicorn + auto-reload)")
+            print(f"\n✦ Ishaa Dev Server (uvicorn + auto-reload)")
             print(f"  App:    {app_path}")
             print(f"  URL:    http://{host}:{port}")
             print(f"  Reload: ON")
@@ -172,14 +172,14 @@ def cmd_run(args):
                 workers=args.workers if args.workers > 1 else 1,
             )
         except ImportError:
-            print("Warning: Auto-reload requires uvicorn. Install with: pip install isha[uvicorn]", file=sys.stderr)
+            print("Warning: Auto-reload requires uvicorn. Install with: pip install ishaa[uvicorn]", file=sys.stderr)
             print("Running without reload...\n")
             app.run(host=host, port=port, debug=debug)
     else:
         # Try uvicorn first for production-quality serving, fall back to built-in
         try:
             import uvicorn
-            print(f"\n✦ Isha Server (uvicorn)")
+            print(f"\n✦ Ishaa Server (uvicorn)")
             print(f"  App:    {app_path}")
             print(f"  URL:    http://{host}:{port}")
             print(f"  Press Ctrl+C to stop\n")
@@ -196,9 +196,9 @@ def cmd_run(args):
 
 
 def cmd_create(args):
-    """Create a new Isha project."""
+    """Create a new Ishaa project."""
     if args.create_type != "project":
-        print("Usage: isha create project <name>")
+        print("Usage: ishaa create project <name>")
         return
 
     name = args.name
@@ -209,7 +209,7 @@ def cmd_create(args):
         print(f"Error: Directory '{name}' already exists.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"\n✦ Creating Isha project: {name}\n")
+    print(f"\n✦ Creating Ishaa project: {name}\n")
 
     if args.minimal:
         _create_minimal_project(project_dir, name, safe_name)
@@ -220,7 +220,7 @@ def cmd_create(args):
 
   Next steps:
     cd {name}
-    pip install isha
+    pip install ishaa
     python app.py
 
   Your app will be running at http://127.0.0.1:8000
@@ -228,7 +228,7 @@ def cmd_create(args):
 
 
 def _create_full_project(project_dir, name, safe_name):
-    """Scaffold a full Isha project."""
+    """Scaffold a full Ishaa project."""
     dirs = [
         project_dir,
         project_dir / "routes",
@@ -245,14 +245,14 @@ def _create_full_project(project_dir, name, safe_name):
 
     # ── app.py ──
     (project_dir / "app.py").write_text(f'''"""
-{name} — Built with Isha Framework
+{name} — Built with Ishaa Framework
 """
 
-from isha import Isha, JSONResponse, HTMLResponse
-from isha.middleware import CORSMiddleware, SecurityHeadersMiddleware
-from isha.plugins import StaticFilesPlugin
+from ishaa import Ishaa, JSONResponse, HTMLResponse
+from ishaa.middleware import CORSMiddleware, SecurityHeadersMiddleware
+from ishaa.plugins import StaticFilesPlugin
 
-app = Isha("{safe_name}", debug=True)
+app = Ishaa("{safe_name}", debug=True)
 
 # Middleware
 app.add_middleware(CORSMiddleware(allow_origins=["*"]))
@@ -273,7 +273,7 @@ async def index(request):
 @app.route("/api/health")
 async def health(request):
     """API health check endpoint."""
-    return {{"status": "ok", "app": "{safe_name}", "framework": "Isha"}}
+    return {{"status": "ok", "app": "{safe_name}", "framework": "Ishaa"}}
 
 
 @app.route("/api/hello/<name>")
@@ -334,7 +334,7 @@ class ProdConfig(Config):
 Route blueprints for {name}
 """
 
-from isha import Blueprint
+from ishaa import Blueprint
 
 api = Blueprint("api", prefix="/api/v1")
 
@@ -352,7 +352,7 @@ Database models for {name}
 
 # Uncomment to use the built-in ORM:
 #
-# from isha.orm import Database, Model, TextField, IntegerField, BooleanField
+# from ishaa.orm import Database, Model, TextField, IntegerField, BooleanField
 #
 # db = Database("{safe_name}.db")
 #
@@ -390,7 +390,7 @@ Database models for {name}
     </main>
 
     <footer class="footer">
-        <p>Built with <a href="https://github.com/jayanthansenthilkumar/ISHA_Framework">Isha Framework</a></p>
+        <p>Built with <a href="https://github.com/jayanthansenthilkumar/ISHAA_Framework">Ishaa Framework</a></p>
     </footer>
 
     {% block scripts %}{% endblock %}
@@ -433,7 +433,7 @@ Database models for {name}
     print(f"  Created {project_dir / 'templates' / 'index.html'}")
 
     # ── static/css/style.css ──
-    (project_dir / "static" / "css" / "style.css").write_text('''/* ''' + name + ''' — Built with Isha Framework */
+    (project_dir / "static" / "css" / "style.css").write_text('''/* ''' + name + ''' — Built with Ishaa Framework */
 :root {
     --primary: #6366f1;
     --primary-hover: #4f46e5;
@@ -567,7 +567,7 @@ a:hover { text-decoration: underline; }
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from isha.testing import TestClient
+from ishaa.testing import TestClient
 from app import app
 
 client = TestClient(app)
@@ -604,7 +604,7 @@ if __name__ == "__main__":
     print(f"  Created {project_dir / 'tests' / 'test_app.py'}")
 
     # ── requirements.txt ──
-    (project_dir / "requirements.txt").write_text("isha>=1.0.0\n", encoding="utf-8")
+    (project_dir / "requirements.txt").write_text("ishaa>=1.0.0\n", encoding="utf-8")
     print(f"  Created {project_dir / 'requirements.txt'}")
 
     # ── .gitignore ──
@@ -621,12 +621,12 @@ def _create_minimal_project(project_dir, name, safe_name):
     print(f"  Created {project_dir}/")
 
     (project_dir / "app.py").write_text(f'''"""
-{name} — Built with Isha Framework (minimal)
+{name} — Built with Ishaa Framework (minimal)
 """
 
-from isha import Isha
+from ishaa import Ishaa
 
-app = Isha("{safe_name}")
+app = Ishaa("{safe_name}")
 
 
 @app.route("/")
@@ -649,7 +649,7 @@ if __name__ == "__main__":
 ''', encoding="utf-8")
     print(f"  Created {project_dir / 'app.py'}")
 
-    (project_dir / "requirements.txt").write_text("isha>=1.0.0\n", encoding="utf-8")
+    (project_dir / "requirements.txt").write_text("ishaa>=1.0.0\n", encoding="utf-8")
     (project_dir / ".gitignore").write_text(
         "__pycache__/\n*.pyc\n.env\n*.db\nvenv/\n",
         encoding="utf-8",
@@ -671,16 +671,16 @@ def cmd_routes(args):
 
 
 def cmd_shell(args):
-    """Start an interactive shell with Isha imports."""
+    """Start an interactive shell with Ishaa imports."""
     cwd = os.getcwd()
     if cwd not in sys.path:
         sys.path.insert(0, cwd)
 
     context = {}
     try:
-        from isha import Isha, Request, Response, JSONResponse, HTMLResponse
+        from ishaa import Ishaa, Request, Response, JSONResponse, HTMLResponse
         context.update({
-            "Isha": Isha,
+            "Ishaa": Ishaa,
             "Request": Request,
             "Response": Response,
             "JSONResponse": JSONResponse,
@@ -698,7 +698,7 @@ def cmd_shell(args):
         pass
 
     names = ", ".join(context.keys())
-    banner = f"✦ Isha Interactive Shell\n  Available: {names}\n"
+    banner = f"✦ Ishaa Interactive Shell\n  Available: {names}\n"
 
     try:
         from IPython import embed
@@ -709,9 +709,9 @@ def cmd_shell(args):
 
 
 def cmd_version(args):
-    """Show Isha framework version."""
+    """Show Ishaa framework version."""
     from . import __version__
-    print(f"Isha Framework v{__version__}")
+    print(f"Ishaa Framework v{__version__}")
 
 
 if __name__ == "__main__":

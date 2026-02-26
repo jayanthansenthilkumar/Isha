@@ -1,11 +1,11 @@
 """
-Database models for Isha Framework Landing Page
+Database models for Ishaa Framework Landing Page
 """
 
 # This landing page is static — no database models needed.
-# But here's an example of what Isha ORM looks like:
+# But here's an example of what Ishaa ORM looks like:
 #
-# from isha.orm import Database, Model, TextField, IntegerField, BooleanField
+# from ishaa.orm import Database, Model, TextField, IntegerField, BooleanField
 #
 # db = Database("isha_landing.db")
 #
