@@ -260,6 +260,23 @@ img { max-width: 100%; height: auto; }
     font-size: 1.4rem;
     letter-spacing: -0.02em;
 }
+.brand-logo {
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    min-width: 36px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    filter: drop-shadow(0 0 6px var(--primary-glow));
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+.brand:hover .brand-logo {
+    filter: drop-shadow(0 0 10px var(--primary-glow));
+    transform: scale(1.05);
+}
 .brand-icon {
     color: var(--primary-light);
     font-size: 1.6rem;
